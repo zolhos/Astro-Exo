@@ -105,10 +105,11 @@ class BatchProcessor:
         # Cenário especial: Alvo marcado como Falso Positivo (BEB)
         is_simulated_fp = (target_dict.get("expected_disp") == "FP") or ("BEB" in name)
 
-        # 1. Simula TPF 7x7
+        # 1. Simula TPF 7x7 com janela dinâmica adaptada à duração do trânsito
         n_cadences = 100
         ny, nx = 7, 7
-        time_pts = np.linspace(-0.2, 0.2, n_cadences) + t0
+        half_window = max(0.25, 2.0 * dur_d)
+        time_pts = np.linspace(-half_window, half_window, n_cadences) + t0
         flux_tpf = np.full((n_cadences, ny, nx), 2000.0)
         err_tpf = np.full_like(flux_tpf, 3.0)
 

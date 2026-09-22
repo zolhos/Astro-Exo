@@ -47,13 +47,15 @@ def fetch_nasa_tois(
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
                 cached_data = json.load(f)
-            print(f"[PROTEÇÃO DE COTA] Reutilizando cache local de TOIs ({cache_path}) - 0 requisições HTTP feitas à NASA.")
-            # Filtra e retorna a fatia solicitada
             filtered = [
                 r for r in cached_data
                 if r.get("expected_disp") in dispositions and r.get("period_days") is not None
             ]
-            return filtered[:limit]
+            if len(filtered) >= limit:
+                print(f"[PROTEÇÃO DE COTA] Reutilizando cache local de TOIs ({cache_path}) - 0 requisições HTTP feitas à NASA.")
+                return filtered[:limit]
+            else:
+                print(f"[CACHE INFO] Cache possui {len(filtered)} alvos correspondentes, mas {limit} foram solicitados. Consultando NASA TAP...")
         except Exception as e:
             print(f"[CACHE AVISO] Falha ao ler cache local ({e}), realizando consulta segura...")
 
