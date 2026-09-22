@@ -81,6 +81,21 @@ pip install -e ".[all]"
 
 ### 1. Command-Line Interface (CLI)
 
+#### Environment & Module Diagnostics (Smoke Test)
+```bash
+astro-exo smoke
+```
+
+#### Ingest Pre-Identified Candidates from NASA Exoplanet Archive (with 24h Quota Guard)
+```bash
+astro-exo fetch-tois --limit 50 --output data/nasa_candidates.csv
+```
+
+#### Run Batch Processing on Multiple Targets
+```bash
+astro-exo batch --input data/pilot_candidates.csv --mode mock --output-dir results/pilot_batch
+```
+
 #### Run Full Pipeline on a Target
 ```bash
 astro-exo run --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 2.5 --backend emcee
@@ -91,11 +106,31 @@ astro-exo run --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 
 astro-exo vet --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 2.5
 ```
 
-### 2. Python API
+### 2. Interactive Visual Dashboard
+
+Generate and open a standalone, interactive HTML5 Canvas visual report showing multi-day light curves, phase-folded transits, sub-pixel difference imaging heatmaps, and Doppler radial velocity curves:
+
+```bash
+python3 examples/generate_visual_report.py
+open examples/sample_dashboard.html
+```
+
+### 3. Python API
 
 ```python
 from astro_exo.pipeline import TargetConfig, PipelineConfig, ExoplanetPipelineRunner
+from astro_exo.pipeline.batch import BatchProcessor
+from astro_exo.ingestion.nasa_archive import fetch_tois_tap
 
+# 1. Fetch live candidates with local cache protection
+tois = fetch_tois_tap(limit=10, dispositions=["PC", "CP"])
+
+# 2. Run batch execution
+batch = BatchProcessor(input_path="data/pilot_candidates.csv", mode="mock", output_dir="results/batch")
+results = batch.run()
+summary = batch.export_summary("results/batch/summary.json")
+
+# 3. Single-target execution
 target = TargetConfig(
     tic_id=261136679,
     sector=1,
@@ -125,13 +160,17 @@ print(f"Centroid Offset: {product.vetting.centroid_offset_arcsec:.2f} arcsec ({p
 
 ```
 Astro-Exo/
+├── data/                # Curated benchmark datasets (pilot_candidates.csv, NASA cache)
+├── docs/                # Architectural manuals and guides (batch_processing_guide.md)
+├── examples/            # Visual reports, sample dashboards (sample_dashboard.html)
 ├── src/astro_exo/
-│   ├── ingestion/       # MAST/TESS downloads, wotan biweight detrending, TLS search
-│   ├── vetting/         # Difference imaging, Gaia overlay, dilution, PRF, TRICERATOPS
+│   ├── ingestion/       # MAST/TESS downloads, NASA TAP client, TLS search, biweight detrending
+│   ├── vetting/         # Difference imaging, Gaia DR3 overlay, dilution, PRF, TRICERATOPS
 │   ├── models/          # Transforms (Kipping, e-omega), emcee MCMC, JAX/NumPyro NUTS, celerite2 GP
-│   ├── pipeline/        # Runner, config dataclasses, output schemas
-│   └── cli.py           # Command-line interface
-├── tests/               # Unit tests verifying mathematical transformations and vetting logic
+│   ├── pipeline/        # Runner, BatchProcessor, config dataclasses, output schemas
+│   ├── smoke.py         # Diagnostic suite for dependencies and numerical stability
+│   └── cli.py           # Unified CLI (run, vet, smoke, batch, fetch-tois)
+├── tests/               # Automated unit tests (smoke, quick sample, large multi-transit, batch)
 ├── pyproject.toml       # Modern Python packaging configuration (PEP 621)
 ├── CITATION.cff         # Academic citation metadata
 └── all_turns.json       # Complete 27-turn analytical specification
@@ -141,10 +180,17 @@ Astro-Exo/
 
 ## Running Tests
 
-Execute the automated test suite with `pytest`:
+Execute the automated test suite with `pytest` or directly with standard `python3`:
 
 ```bash
+# Full test suite via pytest
 pytest tests/ -v
+
+# Or run tests directly with python3:
+python3 tests/test_smoke.py
+python3 tests/test_quick_sample.py
+python3 tests/test_large_sample.py
+python3 tests/test_batch_runner.py
 ```
 
 ---

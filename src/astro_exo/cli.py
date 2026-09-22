@@ -33,6 +33,21 @@ def main():
     vet_parser.add_argument("--t0", type=float, required=True, help="Epoch of mid-transit")
     vet_parser.add_argument("--duration", type=float, default=3.0, help="Transit duration in hours")
 
+    # Command: smoke
+    subparsers.add_parser("smoke", help="Run module diagnostics and functional smoke tests")
+
+    # Command: batch
+    batch_parser = subparsers.add_parser("batch", help="Run batch processing across a catalog of candidates")
+    batch_parser.add_argument("--input", "-i", type=str, required=True, help="Path to input CSV or JSON catalog")
+    batch_parser.add_argument("--outdir", "-o", type=str, default="results/batch_run", help="Output directory")
+    batch_parser.add_argument("--mode", "-m", choices=["mock", "live"], default="mock", help="Execution mode: 'mock' (simulated/offline) or 'live' (MAST)")
+
+    # Command: fetch-tois
+    fetch_parser = subparsers.add_parser("fetch-tois", help="Fetch candidates from NASA Exoplanet Archive with quota protection")
+    fetch_parser.add_argument("--limit", "-l", type=int, default=10, help="Maximum number of TOIs to fetch")
+    fetch_parser.add_argument("--output", "-o", type=str, default="data/nasa_tois_batch.csv", help="Output CSV path")
+    fetch_parser.add_argument("--refresh", action="store_true", help="Force refresh bypassing local 24h cache")
+
     args = parser.parse_args()
 
     if not args.subcommand:
@@ -81,6 +96,21 @@ def main():
         print("Centroid Offset Results:")
         for k, v in res.items():
             print(f"  {k}: {v}")
+
+    elif args.subcommand == "smoke":
+        from astro_exo.smoke import run_full_diagnostics_and_smoke
+        sys.exit(run_full_diagnostics_and_smoke())
+
+    elif args.subcommand == "batch":
+        from astro_exo.pipeline.batch import BatchProcessor
+        processor = BatchProcessor(mode=args.mode, output_dir=args.outdir)
+        processor.process_catalog(args.input)
+
+    elif args.subcommand == "fetch-tois":
+        from astro_exo.ingestion.nasa_archive import fetch_nasa_tois, export_tois_to_csv
+        tois = fetch_nasa_tois(limit=args.limit, force_refresh=args.refresh)
+        out_path = export_tois_to_csv(tois, args.output)
+        print(f"[SUCESSO] {len(tois)} candidatos da NASA salvos em: {out_path}")
 
 
 if __name__ == "__main__":

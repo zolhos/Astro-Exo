@@ -1,0 +1,67 @@
+[
+  {
+    "tic_id": 25155310,
+    "name": "WASP-126b",
+    "toi": "114.01",
+    "sector": 1,
+    "period_days": 3.2888,
+    "t0_bjd": 1325.503,
+    "duration_hours": 3.05,
+    "depth_ppm": 8800.0,
+    "r_star_rsun": 1.27,
+    "m_star_msun": 1.12,
+    "expected_disp": "CP"
+  },
+  {
+    "tic_id": 100100827,
+    "name": "WASP-18b",
+    "toi": "172.01",
+    "sector": 2,
+    "period_days": 0.9414,
+    "t0_bjd": 1354.215,
+    "duration_hours": 2.18,
+    "depth_ppm": 9200.0,
+    "r_star_rsun": 1.21,
+    "m_star_msun": 1.24,
+    "expected_disp": "CP"
+  },
+  {
+    "tic_id": 52368076,
+    "name": "TOI-125b",
+    "toi": "125.01",
+    "sector": 1,
+    "period_days": 4.6538,
+    "t0_bjd": 1327.482,
+    "duration_hours": 2.95,
+    "depth_ppm": 1420.0,
+    "r_star_rsun": 0.85,
+    "m_star_msun": 0.86,
+    "expected_disp": "CP"
+  },
+  {
+    "tic_id": 259377017,
+    "name": "TOI-270b",
+    "toi": "270.01",
+    "sector": 3,
+    "period_days": 3.3600,
+    "t0_bjd": 1383.524,
+    "duration_hours": 1.68,
+    "depth_ppm": 1980.0,
+    "r_star_rsun": 0.38,
+    "m_star_msun": 0.40,
+    "expected_disp": "CP"
+  },
+  {
+    "tic_id": 99999901,
+    "name": "Mock-BEB-Blend",
+    "toi": "999.01",
+    "sector": 1,
+    "period_days": 2.5000,
+    "t0_bjd": 1326.100,
+    "duration_hours": 2.50,
+    "depth_ppm": 15000.0,
+    "r_star_rsun": 1.00,
+    "m_star_msun": 1.00,
+    "expected_disp": "FP"
+  }
+]

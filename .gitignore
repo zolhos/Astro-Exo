@@ -59,4 +59,6 @@ mastDownload/
 scratch/
 chrome_profile*
 *.log
+results/
+
 

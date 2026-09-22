@@ -4,8 +4,17 @@ MCMC transit fitting engine using emcee and analytical transit models (batman).
 
 from typing import Optional, Dict, Any, Tuple
 import numpy as np
-from scipy.optimize import minimize
-import emcee
+
+try:
+    from scipy.optimize import minimize
+except ImportError:
+    minimize = None
+
+try:
+    import emcee
+except ImportError:
+    emcee = None
+
 from astro_exo.models.transforms import kipping_to_quadratic
 
 
@@ -138,11 +147,17 @@ class EmceeTransitFitter:
         self.exp_time = exp_time
 
         self.theta_map: Optional[np.ndarray] = None
-        self.sampler: Optional[emcee.EnsembleSampler] = None
+        self.sampler: Optional[Any] = None
         self.samples: Optional[np.ndarray] = None
 
     def fit_map(self, theta_initial: Optional[np.ndarray] = None) -> np.ndarray:
         """Find Maximum A Posteriori (MAP) starting position."""
+        if minimize is None:
+            raise ImportError(
+                "scipy is required for Nelder-Mead optimization in EmceeTransitFitter. "
+                "Install with `pip install scipy`."
+            )
+
         if theta_initial is None:
             # Default initial parameter vector: [t0, rp, a_rs, b, q1, q2, f0]
             theta_initial = np.array([self.t0_expected, 0.08, 10.0, 0.5, 0.35, 0.30, 1.0])
@@ -169,6 +184,12 @@ class EmceeTransitFitter:
         seed: int = 42
     ) -> np.ndarray:
         """Execute burn-in and production sampling with emcee."""
+        if emcee is None:
+            raise ImportError(
+                "emcee is required for MCMC sampling. "
+                "Install with `pip install emcee`."
+            )
+
         if self.theta_map is None:
             self.fit_map()
 
