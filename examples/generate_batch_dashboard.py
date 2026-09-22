@@ -9,27 +9,30 @@ import csv
 import shutil
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BATCH_INPUT_CSV = os.path.join(REPO_ROOT, "data", "batches", "nasa_toi_batch_100", "inputs.csv")
-BATCH_SUMMARY_JSON = os.path.join(REPO_ROOT, "results", "nasa_toi_batch_100", "batch_summary.json")
-BATCH_METADATA_JSON = os.path.join(REPO_ROOT, "results", "nasa_toi_batch_100", "run_metadata.json")
-OUTPUT_HTML = os.path.join(REPO_ROOT, "examples", "batch_100_dashboard.html")
 ARTIFACT_DIR = "/Users/diegozolhos/.gemini/antigravity/brain/cb01ae73-9fed-4879-8295-1f9bf9e73f3a"
 
 
-def generate_batch_dashboard():
+def generate_batch_dashboard(batch_name: str = "nasa_toi_batch_200"):
+    batch_input_csv = os.path.join(REPO_ROOT, "data", "batches", batch_name, "inputs.csv")
+    batch_summary_json = os.path.join(REPO_ROOT, "results", batch_name, "batch_summary.json")
+    batch_metadata_json = os.path.join(REPO_ROOT, "results", batch_name, "run_metadata.json")
+
+    n_tag = "200" if "200" in batch_name else "100"
+    output_html = os.path.join(REPO_ROOT, "examples", f"batch_{n_tag}_dashboard.html")
+
     # 1. Carrega inputs.csv para obter dados estelares e disposições canônicas
     inputs_map = {}
-    with open(BATCH_INPUT_CSV, "r", encoding="utf-8") as f_in:
+    with open(batch_input_csv, "r", encoding="utf-8") as f_in:
         for row in csv.DictReader(f_in):
             key = (int(row["tic_id"]), row["toi"])
             inputs_map[key] = row
 
     # 2. Carrega batch_summary.json
-    with open(BATCH_SUMMARY_JSON, "r", encoding="utf-8") as f_sum:
+    with open(batch_summary_json, "r", encoding="utf-8") as f_sum:
         summary_data = json.load(f_sum)
 
     # 3. Carrega metadados de execução
-    with open(BATCH_METADATA_JSON, "r", encoding="utf-8") as f_meta:
+    with open(batch_metadata_json, "r", encoding="utf-8") as f_meta:
         metadata = json.load(f_meta)
 
     # 4. Mescla registros
@@ -54,6 +57,7 @@ def generate_batch_dashboard():
             "density": round(item["derived_density_g_cm3"], 2) if item["derived_density_g_cm3"] is not None else None
         })
 
+    total_count = len(merged_targets)
     json_payload = json.dumps(merged_targets)
     meta_payload = json.dumps(metadata)
 
@@ -885,18 +889,18 @@ def generate_batch_dashboard():
 </body>
 </html>"""
 
-    os.makedirs(os.path.dirname(OUTPUT_HTML), exist_ok=True)
-    with open(OUTPUT_HTML, "w", encoding="utf-8") as f_out:
+    os.makedirs(os.path.dirname(output_html), exist_ok=True)
+    with open(output_html, "w", encoding="utf-8") as f_out:
         f_out.write(html_content)
 
-    print(f"[OK] Dashboard salvo em: {OUTPUT_HTML}")
+    print(f"[OK] Dashboard salvo em: {output_html}")
 
     # Salva também no diretório de artefatos
-    artifact_path = os.path.join(ARTIFACT_DIR, "batch_100_dashboard.html")
+    artifact_path = os.path.join(ARTIFACT_DIR, f"batch_{n_tag}_dashboard.html")
     with open(artifact_path, "w", encoding="utf-8") as f_art:
         f_art.write(html_content)
     print(f"[OK] Dashboard copiado para artefatos em: {artifact_path}")
 
 
 if __name__ == "__main__":
-    generate_batch_dashboard()
+    generate_batch_dashboard("nasa_toi_batch_200")
