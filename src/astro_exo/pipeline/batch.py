@@ -244,9 +244,14 @@ class BatchProcessor:
         results: List[BatchTargetResult] = []
         t_batch_start = time.perf_counter()
 
+        targets_dir = os.path.join(self.output_dir, "targets")
+        os.makedirs(targets_dir, exist_ok=True)
+
         for idx, target_info in enumerate(targets, start=1):
             tic = target_info["tic_id"]
             name = target_info.get("name", f"TIC-{tic}")
+            toi = target_info.get("toi", "N/A")
+            safe_toi = str(toi).replace(".", "_")
             print(f"[{idx}/{n_total}] Processando {name} (TIC {tic})...", end=" ", flush=True)
 
             try:
@@ -259,10 +264,15 @@ class BatchProcessor:
                 icon = "✓" if res.status == "PASSED" else "⚠"
                 print(f"{icon} {res.status} [offset={res.centroid_offset_arcsec}\", {res.elapsed_sec:.2f}s]")
 
-                # Salva resultado individual em JSON
-                target_out_path = os.path.join(self.output_dir, f"TIC_{tic}.json")
-                with open(target_out_path, "w", encoding="utf-8") as f_single:
-                    json.dump(asdict(res), f_single, indent=2)
+                # Salva resultado individual em subdiretório de alvos e na raiz para compatibilidade
+                target_json_data = asdict(res)
+                detailed_target_path = os.path.join(targets_dir, f"TIC_{tic}_TOI_{safe_toi}.json")
+                with open(detailed_target_path, "w", encoding="utf-8") as f_det:
+                    json.dump(target_json_data, f_det, indent=2)
+
+                compat_target_path = os.path.join(self.output_dir, f"TIC_{tic}.json")
+                with open(compat_target_path, "w", encoding="utf-8") as f_single:
+                    json.dump(target_json_data, f_single, indent=2)
 
             except Exception as e:
                 print(f"✗ FALHA: {type(e).__name__}: {e}")
@@ -289,16 +299,19 @@ class BatchProcessor:
 
         t_batch_total = time.perf_counter() - t_batch_start
 
-        # Gera relatórios consolidados
-        self._export_summaries(results)
+        # Gera relatórios e metadados consolidados
+        self._export_summaries(results, filepath, t_batch_total)
 
         # Imprime sumário final
         self._print_batch_summary(results, t_batch_total)
 
         return results
 
-    def _export_summaries(self, results: List[BatchTargetResult]):
-        """Exports batch_summary.csv and batch_summary.json."""
+    def _export_summaries(self, results: List[BatchTargetResult], catalog_path: Optional[str] = None, total_time: float = 0.0):
+        """Exports batch_summary.csv, batch_summary.json, and run_metadata.json."""
+        import hashlib
+        from datetime import datetime, timezone
+
         # 1. CSV consolidado
         csv_path = os.path.join(self.output_dir, "batch_summary.csv")
         fieldnames = [
@@ -318,6 +331,60 @@ class BatchProcessor:
         json_path = os.path.join(self.output_dir, "batch_summary.json")
         with open(json_path, "w", encoding="utf-8") as f_json:
             json.dump([asdict(r) for r in results], f_json, indent=2)
+
+        # 3. Metadados de Execução e Rastreabilidade (Provenance)
+        sha256 = ""
+        if catalog_path and os.path.exists(catalog_path):
+            with open(catalog_path, "rb") as f_in:
+                sha256 = hashlib.sha256(f_in.read()).hexdigest()
+
+        n_total = len(results)
+        n_passed = sum(1 for r in results if r.status == "PASSED")
+        n_rejected = sum(1 for r in results if r.status == "REJECTED_FP")
+        n_failed = sum(1 for r in results if r.status == "FAILED")
+
+        metadata = {
+            "run_timestamp_utc": datetime.now(timezone.utc).isoformat(),
+            "pipeline_version": "0.1.0",
+            "mode": self.mode,
+            "input_catalog": {
+                "filepath": os.path.abspath(catalog_path) if catalog_path else None,
+                "sha256": sha256,
+                "total_targets": n_total
+            },
+            "execution_metrics": {
+                "total_duration_seconds": round(total_time, 4),
+                "avg_duration_per_target_seconds": round(total_time / n_total, 4) if n_total > 0 else 0.0,
+                "passed_count": n_passed,
+                "rejected_fp_count": n_rejected,
+                "failed_count": n_failed,
+                "validation_rate_percent": round((n_passed / n_total) * 100.0, 1) if n_total > 0 else 0.0
+            },
+            "environment": {
+                "python_version": sys.version.split()[0],
+                "platform": sys.platform
+            },
+            "output_files": {
+                "summary_csv": os.path.abspath(csv_path),
+                "summary_json": os.path.abspath(json_path),
+                "targets_dir": os.path.abspath(os.path.join(self.output_dir, "targets"))
+            }
+        }
+
+        meta_path = os.path.join(self.output_dir, "run_metadata.json")
+        with open(meta_path, "w", encoding="utf-8") as f_meta:
+            json.dump(metadata, f_meta, indent=2)
+
+    def export_summary(self, output_path: str) -> str:
+        """Public helper to export batch results to a specific file path."""
+        os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
+        if hasattr(self, "results") and self.results:
+            data = [asdict(r) for r in self.results]
+        else:
+            data = []
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        return output_path
 
     def _print_batch_summary(self, results: List[BatchTargetResult], total_time: float):
         """Displays formatted summary table in terminal."""

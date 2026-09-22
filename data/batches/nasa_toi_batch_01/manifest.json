@@ -1,0 +1,112 @@
+{
+  "batch_id": "nasa_toi_batch_01",
+  "created_at_utc": "2026-09-22T19:13:32.887151+00:00",
+  "source": {
+    "service": "NASA Exoplanet Archive TAP API",
+    "endpoint": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+    "table": "toi",
+    "adql_query": "select top 40 tid, toi, toidisplay, tfopwg_disp, pl_orbper, pl_tranmid, pl_trandurh, pl_trandep, pl_rade, st_rad from toi order by toi asc",
+    "quota_guard_status": "ENABLED (Local Cache 24h TTL)"
+  },
+  "dataset": {
+    "filename": "inputs.csv",
+    "sha256": "4de23f07f5edad8c7dac73dc90c6d8746588a1b2a9ccba2e1f937c5029076e26",
+    "total_targets": 10,
+    "disposition_breakdown": {
+      "planet_candidates_and_known": 6,
+      "confirmed_false_positives": 4
+    }
+  },
+  "targets": [
+    {
+      "tic_id": 341420329,
+      "toi": "1019.01",
+      "name": "TOI-1019.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.234101,
+      "depth_ppm": 20796.9,
+      "r_star_rsun": 1.56
+    },
+    {
+      "tic_id": 149603524,
+      "toi": "102.01",
+      "name": "TOI-102.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.411937,
+      "depth_ppm": 14711.9,
+      "r_star_rsun": 1.21
+    },
+    {
+      "tic_id": 20318757,
+      "toi": "1027.01",
+      "name": "TOI-1027.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.283456,
+      "depth_ppm": 1558.0,
+      "r_star_rsun": 0.68
+    },
+    {
+      "tic_id": 20318757,
+      "toi": "1027.02",
+      "name": "TOI-1027.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 11.02875,
+      "depth_ppm": 1694.0,
+      "r_star_rsun": 0.68
+    },
+    {
+      "tic_id": 20318757,
+      "toi": "1027.03",
+      "name": "TOI-1027.03",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.011329,
+      "depth_ppm": 1210.0,
+      "r_star_rsun": 0.68
+    },
+    {
+      "tic_id": 336732616,
+      "toi": "103.01",
+      "name": "TOI-103.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.547854,
+      "depth_ppm": 10424.4,
+      "r_star_rsun": 1.4
+    },
+    {
+      "tic_id": 182943944,
+      "toi": "1017.01",
+      "name": "TOI-1017.01",
+      "nasa_tfopwg_disp": "FP",
+      "period_days": 1.10422,
+      "depth_ppm": 14177.7,
+      "r_star_rsun": 1.61
+    },
+    {
+      "tic_id": 291555748,
+      "toi": "1018.01",
+      "name": "TOI-1018.01",
+      "nasa_tfopwg_disp": "FP",
+      "period_days": 4.95912,
+      "depth_ppm": 7440.0,
+      "r_star_rsun": 2.0
+    },
+    {
+      "tic_id": 140706664,
+      "toi": "1020.01",
+      "name": "TOI-1020.01",
+      "nasa_tfopwg_disp": "FP",
+      "period_days": 3.28892,
+      "depth_ppm": 10518.9,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 143994283,
+      "toi": "1021.01",
+      "name": "TOI-1021.01",
+      "nasa_tfopwg_disp": "FP",
+      "period_days": 1.90879,
+      "depth_ppm": 618.5,
+      "r_star_rsun": 1.22
+    }
+  ]
+}

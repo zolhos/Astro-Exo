@@ -39,7 +39,7 @@ def main():
     # Command: batch
     batch_parser = subparsers.add_parser("batch", help="Run batch processing across a catalog of candidates")
     batch_parser.add_argument("--input", "-i", type=str, required=True, help="Path to input CSV or JSON catalog")
-    batch_parser.add_argument("--outdir", "-o", type=str, default="results/batch_run", help="Output directory")
+    batch_parser.add_argument("--outdir", "--output-dir", "-o", dest="outdir", type=str, default="results/batch_run", help="Output directory")
     batch_parser.add_argument("--mode", "-m", choices=["mock", "live"], default="mock", help="Execution mode: 'mock' (simulated/offline) or 'live' (MAST)")
 
     # Command: fetch-tois
