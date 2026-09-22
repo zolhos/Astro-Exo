@@ -12,12 +12,12 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 ARTIFACT_DIR = "/Users/diegozolhos/.gemini/antigravity/brain/cb01ae73-9fed-4879-8295-1f9bf9e73f3a"
 
 
-def generate_batch_dashboard(batch_name: str = "nasa_toi_batch_200"):
+def generate_batch_dashboard(batch_name: str = "nasa_toi_batch_400"):
     batch_input_csv = os.path.join(REPO_ROOT, "data", "batches", batch_name, "inputs.csv")
     batch_summary_json = os.path.join(REPO_ROOT, "results", batch_name, "batch_summary.json")
     batch_metadata_json = os.path.join(REPO_ROOT, "results", batch_name, "run_metadata.json")
 
-    n_tag = "200" if "200" in batch_name else "100"
+    n_tag = "400" if "400" in batch_name else ("200" if "200" in batch_name else "100")
     output_html = os.path.join(REPO_ROOT, "examples", f"batch_{n_tag}_dashboard.html")
 
     # 1. Carrega inputs.csv para obter dados estelares e disposições canônicas
@@ -903,4 +903,4 @@ def generate_batch_dashboard(batch_name: str = "nasa_toi_batch_200"):
 
 
 if __name__ == "__main__":
-    generate_batch_dashboard("nasa_toi_batch_200")
+    generate_batch_dashboard("nasa_toi_batch_400")

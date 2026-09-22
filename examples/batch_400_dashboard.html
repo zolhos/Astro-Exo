@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astro-Exo | Dashboard do Lote de 100 Candidatos NASA (TOI)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            space: {
+              900: '#060813',
+              850: '#0a0d1d',
+              800: '#0f1429',
+              700: '#1a2142',
+              600: '#252f5c',
+              500: '#384785'
+            },
+            accent: {
+              cyan: '#00f2fe',
+              blue: '#4facfe',
+              emerald: '#10b981',
+              purple: '#a855f7',
+              amber: '#f59e0b',
+              rose: '#f43f5e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: radial-gradient(circle at 50% 0%, #101736 0%, #060813 100%);
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: rgba(15, 20, 41, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card:hover {
+      border-color: rgba(0, 242, 254, 0.25);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px -5px rgba(0, 242, 254, 0.25);
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0d1d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1a2142;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #252f5c;
+    }
+  </style>
+</head>
+<body class="text-slate-100 font-sans antialiased p-4 md:p-8">
+
+  <!-- Header Container -->
+  <header class="max-w-7xl mx-auto mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-6">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-cyan-500/20">
+            🪐
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Astro-Exo Pipeline Dashboard
+            </h1>
+            <p class="text-xs md:text-sm text-slate-400">
+              Processamento em Lote: 100 Candidatos a Exoplanetas (NASA Exoplanet Archive TOI)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          100% Vetting Aprovado
+        </span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-mono">
+          Throughput: 192 alvos/s
+        </span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-300 border border-purple-500/20 font-mono">
+          SHA-256 Verificado
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto space-y-8">
+
+    <!-- KPI Summary Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="glass-card rounded-2xl p-4 transition-all duration-300">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Total de Alvos</div>
+        <div class="text-3xl font-extrabold text-cyan-400 font-mono">100</div>
+        <div class="text-[11px] text-slate-500 mt-1">NASA TOI Table</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 transition-all duration-300">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Aprovação</div>
+        <div class="text-3xl font-extrabold text-emerald-400 font-mono">100%</div>
+        <div class="text-[11px] text-emerald-500/80 mt-1">Centróide &lt; 3σ</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 transition-all duration-300">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Tempo Total</div>
+        <div class="text-3xl font-extrabold text-purple-400 font-mono">0.52s</div>
+        <div class="text-[11px] text-slate-500 mt-1">5.2 ms / candidato</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 transition-all duration-300">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Sistemas Múltiplos</div>
+        <div class="text-3xl font-extrabold text-amber-400 font-mono">5</div>
+        <div class="text-[11px] text-amber-500/80 mt-1">Cadeias Ressonantes</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 transition-all duration-300">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Período Mediano</div>
+        <div class="text-3xl font-extrabold text-blue-400 font-mono">4.02d</div>
+        <div class="text-[11px] text-slate-500 mt-1">0.52d a 51.17d</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 transition-all duration-300">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Profundidade Med.</div>
+        <div class="text-3xl font-extrabold text-rose-400 font-mono">3626</div>
+        <div class="text-[11px] text-slate-500 mt-1">ppm (211 - 31510)</div>
+      </div>
+    </div>
+
+    <!-- Filters & Search Toolbar -->
+    <div class="glass-card rounded-2xl p-5">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+        <!-- Search -->
+        <div class="w-full lg:w-96 relative">
+          <input id="searchInput" type="text" placeholder="Buscar por TOI, TIC ID ou nome..." 
+            class="w-full bg-space-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 pl-10 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+
+        <!-- Disposition Filters -->
+        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+          <span class="text-xs font-medium text-slate-400 mr-1">Disposição:</span>
+          <button onclick="setDispFilter('ALL')" id="btn-disp-all" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-cyan-500 text-space-900 font-bold transition-all">Todos (100)</button>
+          <button onclick="setDispFilter('PC')" id="btn-disp-pc" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all">PC (38)</button>
+          <button onclick="setDispFilter('KP')" id="btn-disp-kp" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all">KP (33)</button>
+          <button onclick="setDispFilter('CP')" id="btn-disp-cp" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all">CP (29)</button>
+        </div>
+
+        <!-- Period Presets -->
+        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+          <span class="text-xs font-medium text-slate-400 mr-1">Período:</span>
+          <button onclick="setPeriodFilter('ALL')" id="btn-per-all" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-purple-500 text-white font-bold transition-all">Todos</button>
+          <button onclick="setPeriodFilter('USP')" id="btn-per-usp" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all">USP (&lt; 1d)</button>
+          <button onclick="setPeriodFilter('MID')" id="btn-per-mid" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all">1d - 10d</button>
+          <button onclick="setPeriodFilter('LONG')" id="btn-per-long" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all">&gt; 10d</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualization Tabs -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <div class="flex items-center gap-4">
+          <button onclick="switchTab('scatter')" id="tab-scatter" class="text-sm font-semibold text-cyan-400 border-b-2 border-cyan-400 pb-2 transition-all">
+            📊 Dispersão: Período × Profundidade
+          </button>
+          <button onclick="switchTab('hist-period')" id="tab-hist-period" class="text-sm font-semibold text-slate-400 hover:text-slate-200 pb-2 transition-all">
+            📈 Distribuição de Períodos
+          </button>
+          <button onclick="switchTab('hist-depth')" id="tab-hist-depth" class="text-sm font-semibold text-slate-400 hover:text-slate-200 pb-2 transition-all">
+            📉 Espectro de Profundidade
+          </button>
+          <button onclick="switchTab('multis')" id="tab-multis" class="text-sm font-semibold text-slate-400 hover:text-slate-200 pb-2 transition-all">
+            🪐 Sistemas Multiplanetários (5)
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 1: Scatter Plot -->
+      <div id="panel-scatter" class="glass-card rounded-2xl p-6 relative">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-200">Diagrama Período Orbital × Profundidade de Trânsito</h3>
+            <p class="text-xs text-slate-400">Escala logarítmica dupla. Passe o mouse sobre os pontos para inspecionar parâmetros.</p>
+          </div>
+          <div class="flex items-center gap-4 text-xs">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span> PC (Candidato)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> KP (Conhecido)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span> CP (Confirmado)</span>
+          </div>
+        </div>
+        <div class="relative w-full h-[400px]">
+          <canvas id="scatterCanvas" class="w-full h-full"></canvas>
+          <div id="scatterTooltip" class="absolute hidden bg-space-900/95 border border-cyan-500/40 rounded-xl p-3 text-xs shadow-2xl pointer-events-none z-20 backdrop-blur-md"></div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Period Histogram -->
+      <div id="panel-hist-period" class="glass-card rounded-2xl p-6 hidden">
+        <div class="mb-4">
+          <h3 class="text-base font-bold text-slate-200">Histograma de Frequência de Períodos Orbitais</h3>
+          <p class="text-xs text-slate-400">Distribuição com destaque para planetas USP (&lt; 1d), Júpiteres quentes (1-10d) e alvos temperados (&gt; 10d).</p>
+        </div>
+        <div class="w-full h-[400px]">
+          <canvas id="periodHistCanvas" class="w-full h-full"></canvas>
+        </div>
+      </div>
+
+      <!-- Tab 3: Depth Histogram -->
+      <div id="panel-hist-depth" class="glass-card rounded-2xl p-6 hidden">
+        <div class="mb-4">
+          <h3 class="text-base font-bold text-slate-200">Histograma do Espectro de Profundidade de Trânsito (ppm)</h3>
+          <p class="text-xs text-slate-400">Identificação clara do pico de sub-Netunos / Super-Terras e a cauda de gigantes gasosos Jovianos.</p>
+        </div>
+        <div class="w-full h-[400px]">
+          <canvas id="depthHistCanvas" class="w-full h-full"></canvas>
+        </div>
+      </div>
+
+      <!-- Tab 4: Multi-Planet Architectures -->
+      <div id="panel-multis" class="glass-card rounded-2xl p-6 hidden">
+        <div class="mb-4">
+          <h3 class="text-base font-bold text-slate-200">Arquitetura dos 5 Sistemas Multiplanetários Detectados</h3>
+          <p class="text-xs text-slate-400">Visualização proporcional dos eixos orbitais (escala linear em dias) e tamanhos relativos dos planetas.</p>
+        </div>
+        <div class="space-y-6" id="multisContainer">
+          <!-- Gerado dinamicamente via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table Section -->
+    <div class="glass-card rounded-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-base font-bold text-slate-200">Catálogo Tabular Consolidado (100 Alvos)</h3>
+          <p class="text-xs text-slate-400" id="tableFilterCount">Exibindo 100 de 100 candidatos</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="exportFilteredCSV()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-cyan-300 hover:bg-space-700 border border-slate-700 flex items-center gap-1.5 transition-all">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Exportar CSV
+          </button>
+          <button onclick="exportFilteredJSON()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-purple-300 hover:bg-space-700 border border-slate-700 flex items-center gap-1.5 transition-all">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            Exportar JSON
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto max-h-[500px]">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="bg-space-900/90 sticky top-0 z-10 text-slate-400 uppercase tracking-wider border-b border-slate-800">
+            <tr>
+              <th class="py-3 px-4">TIC ID</th>
+              <th class="py-3 px-4">Designação</th>
+              <th class="py-3 px-4">Disp</th>
+              <th class="py-3 px-4 text-right cursor-pointer hover:text-cyan-400" onclick="sortBy('period')">Período (d) ↕</th>
+              <th class="py-3 px-4 text-right cursor-pointer hover:text-cyan-400" onclick="sortBy('depth_ppm')">Profundidade (ppm) ↕</th>
+              <th class="py-3 px-4 text-right">Duração (h)</th>
+              <th class="py-3 px-4 text-right">R* (R☉)</th>
+              <th class="py-3 px-4 text-right">Offset (")</th>
+              <th class="py-3 px-4 text-right">Gaia Blends</th>
+              <th class="py-3 px-4 text-right">Densidade (g/cm³)</th>
+              <th class="py-3 px-4 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody id="candidatesTableBody" class="divide-y divide-slate-800/60 text-slate-300">
+            <!-- Linhas geradas via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+    <p>Astro-Exo v0.1.0 • Pipeline de Inferência Bayesiana e Vetting Espacial de Exoplanetas</p>
+    <p class="mt-1 font-mono text-[11px] text-slate-600">
+      Manifesto SHA-256: 3c7d91dcb915abe8c836f52acee33a1392284c0147a88e54d7bb6fc84712c7d3 • NASA Exoplanet Archive
+    </p>
+  </footer>
+
+  <!-- Script com Lógica Interativa e Renderização dos Gráficos Canvas -->
+  <script>
+    const ALL_TARGETS = [{"tic_id": 88863718, "name": "TOI-1001.01", "toi": "1001.01", "disp": "PC", "period": 1.9316, "depth_ppm": 1286.0, "duration_hours": 3.17, "r_star": 2.01, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 1.32}, {"tic_id": 65212867, "name": "TOI-1007.01", "toi": "1007.01", "disp": "PC", "period": 6.9989, "depth_ppm": 2840.0, "duration_hours": 3.95, "r_star": 2.7, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.25}, {"tic_id": 107782586, "name": "TOI-1009.01", "toi": "1009.01", "disp": "PC", "period": 1.96, "depth_ppm": 1707.6, "duration_hours": 2.01, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 7.03}, {"tic_id": 231663901, "name": "TOI-101.01", "toi": "101.01", "disp": "KP", "period": 1.4304, "depth_ppm": 18960.7, "duration_hours": 1.62, "r_star": 0.89, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.24}, {"tic_id": 114018671, "name": "TOI-1011.01", "toi": "1011.01", "disp": "PC", "period": 2.4705, "depth_ppm": 273.0, "duration_hours": 2.35, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 142.99}, {"tic_id": 341420329, "name": "TOI-1019.01", "toi": "1019.01", "disp": "PC", "period": 5.2341, "depth_ppm": 20796.9, "duration_hours": 3.71, "r_star": 1.56, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.06}, {"tic_id": 149603524, "name": "TOI-102.01", "toi": "102.01", "disp": "KP", "period": 4.4119, "depth_ppm": 14711.9, "duration_hours": 3.63, "r_star": 1.21, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.21}, {"tic_id": 20318757, "name": "TOI-1027.01", "toi": "1027.01", "disp": "PC", "period": 3.2835, "depth_ppm": 1558.0, "duration_hours": 1.54, "r_star": 0.68, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 30.46}, {"tic_id": 20318757, "name": "TOI-1027.02", "toi": "1027.02", "disp": "PC", "period": 11.0288, "depth_ppm": 1694.0, "duration_hours": 2.71, "r_star": 0.68, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 40.24}, {"tic_id": 20318757, "name": "TOI-1027.03", "toi": "1027.03", "disp": "PC", "period": 5.0113, "depth_ppm": 1210.0, "duration_hours": 1.02, "r_star": 0.68, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 51.24}, {"tic_id": 336732616, "name": "TOI-103.01", "toi": "103.01", "disp": "KP", "period": 3.5479, "depth_ppm": 10424.4, "duration_hours": 3.49, "r_star": 1.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.21}, {"tic_id": 146589986, "name": "TOI-1032.01", "toi": "1032.01", "disp": "PC", "period": 5.6644, "depth_ppm": 3491.8, "duration_hours": 3.81, "r_star": 2.34, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.27}, {"tic_id": 361413119, "name": "TOI-1035.01", "toi": "1035.01", "disp": "PC", "period": 6.0744, "depth_ppm": 5982.5, "duration_hours": 2.5, "r_star": 2.43, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.11}, {"tic_id": 146172354, "name": "TOI-1036.01", "toi": "1036.01", "disp": "PC", "period": 3.7795, "depth_ppm": 2761.0, "duration_hours": 2.95, "r_star": 1.18, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 2.59}, {"tic_id": 231670397, "name": "TOI-104.01", "toi": "104.01", "disp": "KP", "period": 4.0873, "depth_ppm": 3572.2, "duration_hours": 5.59, "r_star": 2.22, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.27}, {"tic_id": 463402815, "name": "TOI-1044.01", "toi": "1044.01", "disp": "PC", "period": 1.0085, "depth_ppm": 3051.0, "duration_hours": 1.64, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 2.36}, {"tic_id": 16288184, "name": "TOI-1049.01", "toi": "1049.01", "disp": "KP", "period": 2.1805, "depth_ppm": 16399.9, "duration_hours": 2.94, "r_star": 1.27, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.12}, {"tic_id": 144065872, "name": "TOI-105.01", "toi": "105.01", "disp": "KP", "period": 2.1847, "depth_ppm": 11535.5, "duration_hours": 2.7, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.22}, {"tic_id": 66818296, "name": "TOI-1050.01", "toi": "1050.01", "disp": "KP", "period": 3.7355, "depth_ppm": 17030.0, "duration_hours": 4.14, "r_star": 1.57, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.07}, {"tic_id": 317060587, "name": "TOI-1052.01", "toi": "1052.01", "disp": "CP", "period": 9.1398, "depth_ppm": 358.4, "duration_hours": 3.09, "r_star": 1.58, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 30.96}, {"tic_id": 366989877, "name": "TOI-1054.01", "toi": "1054.01", "disp": "CP", "period": 15.5078, "depth_ppm": 513.0, "duration_hours": 4.57, "r_star": 1.17, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 53.1}, {"tic_id": 320004517, "name": "TOI-1055.01", "toi": "1055.01", "disp": "CP", "period": 17.4713, "depth_ppm": 1199.8, "duration_hours": 4.43, "r_star": 0.97, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 27.11}, {"tic_id": 421894914, "name": "TOI-1056.01", "toi": "1056.01", "disp": "PC", "period": 5.308, "depth_ppm": 391.4, "duration_hours": 3.22, "r_star": 1.37, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 34.72}, {"tic_id": 323132914, "name": "TOI-1057.01", "toi": "1057.01", "disp": "PC", "period": 51.1701, "depth_ppm": 851.5, "duration_hours": 6.66, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 71.29}, {"tic_id": 380783252, "name": "TOI-1059.01", "toi": "1059.01", "disp": "PC", "period": 9.4497, "depth_ppm": 25387.7, "duration_hours": 2.26, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.25}, {"tic_id": 38846515, "name": "TOI-106.01", "toi": "106.01", "disp": "KP", "period": 2.8494, "depth_ppm": 7740.5, "duration_hours": 3.55, "r_star": 1.77, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.15}, {"tic_id": 299799658, "name": "TOI-1062.01", "toi": "1062.01", "disp": "CP", "period": 4.1151, "depth_ppm": 539.0, "duration_hours": 1.06, "r_star": 0.89, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 71.98}, {"tic_id": 406976746, "name": "TOI-1063.01", "toi": "1063.01", "disp": "PC", "period": 10.0666, "depth_ppm": 862.7, "duration_hours": 2.02, "r_star": 0.79, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 68.49}, {"tic_id": 79748331, "name": "TOI-1064.01", "toi": "1064.01", "disp": "CP", "period": 6.4439, "depth_ppm": 1122.0, "duration_hours": 1.93, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 48.42}, {"tic_id": 79748331, "name": "TOI-1064.02", "toi": "1064.02", "disp": "CP", "period": 12.2266, "depth_ppm": 1206.4, "duration_hours": 2.19, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 53.77}, {"tic_id": 7088246, "name": "TOI-1065.01", "toi": "1065.01", "disp": "KP", "period": 2.1605, "depth_ppm": 13774.9, "duration_hours": 1.48, "r_star": 1.2, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.18}, {"tic_id": 201604954, "name": "TOI-1066.01", "toi": "1066.01", "disp": "KP", "period": 4.6062, "depth_ppm": 13793.0, "duration_hours": 3.12, "r_star": 1.07, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.33}, {"tic_id": 201642601, "name": "TOI-1067.01", "toi": "1067.01", "disp": "KP", "period": 3.1317, "depth_ppm": 14915.7, "duration_hours": 2.46, "r_star": 0.77, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.7}, {"tic_id": 6663331, "name": "TOI-1068.01", "toi": "1068.01", "disp": "KP", "period": 3.1804, "depth_ppm": 21192.5, "duration_hours": 2.11, "r_star": 0.92, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.24}, {"tic_id": 31858843, "name": "TOI-1069.01", "toi": "1069.01", "disp": "KP", "period": 2.9776, "depth_ppm": 13022.0, "duration_hours": 2.96, "r_star": 1.22, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.21}, {"tic_id": 92352620, "name": "TOI-107.01", "toi": "107.01", "disp": "KP", "period": 3.9502, "depth_ppm": 13914.0, "duration_hours": 4.44, "r_star": 1.71, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.08}, {"tic_id": 120247528, "name": "TOI-1071.01", "toi": "1071.01", "disp": "KP", "period": 3.5544, "depth_ppm": 10164.9, "duration_hours": 2.06, "r_star": 1.11, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.43}, {"tic_id": 158297421, "name": "TOI-1073.01", "toi": "1073.01", "disp": "CP", "period": 3.9228, "depth_ppm": 31510.9, "duration_hours": 1.87, "r_star": 0.7, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.33}, {"tic_id": 327301957, "name": "TOI-1074.01", "toi": "1074.01", "disp": "PC", "period": 13.9429, "depth_ppm": 1015.4, "duration_hours": 3.75, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 72.74}, {"tic_id": 351601843, "name": "TOI-1075.01", "toi": "1075.01", "disp": "CP", "period": 0.6047, "depth_ppm": 1027.7, "duration_hours": 1.04, "r_star": 0.58, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 52.13}, {"tic_id": 360742636, "name": "TOI-1076.01", "toi": "1076.01", "disp": "KP", "period": 2.5496, "depth_ppm": 14921.4, "duration_hours": 2.62, "r_star": 1.04, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.26}, {"tic_id": 369960846, "name": "TOI-1077.01", "toi": "1077.01", "disp": "PC", "period": 1.6063, "depth_ppm": 16725.3, "duration_hours": 1.96, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 370133522, "name": "TOI-1078.01", "toi": "1078.01", "disp": "CP", "period": 0.5182, "depth_ppm": 831.9, "duration_hours": 0.86, "r_star": 0.39, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 223.64}, {"tic_id": 379240073, "name": "TOI-1079.01", "toi": "1079.01", "disp": "PC", "period": 3.1644, "depth_ppm": 5603.5, "duration_hours": 2.06, "r_star": 1.72, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.27}, {"tic_id": 289793076, "name": "TOI-108.01", "toi": "108.01", "disp": "KP", "period": 3.044, "depth_ppm": 22807.0, "duration_hours": 2.65, "r_star": 0.81, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.31}, {"tic_id": 161032923, "name": "TOI-1080.01", "toi": "1080.01", "disp": "CP", "period": 3.9652, "depth_ppm": 3680.8, "duration_hours": 1.01, "r_star": 0.2, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 351.09}, {"tic_id": 253728991, "name": "TOI-1081.01", "toi": "1081.01", "disp": "PC", "period": 2.9841, "depth_ppm": 6014.1, "duration_hours": 2.91, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.64}, {"tic_id": 261108236, "name": "TOI-1082.01", "toi": "1082.01", "disp": "PC", "period": 16.3469, "depth_ppm": 2212.4, "duration_hours": 3.59, "r_star": 0.65, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 35.19}, {"tic_id": 322270620, "name": "TOI-1083.01", "toi": "1083.01", "disp": "PC", "period": 12.9803, "depth_ppm": 2407.3, "duration_hours": 2.5, "r_star": 0.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 67.02}, {"tic_id": 380589029, "name": "TOI-1084.01", "toi": "1084.01", "disp": "KP", "period": 1.3485, "depth_ppm": 18463.8, "duration_hours": 2.41, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.11}, {"tic_id": 468148930, "name": "TOI-1086.01", "toi": "1086.01", "disp": "PC", "period": 3.7179, "depth_ppm": 4864.8, "duration_hours": 5.53, "r_star": 2.08, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.2}, {"tic_id": 29344935, "name": "TOI-109.01", "toi": "109.01", "disp": "KP", "period": 2.7668, "depth_ppm": 14947.4, "duration_hours": 2.69, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.32}, {"tic_id": 193413306, "name": "TOI-1091.01", "toi": "1091.01", "disp": "PC", "period": 1.7258, "depth_ppm": 2710.0, "duration_hours": 3.67, "r_star": 2.39, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.25}, {"tic_id": 375223080, "name": "TOI-1095.01", "toi": "1095.01", "disp": "PC", "period": 1.4821, "depth_ppm": 2102.7, "duration_hours": 2.19, "r_star": 2.66, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.25}, {"tic_id": 360630575, "name": "TOI-1097.01", "toi": "1097.01", "disp": "CP", "period": 9.1885, "depth_ppm": 460.0, "duration_hours": 2.49, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 89.38}, {"tic_id": 360630575, "name": "TOI-1097.02", "toi": "1097.02", "disp": "CP", "period": 13.9028, "depth_ppm": 647.3, "duration_hours": 2.13, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 61.47}, {"tic_id": 383390264, "name": "TOI-1098.01", "toi": "1098.01", "disp": "CP", "period": 10.1827, "depth_ppm": 667.5, "duration_hours": 2.83, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 32.75}, {"tic_id": 290348383, "name": "TOI-1099.01", "toi": "1099.01", "disp": "CP", "period": 6.441, "depth_ppm": 914.0, "duration_hours": 1.81, "r_star": 0.8, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 52.11}, {"tic_id": 281459670, "name": "TOI-110.01", "toi": "110.01", "disp": "KP", "period": 3.1744, "depth_ppm": 15457.3, "duration_hours": 2.75, "r_star": 1.16, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.19}, {"tic_id": 351603103, "name": "TOI-1103.01", "toi": "1103.01", "disp": "PC", "period": 2.9431, "depth_ppm": 4490.0, "duration_hours": 4.07, "r_star": 3.13, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.06}, {"tic_id": 274151135, "name": "TOI-1105.01", "toi": "1105.01", "disp": "PC", "period": 10.868, "depth_ppm": 1646.8, "duration_hours": 2.47, "r_star": 0.76, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 29.92}, {"tic_id": 384513078, "name": "TOI-1106.01", "toi": "1106.01", "disp": "PC", "period": 11.1149, "depth_ppm": 900.0, "duration_hours": 2.26, "r_star": 4.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.27}, {"tic_id": 394561119, "name": "TOI-1107.01", "toi": "1107.01", "disp": "CP", "period": 4.0782, "depth_ppm": 6667.7, "duration_hours": 4.91, "r_star": 1.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.22}, {"tic_id": 355703913, "name": "TOI-111.01", "toi": "111.01", "disp": "KP", "period": 2.1062, "depth_ppm": 12142.2, "duration_hours": 1.47, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.46}, {"tic_id": 304100538, "name": "TOI-1116.01", "toi": "1116.01", "disp": "PC", "period": 5.0101, "depth_ppm": 409.5, "duration_hours": 2.06, "r_star": 0.91, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 108.59}, {"tic_id": 295541511, "name": "TOI-1117.01", "toi": "1117.01", "disp": "PC", "period": 2.2282, "depth_ppm": 630.0, "duration_hours": 2.02, "r_star": 1.02, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 30.84}, {"tic_id": 388104525, "name": "TOI-112.01", "toi": "112.01", "disp": "KP", "period": 2.4998, "depth_ppm": 14621.2, "duration_hours": 2.87, "r_star": 1.14, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.21}, {"tic_id": 80166433, "name": "TOI-1125.01", "toi": "1125.01", "disp": "PC", "period": 0.7725, "depth_ppm": 211.3, "duration_hours": 1.37, "r_star": 2.5, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 7.58}, {"tic_id": 97409519, "name": "TOI-113.01", "toi": "113.01", "disp": "KP", "period": 3.3729, "depth_ppm": 17163.6, "duration_hours": 2.63, "r_star": 1.02, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.25}, {"tic_id": 254113311, "name": "TOI-1130.01", "toi": "1130.01", "disp": "CP", "period": 8.35, "depth_ppm": 16680.0, "duration_hours": 1.84, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.92}, {"tic_id": 254113311, "name": "TOI-1130.02", "toi": "1130.02", "disp": "CP", "period": 4.0686, "depth_ppm": 2650.1, "duration_hours": 1.84, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 11.44}, {"tic_id": 198213332, "name": "TOI-1131.01", "toi": "1131.01", "disp": "PC", "period": 0.586, "depth_ppm": 410.5, "duration_hours": 0.81, "r_star": 2.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 2.88}, {"tic_id": 154872375, "name": "TOI-1135.01", "toi": "1135.01", "disp": "CP", "period": 8.0277, "depth_ppm": 5705.0, "duration_hours": 4.28, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.21}, {"tic_id": 142276270, "name": "TOI-1136.01", "toi": "1136.01", "disp": "CP", "period": 12.5187, "depth_ppm": 2320.0, "duration_hours": 5.38, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 8.75}, {"tic_id": 142276270, "name": "TOI-1136.02", "toi": "1136.02", "disp": "CP", "period": 6.2586, "depth_ppm": 813.0, "duration_hours": 3.2, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 33.47}, {"tic_id": 142276270, "name": "TOI-1136.03", "toi": "1136.03", "disp": "CP", "period": 26.3209, "depth_ppm": 800.0, "duration_hours": 4.41, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 55.35}, {"tic_id": 142276270, "name": "TOI-1136.04", "toi": "1136.04", "disp": "CP", "period": 18.7955, "depth_ppm": 470.7, "duration_hours": 4.34, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 109.62}, {"tic_id": 89389197, "name": "TOI-1137.01", "toi": "1137.01", "disp": "PC", "period": 1.3206, "depth_ppm": 1052.4, "duration_hours": 1.6, "r_star": 6.31, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 0.05}, {"tic_id": 202563254, "name": "TOI-1139.01", "toi": "1139.01", "disp": "PC", "period": 4.4781, "depth_ppm": 1054.0, "duration_hours": 4.51, "r_star": 1.83, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 3.11}, {"tic_id": 25155310, "name": "TOI-114.01", "toi": "114.01", "disp": "KP", "period": 3.2888, "depth_ppm": 7005.7, "duration_hours": 3.44, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.53}, {"tic_id": 28230919, "name": "TOI-1144.01", "toi": "1144.01", "disp": "KP", "period": 4.8878, "depth_ppm": 4279.0, "duration_hours": 2.18, "r_star": 0.76, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 5.47}, {"tic_id": 349827430, "name": "TOI-1148.01", "toi": "1148.01", "disp": "KP", "period": 5.5515, "depth_ppm": 9493.0, "duration_hours": 4.33, "r_star": 1.55, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.2}, {"tic_id": 281541555, "name": "TOI-115.01", "toi": "115.01", "disp": "KP", "period": 4.7424, "depth_ppm": 12650.8, "duration_hours": 2.5, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.69}, {"tic_id": 16740101, "name": "TOI-1150.01", "toi": "1150.01", "disp": "KP", "period": 1.4811, "depth_ppm": 6788.5, "duration_hours": 4.16, "r_star": 2.29, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.07}, {"tic_id": 69679391, "name": "TOI-1151.01", "toi": "1151.01", "disp": "KP", "period": 3.4741, "depth_ppm": 15748.0, "duration_hours": 3.32, "r_star": 1.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.07}, {"tic_id": 459970307, "name": "TOI-1154.01", "toi": "1154.01", "disp": "CP", "period": 21.7455, "depth_ppm": 659.0, "duration_hours": 4.2, "r_star": 0.93, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 81.29}, {"tic_id": 238176110, "name": "TOI-116.01", "toi": "116.01", "disp": "KP", "period": 2.7986, "depth_ppm": 16708.7, "duration_hours": 2.38, "r_star": 0.91, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.34}, {"tic_id": 158324245, "name": "TOI-1161.01", "toi": "1161.01", "disp": "KP", "period": 1.7636, "depth_ppm": 6650.0, "duration_hours": 3.09, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.88}, {"tic_id": 13419950, "name": "TOI-1162.01", "toi": "1162.01", "disp": "PC", "period": 7.3167, "depth_ppm": 3210.0, "duration_hours": 3.25, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 4.23}, {"tic_id": 375542276, "name": "TOI-1163.01", "toi": "1163.01", "disp": "PC", "period": 3.0772, "depth_ppm": 4703.3, "duration_hours": 2.69, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.79}, {"tic_id": 458478250, "name": "TOI-1165.01", "toi": "1165.01", "disp": "KP", "period": 2.2553, "depth_ppm": 20820.0, "duration_hours": 2.05, "r_star": 0.96, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.2}, {"tic_id": 302518439, "name": "TOI-1169.01", "toi": "1169.01", "disp": "PC", "period": 6.7075, "depth_ppm": 11920.0, "duration_hours": 2.12, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.3}, {"tic_id": 322307342, "name": "TOI-117.01", "toi": "117.01", "disp": "KP", "period": 3.5863, "depth_ppm": 5729.3, "duration_hours": 3.37, "r_star": 2.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.17}, {"tic_id": 232967440, "name": "TOI-1173.01", "toi": "1173.01", "disp": "CP", "period": 7.0644, "depth_ppm": 8268.0, "duration_hours": 2.42, "r_star": 0.96, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 1.14}, {"tic_id": 154089169, "name": "TOI-1174.01", "toi": "1174.01", "disp": "CP", "period": 8.9535, "depth_ppm": 1136.0, "duration_hours": 2.7, "r_star": 0.76, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 48.96}, {"tic_id": 230088370, "name": "TOI-1176.01", "toi": "1176.01", "disp": "PC", "period": 14.0078, "depth_ppm": 5924.8, "duration_hours": 5.87, "r_star": 1.57, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.54}, {"tic_id": 266980320, "name": "TOI-118.01", "toi": "118.01", "disp": "CP", "period": 6.0345, "depth_ppm": 1750.6, "duration_hours": 2.05, "r_star": 1.05, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 8.51}, {"tic_id": 158002130, "name": "TOI-1180.01", "toi": "1180.01", "disp": "CP", "period": 9.6868, "depth_ppm": 1669.0, "duration_hours": 2.51, "r_star": 0.73, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 31.85}, {"tic_id": 229510866, "name": "TOI-1181.01", "toi": "1181.01", "disp": "CP", "period": 2.1032, "depth_ppm": 7142.0, "duration_hours": 5.06, "r_star": 1.93, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.12}, {"tic_id": 233087860, "name": "TOI-1184.01", "toi": "1184.01", "disp": "CP", "period": 5.7484, "depth_ppm": 1041.0, "duration_hours": 1.76, "r_star": 0.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 64.34}, {"tic_id": 372757221, "name": "TOI-1187.01", "toi": "1187.01", "disp": "PC", "period": 2.5942, "depth_ppm": 907.0, "duration_hours": 0.86, "r_star": 1.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 7.26}, {"tic_id": 112026224, "name": "TOI-1189.01", "toi": "1189.01", "disp": "PC", "period": 3.9688, "depth_ppm": 1760.0, "duration_hours": 1.07, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 8.5}, {"tic_id": 278683844, "name": "TOI-119.01", "toi": "119.01", "disp": "PC", "period": 5.5411, "depth_ppm": 597.3, "duration_hours": 2.41, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 87.12}, {"tic_id": 278683844, "name": "TOI-119.02", "toi": "119.02", "disp": "PC", "period": 10.6917, "depth_ppm": 498.5, "duration_hours": 3.05, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 142.26}, {"tic_id": 147950620, "name": "TOI-1194.01", "toi": "1194.01", "disp": "CP", "period": 2.3106, "depth_ppm": 6911.0, "duration_hours": 1.29, "r_star": 0.99, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.94}, {"tic_id": 69068526, "name": "TOI-1196.01", "toi": "1196.01", "disp": "PC", "period": 5.5377, "depth_ppm": 5390.0, "duration_hours": 2.52, "r_star": 2.06, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.2}, {"tic_id": 92677094, "name": "TOI-1197.01", "toi": "1197.01", "disp": "PC", "period": 4.596, "depth_ppm": 5000.0, "duration_hours": 4.74, "r_star": 2.12, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.2}, {"tic_id": 203189770, "name": "TOI-1198.01", "toi": "1198.01", "disp": "KP", "period": 3.6128, "depth_ppm": 11794.0, "duration_hours": 4.14, "r_star": 1.71, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.09}, {"tic_id": 99869022, "name": "TOI-1199.01", "toi": "1199.01", "disp": "CP", "period": 3.6715, "depth_ppm": 4340.0, "duration_hours": 2.15, "r_star": 1.54, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.59}, {"tic_id": 394137592, "name": "TOI-120.01", "toi": "120.01", "disp": "CP", "period": 11.5351, "depth_ppm": 2389.9, "duration_hours": 8.56, "r_star": 2.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.5}, {"tic_id": 29960110, "name": "TOI-1201.01", "toi": "1201.01", "disp": "CP", "period": 2.492, "depth_ppm": 2094.0, "duration_hours": 1.43, "r_star": 0.48, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 50.7}, {"tic_id": 23434737, "name": "TOI-1203.01", "toi": "1203.01", "disp": "CP", "period": 25.5195, "depth_ppm": 558.4, "duration_hours": 6.69, "r_star": 1.17, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 55.21}, {"tic_id": 467666275, "name": "TOI-1204.01", "toi": "1204.01", "disp": "PC", "period": 1.3812, "depth_ppm": 117.8, "duration_hours": 2.74, "r_star": 1.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 61.2}, {"tic_id": 287776397, "name": "TOI-1205.01", "toi": "1205.01", "disp": "PC", "period": 2.3923, "depth_ppm": 63.6, "duration_hours": 9.01, "r_star": 4.2, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 14.1}, {"tic_id": 364393429, "name": "TOI-1207.01", "toi": "1207.01", "disp": "PC", "period": 2.6283, "depth_ppm": 75.3, "duration_hours": 2.09, "r_star": 1.11, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 611.96}, {"tic_id": 273985865, "name": "TOI-1208.01", "toi": "1208.01", "disp": "PC", "period": 3.4239, "depth_ppm": 443.6, "duration_hours": 1.96, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 115.94}, {"tic_id": 273985865, "name": "TOI-1208.02", "toi": "1208.02", "disp": "PC", "period": 10.983, "depth_ppm": 725.2, "duration_hours": 3.75, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 81.8}, {"tic_id": 273985865, "name": "TOI-1208.03", "toi": "1208.03", "disp": "PC", "period": 17.7264, "depth_ppm": 747.8, "duration_hours": 3.44, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 91.64}, {"tic_id": 30037565, "name": "TOI-1209.01", "toi": "1209.01", "disp": "PC", "period": 40.7199, "depth_ppm": 355.6, "duration_hours": 4.24, "r_star": 1.56, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 53.55}, {"tic_id": 50312495, "name": "TOI-1211.01", "toi": "1211.01", "disp": "PC", "period": 18.1664, "depth_ppm": 624.0, "duration_hours": 2.46, "r_star": 1.14, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 45.11}, {"tic_id": 389924075, "name": "TOI-1212.01", "toi": "1212.01", "disp": "PC", "period": 105.5851, "depth_ppm": 462.9, "duration_hours": 11.61, "r_star": 1.11, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 137.51}, {"tic_id": 451606970, "name": "TOI-1214.01", "toi": "1214.01", "disp": "PC", "period": 19.1807, "depth_ppm": 615.9, "duration_hours": 3.72, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 83.55}, {"tic_id": 453260209, "name": "TOI-1215.01", "toi": "1215.01", "disp": "PC", "period": 1.2124, "depth_ppm": 284.0, "duration_hours": 1.03, "r_star": 0.52, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 627.91}, {"tic_id": 141527965, "name": "TOI-1216.01", "toi": "1216.01", "disp": "PC", "period": 4.5542, "depth_ppm": 187.8, "duration_hours": 7.81, "r_star": 0.64, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 973.61}, {"tic_id": 248092710, "name": "TOI-1217.01", "toi": "1217.01", "disp": "PC", "period": 41.4856, "depth_ppm": 959.8, "duration_hours": 6.69, "r_star": 3.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 1.09}, {"tic_id": 294781547, "name": "TOI-1218.01", "toi": "1218.01", "disp": "PC", "period": 13.7739, "depth_ppm": 374.0, "duration_hours": 3.01, "r_star": 1.02, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 123.76}, {"tic_id": 294981566, "name": "TOI-1219.01", "toi": "1219.01", "disp": "PC", "period": 1.9143, "depth_ppm": 236.6, "duration_hours": 3.85, "r_star": 1.59, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 33.63}, {"tic_id": 231702397, "name": "TOI-122.01", "toi": "122.01", "disp": "CP", "period": 5.078, "depth_ppm": 5923.1, "duration_hours": 1.21, "r_star": 0.33, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 41.58}, {"tic_id": 349095149, "name": "TOI-1221.01", "toi": "1221.01", "disp": "CP", "period": 91.6828, "depth_ppm": 713.2, "duration_hours": 9.75, "r_star": 1.02, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 88.4}, {"tic_id": 374997123, "name": "TOI-1222.01", "toi": "1222.01", "disp": "PC", "period": 10.1945, "depth_ppm": 317.3, "duration_hours": 2.26, "r_star": 1.33, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 64.62}, {"tic_id": 299798795, "name": "TOI-1224.01", "toi": "1224.01", "disp": "CP", "period": 4.1783, "depth_ppm": 2537.7, "duration_hours": 1.68, "r_star": 0.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 78.01}, {"tic_id": 299798795, "name": "TOI-1224.02", "toi": "1224.02", "disp": "CP", "period": 17.9454, "depth_ppm": 5480.7, "duration_hours": 3.07, "r_star": 0.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 39.95}, {"tic_id": 150428703, "name": "TOI-1225.01", "toi": "1225.01", "disp": "PC", "period": 13.8964, "depth_ppm": 748.5, "duration_hours": 3.59, "r_star": 0.89, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 65.99}, {"tic_id": 150428703, "name": "TOI-1225.02", "toi": "1225.02", "disp": "PC", "period": 8.1213, "depth_ppm": 594.6, "duration_hours": 3.1, "r_star": 0.89, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 77.93}, {"tic_id": 177115354, "name": "TOI-1226.01", "toi": "1226.01", "disp": "PC", "period": 3.9288, "depth_ppm": 486.0, "duration_hours": 1.82, "r_star": 0.99, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 60.15}, {"tic_id": 360156606, "name": "TOI-1227.01", "toi": "1227.01", "disp": "CP", "period": 27.3614, "depth_ppm": 20690.7, "duration_hours": 4.06, "r_star": 0.44, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 4.71}, {"tic_id": 300038935, "name": "TOI-1228.01", "toi": "1228.01", "disp": "CP", "period": 29.0497, "depth_ppm": 297.1, "duration_hours": 7.31, "r_star": 1.8, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 40.79}, {"tic_id": 290131778, "name": "TOI-123.01", "toi": "123.01", "disp": "CP", "period": 3.3089, "depth_ppm": 4736.0, "duration_hours": 6.11, "r_star": 2.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.1}, {"tic_id": 287156968, "name": "TOI-1230.01", "toi": "1230.01", "disp": "CP", "period": 25.0573, "depth_ppm": 567.4, "duration_hours": 6.37, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 56.41}, {"tic_id": 447061717, "name": "TOI-1231.01", "toi": "1231.01", "disp": "CP", "period": 24.2455, "depth_ppm": 6260.7, "duration_hours": 3.37, "r_star": 0.47, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 22.3}, {"tic_id": 364395234, "name": "TOI-1232.01", "toi": "1232.01", "disp": "CP", "period": 14.2546, "depth_ppm": 7899.7, "duration_hours": 4.73, "r_star": 1.1, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 1.03}, {"tic_id": 260647166, "name": "TOI-1233.01", "toi": "1233.01", "disp": "CP", "period": 14.1759, "depth_ppm": 907.1, "duration_hours": 3.75, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 55.19}, {"tic_id": 260647166, "name": "TOI-1233.02", "toi": "1233.02", "disp": "CP", "period": 19.5902, "depth_ppm": 1182.7, "duration_hours": 4.0, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 41.29}, {"tic_id": 260647166, "name": "TOI-1233.03", "toi": "1233.03", "disp": "CP", "period": 6.2036, "depth_ppm": 548.9, "duration_hours": 3.01, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 89.02}, {"tic_id": 260647166, "name": "TOI-1233.04", "toi": "1233.04", "disp": "CP", "period": 3.7959, "depth_ppm": 317.5, "duration_hours": 2.46, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 171.79}, {"tic_id": 103633434, "name": "TOI-1235.01", "toi": "1235.01", "disp": "CP", "period": 3.4447, "depth_ppm": 796.0, "duration_hours": 1.91, "r_star": 0.63, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 106.58}, {"tic_id": 120757718, "name": "TOI-1236.01", "toi": "1236.01", "disp": "KP", "period": 3.0301, "depth_ppm": 21794.6, "duration_hours": 2.55, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.28}, {"tic_id": 120960812, "name": "TOI-1237.01", "toi": "1237.01", "disp": "KP", "period": 12.7204, "depth_ppm": 1070.0, "duration_hours": 2.4, "r_star": 1.48, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 8.15}, {"tic_id": 120960812, "name": "TOI-1237.02", "toi": "1237.02", "disp": "KP", "period": 6.2388, "depth_ppm": 373.6, "duration_hours": 3.62, "r_star": 1.48, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 31.16}, {"tic_id": 153951307, "name": "TOI-1238.01", "toi": "1238.01", "disp": "CP", "period": 3.2948, "depth_ppm": 1324.0, "duration_hours": 1.75, "r_star": 0.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 51.36}, {"tic_id": 153951307, "name": "TOI-1238.02", "toi": "1238.02", "disp": "CP", "period": 0.7646, "depth_ppm": 395.0, "duration_hours": 1.07, "r_star": 0.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 193.67}, {"tic_id": 154716798, "name": "TOI-1239.01", "toi": "1239.01", "disp": "PC", "period": 12.6397, "depth_ppm": 3292.7, "duration_hours": 3.38, "r_star": 0.79, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 9.91}, {"tic_id": 158170594, "name": "TOI-1240.01", "toi": "1240.01", "disp": "KP", "period": 1.7209, "depth_ppm": 10014.3, "duration_hours": 1.83, "r_star": 1.33, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.2}, {"tic_id": 159107668, "name": "TOI-1241.01", "toi": "1241.01", "disp": "PC", "period": 4.7803, "depth_ppm": 1015.5, "duration_hours": 1.46, "r_star": 2.34, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 1.61}, {"tic_id": 198212955, "name": "TOI-1242.01", "toi": "1242.01", "disp": "PC", "period": 0.3815, "depth_ppm": 570.0, "duration_hours": 0.56, "r_star": 0.71, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 59.01}, {"tic_id": 219698776, "name": "TOI-1243.01", "toi": "1243.01", "disp": "CP", "period": 4.6595, "depth_ppm": 1725.2, "duration_hours": 0.9, "r_star": 0.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 78.51}, {"tic_id": 219850915, "name": "TOI-1244.01", "toi": "1244.01", "disp": "CP", "period": 6.4003, "depth_ppm": 1026.6, "duration_hours": 2.16, "r_star": 0.72, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 59.93}, {"tic_id": 229781583, "name": "TOI-1245.01", "toi": "1245.01", "disp": "CP", "period": 4.8205, "depth_ppm": 1930.0, "duration_hours": 1.76, "r_star": 0.52, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 56.15}, {"tic_id": 230127302, "name": "TOI-1246.01", "toi": "1246.01", "disp": "CP", "period": 18.6549, "depth_ppm": 1495.4, "duration_hours": 5.44, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 26.67}, {"tic_id": 230127302, "name": "TOI-1246.02", "toi": "1246.02", "disp": "CP", "period": 4.3075, "depth_ppm": 1094.8, "duration_hours": 2.34, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 26.12}, {"tic_id": 230127302, "name": "TOI-1246.03", "toi": "1246.03", "disp": "CP", "period": 5.9041, "depth_ppm": 773.9, "duration_hours": 2.77, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 48.82}, {"tic_id": 230127302, "name": "TOI-1246.04", "toi": "1246.04", "disp": "CP", "period": 37.9252, "depth_ppm": 1370.8, "duration_hours": 3.53, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 38.49}, {"tic_id": 232540264, "name": "TOI-1247.01", "toi": "1247.01", "disp": "CP", "period": 15.9235, "depth_ppm": 493.0, "duration_hours": 4.02, "r_star": 1.08, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 72.3}, {"tic_id": 232612416, "name": "TOI-1248.01", "toi": "1248.01", "disp": "CP", "period": 4.3602, "depth_ppm": 5592.3, "duration_hours": 2.34, "r_star": 0.87, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 2.35}, {"tic_id": 232976128, "name": "TOI-1249.01", "toi": "1249.01", "disp": "CP", "period": 13.0792, "depth_ppm": 1143.0, "duration_hours": 2.97, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 24.16}, {"tic_id": 52368076, "name": "TOI-125.01", "toi": "125.01", "disp": "CP", "period": 4.6517, "depth_ppm": 978.0, "duration_hours": 2.71, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 35.22}, {"tic_id": 52368076, "name": "TOI-125.02", "toi": "125.02", "disp": "CP", "period": 9.1549, "depth_ppm": 1101.0, "duration_hours": 2.46, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 36.95}, {"tic_id": 52368076, "name": "TOI-125.03", "toi": "125.03", "disp": "CP", "period": 19.9816, "depth_ppm": 909.0, "duration_hours": 2.72, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 63.89}, {"tic_id": 233211762, "name": "TOI-1252.01", "toi": "1252.01", "disp": "PC", "period": 1.122, "depth_ppm": 3997.6, "duration_hours": 0.82, "r_star": 0.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 6.84}, {"tic_id": 237222864, "name": "TOI-1255.01", "toi": "1255.01", "disp": "CP", "period": 10.2889, "depth_ppm": 854.0, "duration_hours": 1.39, "r_star": 0.87, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 52.45}, {"tic_id": 278348461, "name": "TOI-1257.01", "toi": "1257.01", "disp": "KP", "period": 5.4526, "depth_ppm": 7750.0, "duration_hours": 3.4, "r_star": 1.57, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.26}, {"tic_id": 288132261, "name": "TOI-1258.01", "toi": "1258.01", "disp": "PC", "period": 10.2613, "depth_ppm": 726.0, "duration_hours": 4.86, "r_star": 1.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 13.31}, {"tic_id": 288735205, "name": "TOI-1259.01", "toi": "1259.01", "disp": "CP", "period": 3.478, "depth_ppm": 27021.7, "duration_hours": 2.51, "r_star": 0.77, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.3}, {"tic_id": 70440470, "name": "TOI-126.01", "toi": "126.01", "disp": "KP", "period": 3.0354, "depth_ppm": 16196.2, "duration_hours": 2.88, "r_star": 1.07, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 355867695, "name": "TOI-1260.01", "toi": "1260.01", "disp": "CP", "period": 3.1275, "depth_ppm": 1331.8, "duration_hours": 1.98, "r_star": 0.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 36.3}, {"tic_id": 355867695, "name": "TOI-1260.02", "toi": "1260.02", "disp": "CP", "period": 7.4932, "depth_ppm": 1650.6, "duration_hours": 1.93, "r_star": 0.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 35.2}, {"tic_id": 355867695, "name": "TOI-1260.03", "toi": "1260.03", "disp": "CP", "period": 49.8252, "depth_ppm": 2059.4, "duration_hours": 3.87, "r_star": 0.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 47.5}, {"tic_id": 356311210, "name": "TOI-1261.01", "toi": "1261.01", "disp": "PC", "period": 18.0574, "depth_ppm": 1198.1, "duration_hours": 3.59, "r_star": 1.01, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 24.33}, {"tic_id": 365938305, "name": "TOI-1262.01", "toi": "1262.01", "disp": "CP", "period": 20.8774, "depth_ppm": 771.0, "duration_hours": 3.56, "r_star": 0.9, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 69.92}, {"tic_id": 406672232, "name": "TOI-1263.01", "toi": "1263.01", "disp": "PC", "period": 1.0215, "depth_ppm": 319.0, "duration_hours": 1.25, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 127.04}, {"tic_id": 416195870, "name": "TOI-1264.01", "toi": "1264.01", "disp": "PC", "period": 2.7442, "depth_ppm": 5650.0, "duration_hours": 1.42, "r_star": 0.97, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.43}, {"tic_id": 424865156, "name": "TOI-1265.01", "toi": "1265.01", "disp": "KP", "period": 2.2047, "depth_ppm": 6872.0, "duration_hours": 4.0, "r_star": 1.99, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.11}, {"tic_id": 467179528, "name": "TOI-1266.01", "toi": "1266.01", "disp": "CP", "period": 10.8948, "depth_ppm": 3168.4, "duration_hours": 2.07, "r_star": 0.44, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 57.83}, {"tic_id": 467179528, "name": "TOI-1266.02", "toi": "1266.02", "disp": "CP", "period": 18.8016, "depth_ppm": 1686.8, "duration_hours": 1.91, "r_star": 0.44, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 178.56}, {"tic_id": 158561566, "name": "TOI-1267.01", "toi": "1267.01", "disp": "KP", "period": 6.7901, "depth_ppm": 2158.2, "duration_hours": 6.08, "r_star": 2.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.94}, {"tic_id": 142394656, "name": "TOI-1268.01", "toi": "1268.01", "disp": "CP", "period": 8.1577, "depth_ppm": 10273.0, "duration_hours": 3.79, "r_star": 0.9, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 1.05}, {"tic_id": 198241702, "name": "TOI-1269.01", "toi": "1269.01", "disp": "CP", "period": 4.253, "depth_ppm": 758.6, "duration_hours": 2.57, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 50.04}, {"tic_id": 198241702, "name": "TOI-1269.02", "toi": "1269.02", "disp": "PC", "period": 9.2379, "depth_ppm": 660.0, "duration_hours": 2.54, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 79.85}, {"tic_id": 234523599, "name": "TOI-127.01", "toi": "127.01", "disp": "CP", "period": 3.7955, "depth_ppm": 52279.0, "duration_hours": 2.02, "r_star": 0.45, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.57}, {"tic_id": 286923464, "name": "TOI-1271.01", "toi": "1271.01", "disp": "KP", "period": 6.135, "depth_ppm": 3860.0, "duration_hours": 5.66, "r_star": 2.05, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.35}, {"tic_id": 417948359, "name": "TOI-1272.01", "toi": "1272.01", "disp": "CP", "period": 3.316, "depth_ppm": 2770.0, "duration_hours": 1.49, "r_star": 0.81, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 7.63}, {"tic_id": 445859771, "name": "TOI-1273.01", "toi": "1273.01", "disp": "CP", "period": 4.6313, "depth_ppm": 4860.0, "duration_hours": 1.44, "r_star": 1.07, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.59}, {"tic_id": 459969957, "name": "TOI-1274.01", "toi": "1274.01", "disp": "PC", "period": 19.3203, "depth_ppm": 13910.0, "duration_hours": 4.21, "r_star": 0.8, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 1.27}, {"tic_id": 153949511, "name": "TOI-1277.02", "toi": "1277.02", "disp": "PC", "period": 14.856, "depth_ppm": 1127.0, "duration_hours": 3.71, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 40.48}, {"tic_id": 163539739, "name": "TOI-1278.01", "toi": "1278.01", "disp": "CP", "period": 14.4751, "depth_ppm": 9618.6, "duration_hours": 1.62, "r_star": 0.55, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 6.15}, {"tic_id": 224297258, "name": "TOI-1279.01", "toi": "1279.01", "disp": "CP", "period": 9.6142, "depth_ppm": 933.7, "duration_hours": 3.43, "r_star": 0.84, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 49.83}, {"tic_id": 391949880, "name": "TOI-128.01", "toi": "128.01", "disp": "CP", "period": 4.9405, "depth_ppm": 417.0, "duration_hours": 2.12, "r_star": 1.13, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 54.93}, {"tic_id": 230017324, "name": "TOI-1280.01", "toi": "1280.01", "disp": "PC", "period": 9.6926, "depth_ppm": 1838.2, "duration_hours": 3.02, "r_star": 0.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 25.41}, {"tic_id": 232971294, "name": "TOI-1281.01", "toi": "1281.01", "disp": "CP", "period": 6.3909, "depth_ppm": 435.0, "duration_hours": 3.77, "r_star": 1.32, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 35.24}, {"tic_id": 236445129, "name": "TOI-1282.01", "toi": "1282.01", "disp": "KP", "period": 0.969, "depth_ppm": 13533.0, "duration_hours": 2.55, "r_star": 1.41, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.09}, {"tic_id": 266593143, "name": "TOI-1283.01", "toi": "1283.01", "disp": "KP", "period": 10.3385, "depth_ppm": 18162.0, "duration_hours": 4.24, "r_star": 0.84, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.6}, {"tic_id": 352764091, "name": "TOI-1287.01", "toi": "1287.01", "disp": "PC", "period": 9.6001, "depth_ppm": 380.4, "duration_hours": 4.99, "r_star": 1.21, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 64.08}, {"tic_id": 365733349, "name": "TOI-1288.01", "toi": "1288.01", "disp": "CP", "period": 2.6998, "depth_ppm": 2798.0, "duration_hours": 2.21, "r_star": 0.92, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 4.79}, {"tic_id": 201248411, "name": "TOI-129.01", "toi": "129.01", "disp": "CP", "period": 0.981, "depth_ppm": 6178.4, "duration_hours": 0.54, "r_star": 0.76, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.85}, {"tic_id": 417676622, "name": "TOI-1290.01", "toi": "1290.01", "disp": "KP", "period": 5.3987, "depth_ppm": 352.0, "duration_hours": 3.13, "r_star": 1.26, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 52.62}, {"tic_id": 198186769, "name": "TOI-1291.01", "toi": "1291.01", "disp": "PC", "period": 7.162, "depth_ppm": 800.0, "duration_hours": 7.67, "r_star": 1.81, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 5.69}, {"tic_id": 202504234, "name": "TOI-1293.01", "toi": "1293.01", "disp": "PC", "period": 1.685, "depth_ppm": 990.0, "duration_hours": 0.92, "r_star": 1.11, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 11.07}, {"tic_id": 219015370, "name": "TOI-1294.01", "toi": "1294.01", "disp": "CP", "period": 3.9153, "depth_ppm": 3350.0, "duration_hours": 2.56, "r_star": 1.58, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.82}, {"tic_id": 219852584, "name": "TOI-1295.01", "toi": "1295.01", "disp": "CP", "period": 3.1969, "depth_ppm": 7959.0, "duration_hours": 3.75, "r_star": 1.6, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.2}, {"tic_id": 219854185, "name": "TOI-1296.01", "toi": "1296.01", "disp": "CP", "period": 3.9444, "depth_ppm": 6732.5, "duration_hours": 4.87, "r_star": 1.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.21}, {"tic_id": 237104103, "name": "TOI-1298.01", "toi": "1298.01", "disp": "CP", "period": 4.5371, "depth_ppm": 4199.8, "duration_hours": 4.04, "r_star": 1.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.73}, {"tic_id": 263003176, "name": "TOI-130.01", "toi": "130.01", "disp": "CP", "period": 14.3391, "depth_ppm": 363.2, "duration_hours": 4.24, "r_star": 1.14, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 93.88}, {"tic_id": 293687315, "name": "TOI-1300.01", "toi": "1300.01", "disp": "KP", "period": 2.8717, "depth_ppm": 8568.0, "duration_hours": 4.67, "r_star": 1.91, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.1}, {"tic_id": 356867115, "name": "TOI-1301.01", "toi": "1301.01", "disp": "CP", "period": 6.0964, "depth_ppm": 1142.5, "duration_hours": 2.36, "r_star": 0.73, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 48.19}, {"tic_id": 441797803, "name": "TOI-1302.01", "toi": "1302.01", "disp": "PC", "period": 5.6666, "depth_ppm": 9780.0, "duration_hours": 3.6, "r_star": 1.47, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 167092385, "name": "TOI-1318.01", "toi": "1318.01", "disp": "PC", "period": 4.9865, "depth_ppm": 1341.0, "duration_hours": 2.44, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 13.79}, {"tic_id": 89020549, "name": "TOI-132.01", "toi": "132.01", "disp": "CP", "period": 2.1097, "depth_ppm": 1309.7, "duration_hours": 2.13, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 12.91}, {"tic_id": 167403519, "name": "TOI-1320.01", "toi": "1320.01", "disp": "PC", "period": 3.9729, "depth_ppm": 4558.0, "duration_hours": 3.65, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 2.04}, {"tic_id": 395171208, "name": "TOI-1333.01", "toi": "1333.01", "disp": "CP", "period": 4.7202, "depth_ppm": 6710.0, "duration_hours": 4.42, "r_star": 1.8, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.21}, {"tic_id": 160708862, "name": "TOI-1337.01", "toi": "1337.01", "disp": "KP", "period": 3.3448, "depth_ppm": 13626.0, "duration_hours": 3.32, "r_star": 1.76, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.07}, {"tic_id": 260128333, "name": "TOI-1338.01", "toi": "1338.01", "disp": "CP", "period": 95.174, "depth_ppm": 2600.1, "duration_hours": 11.63, "r_star": 1.52, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 3.89}, {"tic_id": 269701147, "name": "TOI-1339.01", "toi": "1339.01", "disp": "CP", "period": 8.8803, "depth_ppm": 1238.0, "duration_hours": 2.71, "r_star": 0.92, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 24.19}, {"tic_id": 269701147, "name": "TOI-1339.02", "toi": "1339.02", "disp": "CP", "period": 28.5805, "depth_ppm": 1081.4, "duration_hours": 4.51, "r_star": 0.92, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 43.75}, {"tic_id": 269701147, "name": "TOI-1339.03", "toi": "1339.03", "disp": "CP", "period": 38.3511, "depth_ppm": 1029.1, "duration_hours": 5.91, "r_star": 0.92, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 51.98}, {"tic_id": 234994474, "name": "TOI-134.01", "toi": "134.01", "disp": "CP", "period": 1.4015, "depth_ppm": 593.8, "duration_hours": 1.16, "r_star": 0.6, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 141.89}, {"tic_id": 160487753, "name": "TOI-1345.01", "toi": "1345.01", "disp": "PC", "period": 8.4713, "depth_ppm": 540.0, "duration_hours": 6.99, "r_star": 4.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.55}, {"tic_id": 219852882, "name": "TOI-1346.01", "toi": "1346.01", "disp": "CP", "period": 5.5026, "depth_ppm": 844.7, "duration_hours": 3.17, "r_star": 0.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 60.05}, {"tic_id": 219852882, "name": "TOI-1346.02", "toi": "1346.02", "disp": "CP", "period": 1.7623, "depth_ppm": 733.6, "duration_hours": 0.88, "r_star": 0.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 50.76}, {"tic_id": 229747848, "name": "TOI-1347.01", "toi": "1347.01", "disp": "CP", "period": 0.8474, "depth_ppm": 424.4, "duration_hours": 0.88, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 69.84}, {"tic_id": 229747848, "name": "TOI-1347.02", "toi": "1347.02", "disp": "CP", "period": 4.842, "depth_ppm": 318.7, "duration_hours": 2.41, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 191.87}, {"tic_id": 267263253, "name": "TOI-135.01", "toi": "135.01", "disp": "CP", "period": 4.1269, "depth_ppm": 10831.0, "duration_hours": 4.41, "r_star": 1.59, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.14}, {"tic_id": 233953967, "name": "TOI-1350.01", "toi": "1350.01", "disp": "PC", "period": 5.5402, "depth_ppm": 2710.0, "duration_hours": 7.71, "r_star": 3.39, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.13}, {"tic_id": 372264750, "name": "TOI-1355.01", "toi": "1355.01", "disp": "CP", "period": 2.1703, "depth_ppm": 5156.8, "duration_hours": 2.14, "r_star": 1.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.22}, {"tic_id": 277566483, "name": "TOI-1356.01", "toi": "1356.01", "disp": "PC", "period": 24.2545, "depth_ppm": 8802.0, "duration_hours": 17.49, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 1.39}, {"tic_id": 410153553, "name": "TOI-136.01", "toi": "136.01", "disp": "CP", "period": 0.4629, "depth_ppm": 4507.3, "duration_hours": 0.54, "r_star": 0.19, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 147.7}, {"tic_id": 277447970, "name": "TOI-1361.01", "toi": "1361.01", "disp": "PC", "period": 2.2375, "depth_ppm": 4281.0, "duration_hours": 2.99, "r_star": 1.66, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.4}, {"tic_id": 395142888, "name": "TOI-1362.01", "toi": "1362.01", "disp": "PC", "period": 1.9174, "depth_ppm": 664.0, "duration_hours": 1.47, "r_star": 7.39, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.07}, {"tic_id": 26880783, "name": "TOI-1364.01", "toi": "1364.01", "disp": "PC", "period": 1.7754, "depth_ppm": 878.0, "duration_hours": 2.03, "r_star": 3.23, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.55}, {"tic_id": 176899385, "name": "TOI-1373.01", "toi": "1373.01", "disp": "KP", "period": 3.853, "depth_ppm": 8913.0, "duration_hours": 3.23, "r_star": 1.57, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.19}, {"tic_id": 275722992, "name": "TOI-1381.01", "toi": "1381.01", "disp": "PC", "period": 6.5602, "depth_ppm": 2474.0, "duration_hours": 4.06, "r_star": 2.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.34}, {"tic_id": 343019899, "name": "TOI-1386.01", "toi": "1386.01", "disp": "CP", "period": 25.8386, "depth_ppm": 1806.0, "duration_hours": 5.21, "r_star": 1.03, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 13.97}, {"tic_id": 346338552, "name": "TOI-1388.01", "toi": "1388.01", "disp": "KP", "period": 4.4653, "depth_ppm": 14440.0, "duration_hours": 2.5, "r_star": 1.18, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 353038705, "name": "TOI-1389.01", "toi": "1389.01", "disp": "PC", "period": 3.0626, "depth_ppm": 580.0, "duration_hours": 1.77, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 41.2}, {"tic_id": 62483237, "name": "TOI-139.01", "toi": "139.01", "disp": "CP", "period": 11.0709, "depth_ppm": 1149.7, "duration_hours": 2.19, "r_star": 0.7, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 66.05}, {"tic_id": 352239069, "name": "TOI-1404.01", "toi": "1404.01", "disp": "PC", "period": 6.8674, "depth_ppm": 779.0, "duration_hours": 3.49, "r_star": 1.03, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 31.7}, {"tic_id": 352239069, "name": "TOI-1404.02", "toi": "1404.02", "disp": "PC", "period": 14.4319, "depth_ppm": 1687.0, "duration_hours": 3.27, "r_star": 1.03, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 12.74}, {"tic_id": 231736113, "name": "TOI-1406.01", "toi": "1406.01", "disp": "CP", "period": 10.574, "depth_ppm": 5460.0, "duration_hours": 4.04, "r_star": 1.27, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.05}, {"tic_id": 69747919, "name": "TOI-1407.01", "toi": "1407.01", "disp": "KP", "period": 9.9783, "depth_ppm": 179.2, "duration_hours": 4.23, "r_star": 1.47, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 111.96}, {"tic_id": 364186197, "name": "TOI-1408.01", "toi": "1408.01", "disp": "CP", "period": 4.4247, "depth_ppm": 2447.0, "duration_hours": 1.32, "r_star": 1.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.62}, {"tic_id": 364186197, "name": "TOI-1408.02", "toi": "1408.02", "disp": "KP", "period": 2.2222, "depth_ppm": 87.0, "duration_hours": 2.46, "r_star": 1.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 192.64}, {"tic_id": 403224672, "name": "TOI-141.01", "toi": "141.01", "disp": "CP", "period": 1.0082, "depth_ppm": 228.0, "duration_hours": 1.41, "r_star": 1.13, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 79.99}, {"tic_id": 199444169, "name": "TOI-1410.01", "toi": "1410.01", "disp": "CP", "period": 1.2169, "depth_ppm": 1240.0, "duration_hours": 0.86, "r_star": 0.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 20.42}, {"tic_id": 116483514, "name": "TOI-1411.01", "toi": "1411.01", "disp": "CP", "period": 1.452, "depth_ppm": 393.0, "duration_hours": 1.34, "r_star": 0.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 175.33}, {"tic_id": 119700084, "name": "TOI-1413.01", "toi": "1413.01", "disp": "PC", "period": 6.1182, "depth_ppm": 1805.2, "duration_hours": 0.67, "r_star": 0.89, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 13.4}, {"tic_id": 148782377, "name": "TOI-1415.01", "toi": "1415.01", "disp": "PC", "period": 14.4205, "depth_ppm": 1061.5, "duration_hours": 5.17, "r_star": 1.41, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 9.95}, {"tic_id": 158025009, "name": "TOI-1416.01", "toi": "1416.01", "disp": "CP", "period": 1.0698, "depth_ppm": 376.0, "duration_hours": 1.36, "r_star": 0.8, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 108.57}, {"tic_id": 164173105, "name": "TOI-1417.01", "toi": "1417.01", "disp": "CP", "period": 3.0726, "depth_ppm": 10471.5, "duration_hours": 2.26, "r_star": 1.56, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.14}, {"tic_id": 311035838, "name": "TOI-1419.01", "toi": "1419.01", "disp": "KP", "period": 2.8997, "depth_ppm": 13760.0, "duration_hours": 1.85, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.63}, {"tic_id": 425934411, "name": "TOI-142.01", "toi": "142.01", "disp": "PC", "period": 0.8534, "depth_ppm": 25080.3, "duration_hours": 1.2, "r_star": 0.61, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.42}, {"tic_id": 321857016, "name": "TOI-1420.01", "toi": "1420.01", "disp": "CP", "period": 6.9561, "depth_ppm": 15989.2, "duration_hours": 3.36, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.45}, {"tic_id": 333473672, "name": "TOI-1422.01", "toi": "1422.01", "disp": "CP", "period": 13.0018, "depth_ppm": 1339.6, "duration_hours": 4.48, "r_star": 1.01, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 18.45}, {"tic_id": 25375553, "name": "TOI-143.01", "toi": "143.01", "disp": "KP", "period": 2.311, "depth_ppm": 6829.4, "duration_hours": 3.43, "r_star": 1.95, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.13}, {"tic_id": 293954617, "name": "TOI-1430.01", "toi": "1430.01", "disp": "CP", "period": 7.4341, "depth_ppm": 701.0, "duration_hours": 2.42, "r_star": 0.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 87.81}, {"tic_id": 375506058, "name": "TOI-1431.01", "toi": "1431.01", "disp": "CP", "period": 2.6502, "depth_ppm": 6449.0, "duration_hours": 2.03, "r_star": 1.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.15}, {"tic_id": 256783784, "name": "TOI-1432.01", "toi": "1432.01", "disp": "CP", "period": 6.1096, "depth_ppm": 510.0, "duration_hours": 2.44, "r_star": 0.91, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 83.47}, {"tic_id": 138588540, "name": "TOI-1434.01", "toi": "1434.01", "disp": "PC", "period": 29.8719, "depth_ppm": 712.6, "duration_hours": 4.7, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 159.51}, {"tic_id": 153976959, "name": "TOI-1435.01", "toi": "1435.01", "disp": "CP", "period": 0.6858, "depth_ppm": 148.2, "duration_hours": 1.39, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 351.31}, {"tic_id": 154383539, "name": "TOI-1436.01", "toi": "1436.01", "disp": "PC", "period": 0.8676, "depth_ppm": 321.5, "duration_hours": 1.38, "r_star": 0.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 155.41}, {"tic_id": 198356533, "name": "TOI-1437.01", "toi": "1437.01", "disp": "CP", "period": 18.8409, "depth_ppm": 331.0, "duration_hours": 5.76, "r_star": 1.22, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 96.43}, {"tic_id": 229650439, "name": "TOI-1438.01", "toi": "1438.01", "disp": "CP", "period": 5.1397, "depth_ppm": 769.6, "duration_hours": 0.9, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 58.09}, {"tic_id": 229650439, "name": "TOI-1438.02", "toi": "1438.02", "disp": "CP", "period": 9.4281, "depth_ppm": 799.0, "duration_hours": 1.38, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 67.23}, {"tic_id": 232982558, "name": "TOI-1439.01", "toi": "1439.01", "disp": "CP", "period": 27.6439, "depth_ppm": 560.0, "duration_hours": 5.32, "r_star": 1.62, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 21.27}, {"tic_id": 261136679, "name": "TOI-144.01", "toi": "144.01", "disp": "CP", "period": 6.2678, "depth_ppm": 321.0, "duration_hours": 2.79, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 83.53}, {"tic_id": 233617847, "name": "TOI-1440.01", "toi": "1440.01", "disp": "PC", "period": 15.5175, "depth_ppm": 434.0, "duration_hours": 5.32, "r_star": 1.34, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 45.43}, {"tic_id": 233617847, "name": "TOI-1440.02", "toi": "1440.02", "disp": "PC", "period": 4.6274, "depth_ppm": 152.4, "duration_hours": 4.66, "r_star": 1.34, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 145.88}, {"tic_id": 233951353, "name": "TOI-1441.01", "toi": "1441.01", "disp": "CP", "period": 22.093, "depth_ppm": 435.0, "duration_hours": 5.81, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 64.28}, {"tic_id": 235683377, "name": "TOI-1442.01", "toi": "1442.01", "disp": "CP", "period": 0.4091, "depth_ppm": 1281.2, "duration_hours": 0.62, "r_star": 0.31, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 215.32}, {"tic_id": 237232044, "name": "TOI-1443.01", "toi": "1443.01", "disp": "CP", "period": 23.5407, "depth_ppm": 956.0, "duration_hours": 4.03, "r_star": 0.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 91.08}, {"tic_id": 258514800, "name": "TOI-1444.01", "toi": "1444.01", "disp": "CP", "period": 0.4703, "depth_ppm": 209.5, "duration_hours": 1.33, "r_star": 0.92, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 130.51}, {"tic_id": 259172391, "name": "TOI-1445.01", "toi": "1445.01", "disp": "PC", "period": 9.8131, "depth_ppm": 630.0, "duration_hours": 3.91, "r_star": 1.06, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 45.05}, {"tic_id": 259172391, "name": "TOI-1445.02", "toi": "1445.02", "disp": "PC", "period": 4.7842, "depth_ppm": 390.0, "duration_hours": 2.95, "r_star": 1.06, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 72.79}, {"tic_id": 294471966, "name": "TOI-1446.01", "toi": "1446.01", "disp": "PC", "period": 6.3171, "depth_ppm": 688.3, "duration_hours": 2.45, "r_star": 0.83, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 70.95}, {"tic_id": 294471966, "name": "TOI-1446.02", "toi": "1446.02", "disp": "PC", "period": 4.5057, "depth_ppm": 428.7, "duration_hours": 1.89, "r_star": 0.83, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 128.96}, {"tic_id": 343628284, "name": "TOI-1448.01", "toi": "1448.01", "disp": "CP", "period": 8.0971, "depth_ppm": 4723.1, "duration_hours": 3.13, "r_star": 0.38, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 44.68}, {"tic_id": 356158613, "name": "TOI-1449.02", "toi": "1449.02", "disp": "PC", "period": 2.3692, "depth_ppm": 699.3, "duration_hours": 1.68, "r_star": 0.6, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 132.26}, {"tic_id": 265612438, "name": "TOI-145.01", "toi": "145.01", "disp": "PC", "period": 5.13, "depth_ppm": 3376.0, "duration_hours": 4.78, "r_star": 1.58, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.88}, {"tic_id": 377293776, "name": "TOI-1450.01", "toi": "1450.01", "disp": "CP", "period": 2.0439, "depth_ppm": 465.2, "duration_hours": 1.01, "r_star": 0.47, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 482.76}, {"tic_id": 417931607, "name": "TOI-1451.01", "toi": "1451.01", "disp": "CP", "period": 16.538, "depth_ppm": 608.0, "duration_hours": 2.8, "r_star": 1.03, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 61.63}, {"tic_id": 420112589, "name": "TOI-1452.01", "toi": "1452.01", "disp": "CP", "period": 11.062, "depth_ppm": 3249.1, "duration_hours": 1.76, "r_star": 0.28, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 217.18}, {"tic_id": 198390247, "name": "TOI-1453.01", "toi": "1453.01", "disp": "CP", "period": 6.5887, "depth_ppm": 852.0, "duration_hours": 1.68, "r_star": 0.71, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 83.46}, {"tic_id": 198390247, "name": "TOI-1453.02", "toi": "1453.02", "disp": "CP", "period": 4.3135, "depth_ppm": 274.0, "duration_hours": 1.87, "r_star": 0.71, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 397.38}, {"tic_id": 294179385, "name": "TOI-1454.01", "toi": "1454.01", "disp": "PC", "period": 2.6794, "depth_ppm": 13578.3, "duration_hours": 2.99, "r_star": 1.14, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 199376584, "name": "TOI-1456.01", "toi": "1456.01", "disp": "CP", "period": 18.7123, "depth_ppm": 6066.0, "duration_hours": 6.47, "r_star": 1.27, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.09}, {"tic_id": 191284318, "name": "TOI-1458.01", "toi": "1458.01", "disp": "KP", "period": 2.776, "depth_ppm": 13613.0, "duration_hours": 3.07, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.18}, {"tic_id": 188768068, "name": "TOI-1462.01", "toi": "1462.01", "disp": "CP", "period": 2.1779, "depth_ppm": 110.0, "duration_hours": 2.1, "r_star": 1.26, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 222.58}, {"tic_id": 190998418, "name": "TOI-1463.01", "toi": "1463.01", "disp": "KP", "period": 2.8791, "depth_ppm": 11426.6, "duration_hours": 2.75, "r_star": 1.11, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.34}, {"tic_id": 229944666, "name": "TOI-1464.01", "toi": "1464.01", "disp": "PC", "period": 11.3125, "depth_ppm": 861.7, "duration_hours": 2.59, "r_star": 0.85, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 57.27}, {"tic_id": 236887394, "name": "TOI-1465.01", "toi": "1465.01", "disp": "KP", "period": 1.42, "depth_ppm": 23730.0, "duration_hours": 1.43, "r_star": 0.77, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.27}, {"tic_id": 237086564, "name": "TOI-1466.01", "toi": "1466.01", "disp": "PC", "period": 1.8719, "depth_ppm": 920.0, "duration_hours": 1.48, "r_star": 0.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 41.49}, {"tic_id": 240968774, "name": "TOI-1467.01", "toi": "1467.01", "disp": "CP", "period": 5.9711, "depth_ppm": 1437.1, "duration_hours": 1.55, "r_star": 0.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 112.17}, {"tic_id": 243185500, "name": "TOI-1468.01", "toi": "1468.01", "disp": "CP", "period": 15.5324, "depth_ppm": 2937.5, "duration_hours": 1.76, "r_star": 0.37, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 122.6}, {"tic_id": 243185500, "name": "TOI-1468.02", "toi": "1468.02", "disp": "CP", "period": 1.8805, "depth_ppm": 1214.0, "duration_hours": 1.19, "r_star": 0.37, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 228.29}, {"tic_id": 283722336, "name": "TOI-1469.01", "toi": "1469.01", "disp": "KP", "period": 3.0929, "depth_ppm": 254.2, "duration_hours": 0.88, "r_star": 0.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 337.68}, {"tic_id": 283722336, "name": "TOI-1469.02", "toi": "1469.02", "disp": "KP", "period": 6.765, "depth_ppm": 269.0, "duration_hours": 1.42, "r_star": 0.75, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 402.66}, {"tic_id": 284441182, "name": "TOI-1470.01", "toi": "1470.01", "disp": "CP", "period": 2.5273, "depth_ppm": 1847.5, "duration_hours": 1.27, "r_star": 0.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 57.78}, {"tic_id": 306263608, "name": "TOI-1471.01", "toi": "1471.01", "disp": "CP", "period": 20.7724, "depth_ppm": 1415.0, "duration_hours": 5.51, "r_star": 0.97, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 22.42}, {"tic_id": 306263608, "name": "TOI-1471.02", "toi": "1471.02", "disp": "CP", "period": 52.5637, "depth_ppm": 1193.0, "duration_hours": 6.5, "r_star": 0.97, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 39.47}, {"tic_id": 306955329, "name": "TOI-1472.01", "toi": "1472.01", "disp": "CP", "period": 6.3634, "depth_ppm": 2368.7, "duration_hours": 2.69, "r_star": 0.86, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 10.01}, {"tic_id": 352413427, "name": "TOI-1473.01", "toi": "1473.01", "disp": "CP", "period": 5.2545, "depth_ppm": 567.0, "duration_hours": 2.9, "r_star": 0.99, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 52.59}, {"tic_id": 431514478, "name": "TOI-1475.01", "toi": "1475.01", "disp": "PC", "period": 8.4954, "depth_ppm": 718.5, "duration_hours": 0.91, "r_star": 1.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 6.32}, {"tic_id": 432549364, "name": "TOI-1476.01", "toi": "1476.01", "disp": "KP", "period": 1.2175, "depth_ppm": 6969.0, "duration_hours": 2.57, "r_star": 1.46, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 240681314, "name": "TOI-1477.01", "toi": "1477.01", "disp": "KP", "period": 2.7325, "depth_ppm": 9548.3, "duration_hours": 2.21, "r_star": 1.61, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.14}, {"tic_id": 409794137, "name": "TOI-1478.01", "toi": "1478.01", "disp": "CP", "period": 10.1802, "depth_ppm": 11500.0, "duration_hours": 4.61, "r_star": 1.04, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.62}, {"tic_id": 393940766, "name": "TOI-148.01", "toi": "148.01", "disp": "CP", "period": 4.8671, "depth_ppm": 4965.8, "duration_hours": 3.19, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.26}, {"tic_id": 252616865, "name": "TOI-1482.01", "toi": "1482.01", "disp": "PC", "period": 5.7122, "depth_ppm": 7555.0, "duration_hours": 4.78, "r_star": 1.79, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.19}, {"tic_id": 260985861, "name": "TOI-149.01", "toi": "149.01", "disp": "PC", "period": 3.3399, "depth_ppm": 9074.1, "duration_hours": 4.25, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.69}, {"tic_id": 53875855, "name": "TOI-1491.01", "toi": "1491.01", "disp": "PC", "period": 4.4903, "depth_ppm": 2513.0, "duration_hours": 2.76, "r_star": 1.23, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 2.79}, {"tic_id": 15692883, "name": "TOI-1493.01", "toi": "1493.01", "disp": "CP", "period": 5.1479, "depth_ppm": 3710.0, "duration_hours": 5.41, "r_star": 2.9, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.12}, {"tic_id": 411608801, "name": "TOI-1494.01", "toi": "1494.01", "disp": "CP", "period": 5.0268, "depth_ppm": 6358.0, "duration_hours": 2.75, "r_star": 1.48, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.41}, {"tic_id": 271893367, "name": "TOI-150.01", "toi": "150.01", "disp": "CP", "period": 5.8574, "depth_ppm": 6489.7, "duration_hours": 5.85, "r_star": 1.68, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.29}, {"tic_id": 376637093, "name": "TOI-1516.01", "toi": "1516.01", "disp": "CP", "period": 2.056, "depth_ppm": 17453.0, "duration_hours": 2.77, "r_star": 1.24, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.11}, {"tic_id": 427761355, "name": "TOI-1518.01", "toi": "1518.01", "disp": "CP", "period": 1.9026, "depth_ppm": 8985.0, "duration_hours": 2.37, "r_star": 1.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.1}, {"tic_id": 202375913, "name": "TOI-1527.01", "toi": "1527.01", "disp": "PC", "period": 5.0626, "depth_ppm": 2884.0, "duration_hours": 3.69, "r_star": 2.76, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.21}, {"tic_id": 327579226, "name": "TOI-1532.01", "toi": "1532.01", "disp": "PC", "period": 8.9054, "depth_ppm": 6702.0, "duration_hours": 2.71, "r_star": 1.41, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.53}, {"tic_id": 345143460, "name": "TOI-1533.01", "toi": "1533.01", "disp": "CP", "period": 3.6458, "depth_ppm": 1168.0, "duration_hours": 1.83, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 22.42}, {"tic_id": 345143460, "name": "TOI-1533.02", "toi": "1533.02", "disp": "PC", "period": 8.0638, "depth_ppm": 2301.0, "duration_hours": 0.8, "r_star": 0.88, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 10.56}, {"tic_id": 173612049, "name": "TOI-1537.01", "toi": "1537.01", "disp": "PC", "period": 6.4903, "depth_ppm": 1080.0, "duration_hours": 2.54, "r_star": 0.96, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 23.54}, {"tic_id": 177244357, "name": "TOI-1538.01", "toi": "1538.01", "disp": "PC", "period": 6.5469, "depth_ppm": 2400.0, "duration_hours": 4.59, "r_star": 1.12, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 4.49}, {"tic_id": 455791689, "name": "TOI-1544.01", "toi": "1544.01", "disp": "PC", "period": 1.2918, "depth_ppm": 1224.0, "duration_hours": 1.43, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 10.08}, {"tic_id": 194203348, "name": "TOI-1546.01", "toi": "1546.01", "disp": "PC", "period": 1.1335, "depth_ppm": 490.0, "duration_hours": 1.89, "r_star": 1.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 13.88}, {"tic_id": 129637892, "name": "TOI-155.01", "toi": "155.01", "disp": "PC", "period": 5.45, "depth_ppm": 973.0, "duration_hours": 4.32, "r_star": 1.79, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 4.01}, {"tic_id": 288348498, "name": "TOI-1551.01", "toi": "1551.01", "disp": "PC", "period": 1.6755, "depth_ppm": 1250.0, "duration_hours": 1.2, "r_star": 1.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 1.89}, {"tic_id": 299158887, "name": "TOI-1554.01", "toi": "1554.01", "disp": "KP", "period": 9.4342, "depth_ppm": 4001.9, "duration_hours": 2.85, "r_star": 0.94, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 3.98}, {"tic_id": 241040309, "name": "TOI-1559.01", "toi": "1559.01", "disp": "PC", "period": 3.4649, "depth_ppm": 1339.0, "duration_hours": 1.05, "r_star": 2.54, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 0.75}, {"tic_id": 241076290, "name": "TOI-1560.01", "toi": "1560.01", "disp": "PC", "period": 0.258, "depth_ppm": 812.7, "duration_hours": 0.54, "r_star": 2.09, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 1.19}, {"tic_id": 249945230, "name": "TOI-1563.01", "toi": "1563.01", "disp": "PC", "period": 1098.2259, "depth_ppm": 4496.0, "duration_hours": 6.12, "r_star": 0.74, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 33.47}, {"tic_id": 251384275, "name": "TOI-1565.01", "toi": "1565.01", "disp": "PC", "period": 1099.256, "depth_ppm": 2970.0, "duration_hours": 5.66, "r_star": 2.18, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 2.44}, {"tic_id": 140691463, "name": "TOI-157.01", "toi": "157.01", "disp": "CP", "period": 2.0845, "depth_ppm": 12504.8, "duration_hours": 2.02, "r_star": 1.11, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.26}, {"tic_id": 302773669, "name": "TOI-1573.01", "toi": "1573.01", "disp": "KP", "period": 21.2165, "depth_ppm": 6499.0, "duration_hours": 3.04, "r_star": 1.55, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.56}, {"tic_id": 354469661, "name": "TOI-1580.01", "toi": "1580.01", "disp": "KP", "period": 4.7948, "depth_ppm": 6864.0, "duration_hours": 4.8, "r_star": 2.18, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.11}, {"tic_id": 445144327, "name": "TOI-1586.01", "toi": "1586.01", "disp": "PC", "period": 1.8079, "depth_ppm": 540.0, "duration_hours": 2.17, "r_star": 8.61, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.06}, {"tic_id": 50120414, "name": "TOI-1588.01", "toi": "1588.01", "disp": "PC", "period": 3.5811, "depth_ppm": 760.0, "duration_hours": 3.45, "r_star": 5.96, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.14}, {"tic_id": 394657039, "name": "TOI-159.01", "toi": "159.01", "disp": "CP", "period": 3.7628, "depth_ppm": 11360.0, "duration_hours": 3.96, "r_star": 1.59, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.13}, {"tic_id": 67418624, "name": "TOI-1598.01", "toi": "1598.01", "disp": "PC", "period": 1.1021, "depth_ppm": 580.0, "duration_hours": 0.86, "r_star": 1.73, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 5.66}, {"tic_id": 129979528, "name": "TOI-1599.01", "toi": "1599.01", "disp": "KP", "period": 1.2198, "depth_ppm": 12160.1, "duration_hours": 2.83, "r_star": 1.6, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.08}, {"tic_id": 139375960, "name": "TOI-1601.01", "toi": "1601.01", "disp": "CP", "period": 5.3316, "depth_ppm": 4220.0, "duration_hours": 6.19, "r_star": 2.22, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.23}, {"tic_id": 73448352, "name": "TOI-1603.01", "toi": "1603.01", "disp": "KP", "period": 4.7322, "depth_ppm": 8121.0, "duration_hours": 2.59, "r_star": 1.56, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.24}, {"tic_id": 101037590, "name": "TOI-1605.01", "toi": "1605.01", "disp": "CP", "period": 8.7095, "depth_ppm": 4510.0, "duration_hours": 3.03, "r_star": 1.59, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.67}, {"tic_id": 348770361, "name": "TOI-161.01", "toi": "161.01", "disp": "PC", "period": 2.7684, "depth_ppm": 3234.1, "duration_hours": 4.22, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 3.21}, {"tic_id": 219776325, "name": "TOI-1610.01", "toi": "1610.01", "disp": "PC", "period": 2.5288, "depth_ppm": 387.0, "duration_hours": 1.29, "r_star": 1.19, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 42.08}, {"tic_id": 264678534, "name": "TOI-1611.01", "toi": "1611.01", "disp": "CP", "period": 16.2017, "depth_ppm": 885.0, "duration_hours": 2.79, "r_star": 0.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 80.26}, {"tic_id": 268403451, "name": "TOI-1612.01", "toi": "1612.01", "disp": "KP", "period": 2.8641, "depth_ppm": 9597.0, "duration_hours": 2.42, "r_star": 1.53, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.17}, {"tic_id": 322054600, "name": "TOI-1616.01", "toi": "1616.01", "disp": "PC", "period": 1.3433, "depth_ppm": 1052.0, "duration_hours": 0.66, "r_star": 1.45, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 4.2}, {"tic_id": 378291076, "name": "TOI-1620.01", "toi": "1620.01", "disp": "PC", "period": 1.5982, "depth_ppm": 296.0, "duration_hours": 2.25, "r_star": 1.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 27.5}, {"tic_id": 387260717, "name": "TOI-1621.01", "toi": "1621.01", "disp": "PC", "period": 6.4536, "depth_ppm": 200.0, "duration_hours": 3.58, "r_star": 1.02, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 245.8}, {"tic_id": 157586003, "name": "TOI-1626.01", "toi": "1626.01", "disp": "KP", "period": 3.3326, "depth_ppm": 8310.5, "duration_hours": 3.56, "r_star": 1.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.16}, {"tic_id": 424435940, "name": "TOI-1627.01", "toi": "1627.01", "disp": "KP", "period": 5.0172, "depth_ppm": 14237.0, "duration_hours": 3.74, "r_star": 1.1, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.3}, {"tic_id": 284475976, "name": "TOI-1628.01", "toi": "1628.01", "disp": "KP", "period": 2.1436, "depth_ppm": 9203.8, "duration_hours": 3.15, "r_star": 1.77, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.1}, {"tic_id": 310003988, "name": "TOI-1629.01", "toi": "1629.01", "disp": "KP", "period": 4.5422, "depth_ppm": 9760.0, "duration_hours": 4.29, "r_star": 1.73, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.13}, {"tic_id": 179317684, "name": "TOI-163.01", "toi": "163.01", "disp": "CP", "period": 4.2311, "depth_ppm": 7261.3, "duration_hours": 4.35, "r_star": 1.66, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.23}, {"tic_id": 317597583, "name": "TOI-1630.01", "toi": "1630.01", "disp": "CP", "period": 12.0557, "depth_ppm": 807.0, "duration_hours": 1.96, "r_star": 0.83, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 69.32}, {"tic_id": 201186294, "name": "TOI-1634.01", "toi": "1634.01", "disp": "CP", "period": 0.9893, "depth_ppm": 1519.7, "duration_hours": 1.04, "r_star": 0.47, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 64.2}, {"tic_id": 312862941, "name": "TOI-1638.01", "toi": "1638.01", "disp": "PC", "period": 0.9151, "depth_ppm": 4304.9, "duration_hours": 0.67, "r_star": 0.7, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 3.97}, {"tic_id": 396562848, "name": "TOI-1640.01", "toi": "1640.01", "disp": "CP", "period": 1.9495, "depth_ppm": 2089.2, "duration_hours": 0.81, "r_star": 0.26, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 294.95}, {"tic_id": 422923265, "name": "TOI-1641.01", "toi": "1641.01", "disp": "PC", "period": 1.8647, "depth_ppm": 570.0, "duration_hours": 1.03, "r_star": 3.4, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.91}, {"tic_id": 298647682, "name": "TOI-1643.01", "toi": "1643.01", "disp": "PC", "period": 20.0795, "depth_ppm": 1065.5, "duration_hours": 1.22, "r_star": 0.78, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 65.26}, {"tic_id": 376353509, "name": "TOI-1648.01", "toi": "1648.01", "disp": "CP", "period": 7.3316, "depth_ppm": 893.0, "duration_hours": 1.29, "r_star": 0.84, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 48.67}, {"tic_id": 138168780, "name": "TOI-1651.01", "toi": "1651.01", "disp": "KP", "period": 3.765, "depth_ppm": 14735.0, "duration_hours": 2.64, "r_star": 1.42, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.12}, {"tic_id": 156724719, "name": "TOI-1653.01", "toi": "1653.01", "disp": "PC", "period": 10.9569, "depth_ppm": 4643.0, "duration_hours": 3.47, "r_star": 2.5, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.18}, {"tic_id": 258829450, "name": "TOI-1654.01", "toi": "1654.01", "disp": "PC", "period": 1.8348, "depth_ppm": 242.0, "duration_hours": 2.41, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 128.87}, {"tic_id": 266500992, "name": "TOI-1655.01", "toi": "1655.01", "disp": "PC", "period": 3.2787, "depth_ppm": 1101.0, "duration_hours": 2.63, "r_star": 1.15, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 10.6}, {"tic_id": 288631580, "name": "TOI-1659.01", "toi": "1659.01", "disp": "CP", "period": 5.8776, "depth_ppm": 412.3, "duration_hours": 2.9, "r_star": 1.01, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 82.91}, {"tic_id": 288631580, "name": "TOI-1659.02", "toi": "1659.02", "disp": "PC", "period": 3.3986, "depth_ppm": 171.0, "duration_hours": 2.2, "r_star": 1.01, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 258.61}, {"tic_id": 147203645, "name": "TOI-166.01", "toi": "166.01", "disp": "PC", "period": 5.0611, "depth_ppm": 5276.0, "duration_hours": 1.56, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.78}, {"tic_id": 353782445, "name": "TOI-1664.01", "toi": "1664.01", "disp": "PC", "period": 11.8351, "depth_ppm": 336.0, "duration_hours": 2.09, "r_star": 1.34, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 60.94}, {"tic_id": 428679607, "name": "TOI-1669.01", "toi": "1669.01", "disp": "CP", "period": 2.6801, "depth_ppm": 456.0, "duration_hours": 1.76, "r_star": 1.07, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 46.14}, {"tic_id": 149990841, "name": "TOI-167.01", "toi": "167.01", "disp": "PC", "period": 4.4532, "depth_ppm": 5910.0, "duration_hours": 1.69, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.43}, {"tic_id": 441739020, "name": "TOI-1670.01", "toi": "1670.01", "disp": "CP", "period": 40.7501, "depth_ppm": 6026.0, "duration_hours": 4.87, "r_star": 1.31, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 1.3}, {"tic_id": 441739020, "name": "TOI-1670.02", "toi": "1670.02", "disp": "CP", "period": 10.9837, "depth_ppm": 315.0, "duration_hours": 2.64, "r_star": 1.31, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 70.09}, {"tic_id": 441739020, "name": "TOI-1670.03", "toi": "1670.03", "disp": "PC", "period": 123.0508, "depth_ppm": 432.5, "duration_hours": 9.19, "r_star": 1.31, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 97.48}, {"tic_id": 81831095, "name": "TOI-1675.01", "toi": "1675.01", "disp": "PC", "period": 3.1331, "depth_ppm": 1192.0, "duration_hours": 1.24, "r_star": 2.06, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 1.61}, {"tic_id": 8400842, "name": "TOI-1676.01", "toi": "1676.01", "disp": "KP", "period": 3.1915, "depth_ppm": 8587.0, "duration_hours": 2.76, "r_star": 1.69, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.15}, {"tic_id": 87090944, "name": "TOI-1677.01", "toi": "1677.01", "disp": "PC", "period": 0.6436, "depth_ppm": 876.7, "duration_hours": 0.67, "r_star": 1.49, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 3.98}, {"tic_id": 369457671, "name": "TOI-168.01", "toi": "168.01", "disp": "PC", "period": 2.3145, "depth_ppm": 1190.0, "duration_hours": 1.35, "r_star": 0.73, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 32.82}, {"tic_id": 259168516, "name": "TOI-1680.01", "toi": "1680.01", "disp": "CP", "period": 4.8027, "depth_ppm": 4358.1, "duration_hours": 1.17, "r_star": 0.21, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 250.93}, {"tic_id": 321041369, "name": "TOI-1681.01", "toi": "1681.01", "disp": "PC", "period": 1.5379, "depth_ppm": 1135.0, "duration_hours": 0.77, "r_star": 0.93, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 14.87}, {"tic_id": 367366318, "name": "TOI-1682.01", "toi": "1682.01", "disp": "KP", "period": 2.7348, "depth_ppm": 9209.0, "duration_hours": 3.21, "r_star": 1.77, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.11}, {"tic_id": 58542531, "name": "TOI-1683.01", "toi": "1683.01", "disp": "CP", "period": 3.0575, "depth_ppm": 1118.0, "duration_hours": 1.38, "r_star": 0.7, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 44.86}, {"tic_id": 85031598, "name": "TOI-1684.01", "toi": "1684.01", "disp": "PC", "period": 1.155, "depth_ppm": 739.0, "duration_hours": 0.91, "r_star": 2.99, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 0.77}, {"tic_id": 28900646, "name": "TOI-1685.01", "toi": "1685.01", "disp": "CP", "period": 0.6691, "depth_ppm": 1254.4, "duration_hours": 0.99, "r_star": 0.46, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 80.15}, {"tic_id": 102672709, "name": "TOI-1686.01", "toi": "1686.01", "disp": "PC", "period": 6.7054, "depth_ppm": 575.2, "duration_hours": 3.85, "r_star": 1.46, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 17.41}, {"tic_id": 103448870, "name": "TOI-1687.01", "toi": "1687.01", "disp": "PC", "period": 10.2596, "depth_ppm": 1080.9, "duration_hours": 1.82, "r_star": 0.98, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 25.74}, {"tic_id": 183120439, "name": "TOI-169.01", "toi": "169.01", "disp": "CP", "period": 2.2554, "depth_ppm": 5283.7, "duration_hours": 1.67, "r_star": 1.3, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 0.62}, {"tic_id": 267574918, "name": "TOI-1690.01", "toi": "1690.01", "disp": "CP", "period": 1.4079, "depth_ppm": 484643.7, "duration_hours": 0.31, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 3, "density": 0.0}, {"tic_id": 268334473, "name": "TOI-1691.01", "toi": "1691.01", "disp": "CP", "period": 16.7369, "depth_ppm": 989.0, "duration_hours": 4.56, "r_star": 1.0, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 32.59}, {"tic_id": 288636342, "name": "TOI-1692.01", "toi": "1692.01", "disp": "PC", "period": 17.7287, "depth_ppm": 1086.5, "duration_hours": 6.44, "r_star": 1.46, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 9.27}, {"tic_id": 288636342, "name": "TOI-1692.02", "toi": "1692.02", "disp": "PC", "period": 32.208, "depth_ppm": 2409.3, "duration_hours": 7.52, "r_star": 1.46, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 3.43}, {"tic_id": 353475866, "name": "TOI-1693.01", "toi": "1693.01", "disp": "CP", "period": 1.7667, "depth_ppm": 830.5, "duration_hours": 1.42, "r_star": 0.46, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 0, "density": 205.64}, {"tic_id": 396740648, "name": "TOI-1694.01", "toi": "1694.01", "disp": "CP", "period": 3.7701, "depth_ppm": 4361.2, "duration_hours": 2.85, "r_star": 0.82, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 2, "density": 3.88}, {"tic_id": 422756130, "name": "TOI-1695.01", "toi": "1695.01", "disp": "CP", "period": 3.1343, "depth_ppm": 1183.6, "duration_hours": 1.22, "r_star": 0.52, "status": "PASSED", "offset": 0.0, "sigma": 0.0, "screened": 3, "ruled_out": 1, "density": 101.29}];
+    const METADATA = {"run_timestamp_utc": "2026-09-22T19:40:45.265586+00:00", "pipeline_version": "0.1.0", "mode": "mock", "input_catalog": {"filepath": "/Users/diegozolhos/Projects/Astro Exo Planets/data/batches/nasa_toi_batch_400/inputs.csv", "sha256": "10781cfc49f6cc80fcf8610c20fb20ed67e14844f3259aaf7cd8a5268e0f9e4a", "total_targets": 400}, "execution_metrics": {"total_duration_seconds": 2.0555, "avg_duration_per_target_seconds": 0.0051, "passed_count": 400, "rejected_fp_count": 0, "failed_count": 0, "validation_rate_percent": 100.0}, "environment": {"python_version": "3.11.1", "platform": "darwin"}, "output_files": {"summary_csv": "/Users/diegozolhos/Projects/Astro Exo Planets/results/nasa_toi_batch_400/batch_summary.csv", "summary_json": "/Users/diegozolhos/Projects/Astro Exo Planets/results/nasa_toi_batch_400/batch_summary.json", "targets_dir": "/Users/diegozolhos/Projects/Astro Exo Planets/results/nasa_toi_batch_400/targets"}};
+
+    let currentDispFilter = 'ALL';
+    let currentPeriodFilter = 'ALL';
+    let currentSearchTerm = '';
+    let sortColumn = 'period';
+    let sortAsc = true;
+
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTable();
+      renderScatterChart();
+      renderPeriodHist();
+      renderDepthHist();
+      renderMultiPlanetArchitectures();
+
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value.toLowerCase();
+        renderTable();
+      });
+    });
+
+    // Filtros
+    function setDispFilter(disp) {
+      currentDispFilter = disp;
+      ['all', 'pc', 'kp', 'cp'].forEach(id => {
+        const btn = document.getElementById(`btn-disp-${id}`);
+        if (id === disp.toLowerCase()) {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500 text-space-900 transition-all";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all";
+        }
+      });
+      renderTable();
+      renderScatterChart();
+    }
+
+    function setPeriodFilter(per) {
+      currentPeriodFilter = per;
+      ['all', 'usp', 'mid', 'long'].forEach(id => {
+        const btn = document.getElementById(`btn-per-${id}`);
+        if (id === per.toLowerCase()) {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-500 text-white transition-all";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-medium bg-space-800 text-slate-300 hover:text-white border border-slate-700 transition-all";
+        }
+      });
+      renderTable();
+      renderScatterChart();
+    }
+
+    function getFilteredTargets() {
+      return ALL_TARGETS.filter(t => {
+        // Filtro Disposição
+        if (currentDispFilter !== 'ALL' && t.disp !== currentDispFilter) return false;
+
+        // Filtro Período
+        if (currentPeriodFilter === 'USP' && t.period >= 1.0) return false;
+        if (currentPeriodFilter === 'MID' && (t.period < 1.0 || t.period > 10.0)) return false;
+        if (currentPeriodFilter === 'LONG' && t.period <= 10.0) return false;
+
+        // Filtro Busca
+        if (currentSearchTerm) {
+          const term = currentSearchTerm;
+          const matchTic = String(t.tic_id).includes(term);
+          const matchToi = String(t.toi).toLowerCase().includes(term);
+          const matchName = t.name.toLowerCase().includes(term);
+          if (!matchTic && !matchToi && !matchName) return false;
+        }
+        return true;
+      });
+    }
+
+    // Ordenação
+    function sortBy(col) {
+      if (sortColumn === col) {
+        sortAsc = !sortAsc;
+      } else {
+        sortColumn = col;
+        sortAsc = true;
+      }
+      renderTable();
+    }
+
+    // Renderização da Tabela
+    function renderTable() {
+      const filtered = getFilteredTargets();
+      document.getElementById('tableFilterCount').textContent = `Exibindo ${filtered.length} de ${ALL_TARGETS.length} candidatos`;
+
+      filtered.sort((a, b) => {
+        let vA = a[sortColumn];
+        let vB = b[sortColumn];
+        if (vA === null || vA === undefined) vA = -9999;
+        if (vB === null || vB === undefined) vB = -9999;
+        return sortAsc ? (vA - vB) : (vB - vA);
+      });
+
+      const tbody = document.getElementById('candidatesTableBody');
+      tbody.innerHTML = '';
+
+      filtered.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-space-800/50 transition-colors';
+
+        let dispBadge = '';
+        if (t.disp === 'PC') dispBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">PC</span>';
+        else if (t.disp === 'KP') dispBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">KP</span>';
+        else dispBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">CP</span>';
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 text-cyan-300">${t.tic_id}</td>
+          <td class="py-2.5 px-4 font-semibold text-slate-200">${t.name}</td>
+          <td class="py-2.5 px-4">${dispBadge}</td>
+          <td class="py-2.5 px-4 text-right">${t.period.toFixed(3)}</td>
+          <td class="py-2.5 px-4 text-right text-rose-300 font-bold">${t.depth_ppm.toLocaleString()}</td>
+          <td class="py-2.5 px-4 text-right text-slate-400">${t.duration_hours.toFixed(2)}</td>
+          <td class="py-2.5 px-4 text-right text-slate-400">${t.r_star.toFixed(2)}</td>
+          <td class="py-2.5 px-4 text-right text-emerald-400">${t.offset.toFixed(2)}"</td>
+          <td class="py-2.5 px-4 text-right text-slate-300">${t.ruled_out} / ${t.screened}</td>
+          <td class="py-2.5 px-4 text-right text-purple-300">${t.density !== null ? t.density.toFixed(2) : 'N/A'}</td>
+          <td class="py-2.5 px-4 text-center">
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              PASSED
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Alternância de Abas
+    function switchTab(tabId) {
+      ['scatter', 'hist-period', 'hist-depth', 'multis'].forEach(id => {
+        const panel = document.getElementById(`panel-${id}`);
+        const btn = document.getElementById(`tab-${id}`);
+        if (id === tabId) {
+          panel.classList.remove('hidden');
+          btn.className = "text-sm font-semibold text-cyan-400 border-b-2 border-cyan-400 pb-2 transition-all";
+        } else {
+          panel.classList.add('hidden');
+          btn.className = "text-sm font-semibold text-slate-400 hover:text-slate-200 pb-2 transition-all";
+        }
+      });
+
+      if (tabId === 'scatter') renderScatterChart();
+      if (tabId === 'hist-period') renderPeriodHist();
+      if (tabId === 'hist-depth') renderDepthHist();
+    }
+
+    // Gráfico 1: Scatter Plot (Período vs Profundidade)
+    let scatterPoints = [];
+    function renderScatterChart() {
+      const canvas = document.getElementById('scatterCanvas');
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      const padL = 65, padR = 25, padT = 30, padB = 45;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const filtered = getFilteredTargets();
+      if (filtered.length === 0) return;
+
+      // Escalas Logarítmicas
+      const minP = 0.4, maxP = 60.0;
+      const minD = 150.0, maxD = 40000.0;
+
+      const logMinP = Math.log10(minP), logMaxP = Math.log10(maxP);
+      const logMinD = Math.log10(minD), logMaxD = Math.log10(maxD);
+
+      function scaleX(p) {
+        return padL + ((Math.log10(p) - logMinP) / (logMaxP - logMinP)) * (w - padL - padR);
+      }
+      function scaleY(d) {
+        return h - padB - ((Math.log10(d) - logMinD) / (logMaxD - logMinD)) * (h - padT - padB);
+      }
+
+      // Grid e Eixos
+      ctx.strokeStyle = '#1a2142';
+      ctx.lineWidth = 1;
+      ctx.font = '10px JetBrains Mono';
+      ctx.fillStyle = '#64748b';
+
+      // Linhas verticais (Período em dias: 0.5, 1, 2, 5, 10, 20, 50)
+      [0.5, 1, 2, 5, 10, 20, 50].forEach(p => {
+        const x = scaleX(p);
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, h - padB);
+        ctx.stroke();
+        ctx.fillText(`${p}d`, x - 8, h - padB + 16);
+      });
+
+      // Linhas horizontais (Profundidade: 300, 1000, 3000, 10000, 30000)
+      [300, 1000, 3000, 10000, 30000].forEach(d => {
+        const y = scaleY(d);
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(w - padR, y);
+        ctx.stroke();
+        ctx.fillText(`${d}`, padL - 45, y + 3);
+      });
+
+      // Rótulos dos eixos
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11px Inter';
+      ctx.fillText('Período Orbital (dias, log)', w / 2 - 60, h - 10);
+      ctx.save();
+      ctx.translate(16, h / 2 + 50);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText('Profundidade de Trânsito (ppm, log)', 0, 0);
+      ctx.restore();
+
+      // Plota os pontos
+      scatterPoints = [];
+      filtered.forEach(t => {
+        const x = scaleX(t.period);
+        const y = scaleY(t.depth_ppm);
+
+        let color = '#00f2fe';
+        if (t.disp === 'KP') color = '#f59e0b';
+        if (t.disp === 'CP') color = '#10b981';
+
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#060813';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        scatterPoints.push({ x, y, data: t });
+      });
+    }
+
+    // Tooltip Interativo do Scatter Plot
+    const scatterCanvas = document.getElementById('scatterCanvas');
+    const tooltip = document.getElementById('scatterTooltip');
+
+    scatterCanvas.addEventListener('mousemove', (e) => {
+      const rect = scatterCanvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const hit = scatterPoints.find(p => Math.hypot(p.x - mouseX, p.y - mouseY) < 8);
+
+      if (hit) {
+        const d = hit.data;
+        tooltip.innerHTML = `
+          <div class="font-bold text-cyan-300 text-sm mb-1">${d.name} (TIC ${d.tic_id})</div>
+          <div class="text-slate-300 space-y-0.5 font-mono text-[11px]">
+            <div>Disposição: <span class="font-bold text-white">${d.disp}</span></div>
+            <div>Período: <span class="text-blue-400 font-bold">${d.period.toFixed(3)} dias</span></div>
+            <div>Profundidade: <span class="text-rose-400 font-bold">${d.depth_ppm.toLocaleString()} ppm</span></div>
+            <div>Duração: <span class="text-slate-300">${d.duration_hours}h</span></div>
+            <div>Densidade: <span class="text-purple-300">${d.density ? d.density.toFixed(2) + ' g/cm³' : 'N/A'}</span></div>
+          </div>
+        `;
+        tooltip.style.left = `${hit.x + 15}px`;
+        tooltip.style.top = `${hit.y - 30}px`;
+        tooltip.classList.remove('hidden');
+      } else {
+        tooltip.classList.add('hidden');
+      }
+    });
+
+    scatterCanvas.addEventListener('mouseleave', () => {
+      tooltip.classList.add('hidden');
+    });
+
+    // Gráfico 2: Histograma de Períodos
+    function renderPeriodHist() {
+      const canvas = document.getElementById('periodHistCanvas');
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      const padL = 45, padR = 25, padT = 30, padB = 45;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Bins de período: [0-1], [1-2], [2-3], [3-5], [5-8], [8-12], [12-20], [20+]
+      const bins = [
+        { label: '< 1d', min: 0, max: 1, count: 0, color: '#ec4899' },
+        { label: '1 - 2d', min: 1, max: 2, count: 0, color: '#3b82f6' },
+        { label: '2 - 3d', min: 2, max: 3, count: 0, color: '#06b6d4' },
+        { label: '3 - 5d', min: 3, max: 5, count: 0, color: '#10b981' },
+        { label: '5 - 8d', min: 5, max: 8, count: 0, color: '#8b5cf6' },
+        { label: '8 - 12d', min: 8, max: 12, count: 0, color: '#f59e0b' },
+        { label: '12 - 20d', min: 12, max: 20, count: 0, color: '#6366f1' },
+        { label: '> 20d', min: 20, max: 100, count: 0, color: '#14b8a6' }
+      ];
+
+      ALL_TARGETS.forEach(t => {
+        for (let b of bins) {
+          if (t.period >= b.min && t.period < b.max) {
+            b.count++;
+            break;
+          }
+        }
+      });
+
+      const maxCount = Math.max(...bins.map(b => b.count), 1);
+      const barW = (w - padL - padR) / bins.length - 12;
+
+      bins.forEach((b, i) => {
+        const x = padL + i * ((w - padL - padR) / bins.length) + 6;
+        const barH = (b.count / maxCount) * (h - padT - padB);
+        const y = h - padB - barH;
+
+        // Barra
+        ctx.fillStyle = b.color;
+        ctx.fillRect(x, y, barW, barH);
+
+        // Contagem acima da barra
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px JetBrains Mono';
+        ctx.textAlign = 'center';
+        ctx.fillText(b.count, x + barW / 2, y - 6);
+
+        // Rótulo abaixo da barra
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Inter';
+        ctx.fillText(b.label, x + barW / 2, h - padB + 16);
+      });
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'left';
+      ctx.fillText('Faixa de Período Orbital', w / 2 - 50, h - 10);
+    }
+
+    // Gráfico 3: Histograma de Profundidade
+    function renderDepthHist() {
+      const canvas = document.getElementById('depthHistCanvas');
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      const padL = 45, padR = 25, padT = 30, padB = 45;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const bins = [
+        { label: '< 500', min: 0, max: 500, count: 0, color: '#38bdf8' },
+        { label: '500 - 1k', min: 500, max: 1000, count: 0, color: '#2dd4bf' },
+        { label: '1k - 2k', min: 1000, max: 2000, count: 0, color: '#34d399' },
+        { label: '2k - 4k', min: 2000, max: 4000, count: 0, color: '#a78bfa' },
+        { label: '4k - 8k', min: 4000, max: 8000, count: 0, color: '#f472b6' },
+        { label: '8k - 15k', min: 8000, max: 15000, count: 0, color: '#fb923c' },
+        { label: '> 15k', min: 15000, max: 100000, count: 0, color: '#f43f5e' }
+      ];
+
+      ALL_TARGETS.forEach(t => {
+        for (let b of bins) {
+          if (t.depth_ppm >= b.min && t.depth_ppm < b.max) {
+            b.count++;
+            break;
+          }
+        }
+      });
+
+      const maxCount = Math.max(...bins.map(b => b.count), 1);
+      const barW = (w - padL - padR) / bins.length - 12;
+
+      bins.forEach((b, i) => {
+        const x = padL + i * ((w - padL - padR) / bins.length) + 6;
+        const barH = (b.count / maxCount) * (h - padT - padB);
+        const y = h - padB - barH;
+
+        ctx.fillStyle = b.color;
+        ctx.fillRect(x, y, barW, barH);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px JetBrains Mono';
+        ctx.textAlign = 'center';
+        ctx.fillText(b.count, x + barW / 2, y - 6);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Inter';
+        ctx.fillText(b.label, x + barW / 2, h - padB + 16);
+      });
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'left';
+      ctx.fillText('Profundidade de Trânsito (ppm)', w / 2 - 60, h - 10);
+    }
+
+    // Aba 4: Sistemas Multiplanetários
+    function renderMultiPlanetArchitectures() {
+      const container = document.getElementById('multisContainer');
+      container.innerHTML = '';
+
+      const multis = [
+        {
+          name: "TOI-1136 (TIC 142276270)",
+          desc: "Cadeia ressonante quádrupla de Laplace com ressonância exata 2:1 entre planetas b e c.",
+          planets: [
+            { toi: "TOI-1136.02", p: 6.259, depth: 813, color: "#38bdf8" },
+            { toi: "TOI-1136.01", p: 12.519, depth: 2320, color: "#34d399", note: "Ressonância 2:1 exata" },
+            { toi: "TOI-1136.04", p: 18.796, depth: 471, color: "#a78bfa", note: "Ressonância 3:2" },
+            { toi: "TOI-1136.03", p: 26.321, depth: 800, color: "#f472b6" }
+          ]
+        },
+        {
+          name: "TOI-1130 (TIC 254113311)",
+          desc: "Arquitetura rara com Júpiter quente massivo e sub-Netuno interno raso.",
+          planets: [
+            { toi: "TOI-1130.02", p: 4.069, depth: 2650, color: "#38bdf8", note: "Sub-Netuno interno" },
+            { toi: "TOI-1130.01", p: 8.350, depth: 16680, color: "#fb923c", note: "Júpiter Quente (P2/P1 ≈ 2.05)" }
+          ]
+        },
+        {
+          name: "TOI-1027 (TIC 20318757)",
+          desc: "Três sub-Netunos em trânsito em torno de uma estrela hospedeira anã laranja (0.68 R☉).",
+          planets: [
+            { toi: "TOI-1027.01", p: 3.283, depth: 1558, color: "#38bdf8" },
+            { toi: "TOI-1027.03", p: 5.011, depth: 1210, color: "#2dd4bf" },
+            { toi: "TOI-1027.02", p: 11.029, depth: 1694, color: "#818cf8" }
+          ]
+        },
+        {
+          name: "TOI-1064 (TIC 79748331)",
+          desc: "Dois sub-Netunos próximos de uma ressonância de movimento médio 2:1.",
+          planets: [
+            { toi: "TOI-1064.01", p: 6.444, depth: 1122, color: "#38bdf8" },
+            { toi: "TOI-1064.02", p: 12.227, depth: 1206, color: "#f59e0b", note: "P2/P1 ≈ 1.90" }
+          ]
+        },
+        {
+          name: "TOI-1097 (TIC 360630575)",
+          desc: "Dois candidatos de trânsito raso em órbitas intermediárias.",
+          planets: [
+            { toi: "TOI-1097.01", p: 9.189, depth: 460, color: "#38bdf8" },
+            { toi: "TOI-1097.02", p: 13.903, depth: 647, color: "#c084fc" }
+          ]
+        }
+      ];
+
+      multis.forEach(sys => {
+        const card = document.createElement('div');
+        card.className = "bg-space-900/60 rounded-xl p-4 border border-slate-800";
+
+        let planetsHtml = sys.planets.map(p => `
+          <div class="flex items-center gap-3 bg-space-800/40 px-3 py-2 rounded-lg border border-slate-700/40">
+            <span class="w-3 h-3 rounded-full" style="background-color: ${p.color}"></span>
+            <div class="font-mono text-xs">
+              <span class="text-white font-bold">${p.toi}</span>
+              <span class="text-slate-400 ml-2">P = ${p.p.toFixed(3)}d</span>
+              <span class="text-rose-300 ml-2">δ = ${p.depth} ppm</span>
+              ${p.note ? `<span class="ml-2 px-1.5 py-0.5 rounded text-[10px] bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">${p.note}</span>` : ''}
+            </div>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
+            <h4 class="font-bold text-sm text-cyan-300">${sys.name}</h4>
+            <span class="text-xs text-slate-400">${sys.desc}</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+            ${planetsHtml}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Exportação
+    function exportFilteredCSV() {
+      const filtered = getFilteredTargets();
+      const headers = ["tic_id","name","toi","disp","period","depth_ppm","duration_hours","r_star","offset","screened","ruled_out","density","status"];
+      let csvStr = headers.join(",") + "\n";
+      filtered.forEach(t => {
+        csvStr += [t.tic_id, t.name, t.toi, t.disp, t.period, t.depth_ppm, t.duration_hours, t.r_star, t.offset, t.screened, t.ruled_out, t.density, t.status].join(",") + "\n";
+      });
+      const blob = new Blob([csvStr], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "astro_exo_batch_100_filtered.csv";
+      a.click();
+    }
+
+    function exportFilteredJSON() {
+      const filtered = getFilteredTargets();
+      const blob = new Blob([JSON.stringify(filtered, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "astro_exo_batch_100_filtered.json";
+      a.click();
+    }
+  </script>
+</body>
+</html>

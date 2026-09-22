@@ -1,0 +1,3623 @@
+{
+  "batch_id": "nasa_toi_batch_400",
+  "created_at_utc": "2026-09-22T19:40:31.028324+00:00",
+  "source": {
+    "service": "NASA Exoplanet Archive TAP API",
+    "endpoint": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+    "table": "toi",
+    "adql_query": "select top 1600 tid, toi, toidisplay, tfopwg_disp, pl_orbper, pl_tranmid, pl_trandurh, pl_trandep, pl_rade, st_rad from toi order by toi asc",
+    "quota_guard_status": "ENABLED (Local Cache 24h TTL)"
+  },
+  "dataset": {
+    "filename": "inputs.csv",
+    "sha256": "10781cfc49f6cc80fcf8610c20fb20ed67e14844f3259aaf7cd8a5268e0f9e4a",
+    "total_targets": 400,
+    "disposition_breakdown": {
+      "PC": 152,
+      "KP": 74,
+      "CP": 174
+    }
+  },
+  "targets": [
+    {
+      "tic_id": 88863718,
+      "toi": "1001.01",
+      "name": "TOI-1001.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.931646,
+      "depth_ppm": 1286.0,
+      "r_star_rsun": 2.01
+    },
+    {
+      "tic_id": 65212867,
+      "toi": "1007.01",
+      "name": "TOI-1007.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.998921,
+      "depth_ppm": 2840.0,
+      "r_star_rsun": 2.7
+    },
+    {
+      "tic_id": 107782586,
+      "toi": "1009.01",
+      "name": "TOI-1009.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.960028,
+      "depth_ppm": 1707.6,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 231663901,
+      "toi": "101.01",
+      "name": "TOI-101.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.43037,
+      "depth_ppm": 18960.7,
+      "r_star_rsun": 0.89
+    },
+    {
+      "tic_id": 114018671,
+      "toi": "1011.01",
+      "name": "TOI-1011.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.470504,
+      "depth_ppm": 273.0,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 341420329,
+      "toi": "1019.01",
+      "name": "TOI-1019.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.234101,
+      "depth_ppm": 20796.9,
+      "r_star_rsun": 1.56
+    },
+    {
+      "tic_id": 149603524,
+      "toi": "102.01",
+      "name": "TOI-102.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.411937,
+      "depth_ppm": 14711.9,
+      "r_star_rsun": 1.21
+    },
+    {
+      "tic_id": 20318757,
+      "toi": "1027.01",
+      "name": "TOI-1027.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.283456,
+      "depth_ppm": 1558.0,
+      "r_star_rsun": 0.68
+    },
+    {
+      "tic_id": 20318757,
+      "toi": "1027.02",
+      "name": "TOI-1027.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 11.02875,
+      "depth_ppm": 1694.0,
+      "r_star_rsun": 0.68
+    },
+    {
+      "tic_id": 20318757,
+      "toi": "1027.03",
+      "name": "TOI-1027.03",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.011329,
+      "depth_ppm": 1210.0,
+      "r_star_rsun": 0.68
+    },
+    {
+      "tic_id": 336732616,
+      "toi": "103.01",
+      "name": "TOI-103.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.547854,
+      "depth_ppm": 10424.4,
+      "r_star_rsun": 1.4
+    },
+    {
+      "tic_id": 146589986,
+      "toi": "1032.01",
+      "name": "TOI-1032.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.66437,
+      "depth_ppm": 3491.8,
+      "r_star_rsun": 2.34
+    },
+    {
+      "tic_id": 361413119,
+      "toi": "1035.01",
+      "name": "TOI-1035.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.074448,
+      "depth_ppm": 5982.5,
+      "r_star_rsun": 2.43
+    },
+    {
+      "tic_id": 146172354,
+      "toi": "1036.01",
+      "name": "TOI-1036.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.779521,
+      "depth_ppm": 2761.0,
+      "r_star_rsun": 1.18
+    },
+    {
+      "tic_id": 231670397,
+      "toi": "104.01",
+      "name": "TOI-104.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.087296,
+      "depth_ppm": 3572.2,
+      "r_star_rsun": 2.22
+    },
+    {
+      "tic_id": 463402815,
+      "toi": "1044.01",
+      "name": "TOI-1044.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.008509,
+      "depth_ppm": 3051.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 16288184,
+      "toi": "1049.01",
+      "name": "TOI-1049.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.180533,
+      "depth_ppm": 16399.9,
+      "r_star_rsun": 1.27
+    },
+    {
+      "tic_id": 144065872,
+      "toi": "105.01",
+      "name": "TOI-105.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.184667,
+      "depth_ppm": 11535.5,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 66818296,
+      "toi": "1050.01",
+      "name": "TOI-1050.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.735484,
+      "depth_ppm": 17030.0,
+      "r_star_rsun": 1.57
+    },
+    {
+      "tic_id": 317060587,
+      "toi": "1052.01",
+      "name": "TOI-1052.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 9.139804,
+      "depth_ppm": 358.4,
+      "r_star_rsun": 1.58
+    },
+    {
+      "tic_id": 366989877,
+      "toi": "1054.01",
+      "name": "TOI-1054.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 15.507786,
+      "depth_ppm": 513.0,
+      "r_star_rsun": 1.17
+    },
+    {
+      "tic_id": 320004517,
+      "toi": "1055.01",
+      "name": "TOI-1055.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 17.471308,
+      "depth_ppm": 1199.8,
+      "r_star_rsun": 0.97
+    },
+    {
+      "tic_id": 421894914,
+      "toi": "1056.01",
+      "name": "TOI-1056.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.307951,
+      "depth_ppm": 391.4,
+      "r_star_rsun": 1.37
+    },
+    {
+      "tic_id": 323132914,
+      "toi": "1057.01",
+      "name": "TOI-1057.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 51.17015,
+      "depth_ppm": 851.5,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 380783252,
+      "toi": "1059.01",
+      "name": "TOI-1059.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 9.449654,
+      "depth_ppm": 25387.7,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 38846515,
+      "toi": "106.01",
+      "name": "TOI-106.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.849383,
+      "depth_ppm": 7740.5,
+      "r_star_rsun": 1.77
+    },
+    {
+      "tic_id": 299799658,
+      "toi": "1062.01",
+      "name": "TOI-1062.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.115053,
+      "depth_ppm": 539.0,
+      "r_star_rsun": 0.89
+    },
+    {
+      "tic_id": 406976746,
+      "toi": "1063.01",
+      "name": "TOI-1063.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.066552,
+      "depth_ppm": 862.7,
+      "r_star_rsun": 0.79
+    },
+    {
+      "tic_id": 79748331,
+      "toi": "1064.01",
+      "name": "TOI-1064.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.443866,
+      "depth_ppm": 1122.0,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 79748331,
+      "toi": "1064.02",
+      "name": "TOI-1064.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 12.22656,
+      "depth_ppm": 1206.4,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 7088246,
+      "toi": "1065.01",
+      "name": "TOI-1065.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.160515,
+      "depth_ppm": 13774.9,
+      "r_star_rsun": 1.2
+    },
+    {
+      "tic_id": 201604954,
+      "toi": "1066.01",
+      "name": "TOI-1066.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.606184,
+      "depth_ppm": 13793.0,
+      "r_star_rsun": 1.07
+    },
+    {
+      "tic_id": 201642601,
+      "toi": "1067.01",
+      "name": "TOI-1067.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.131674,
+      "depth_ppm": 14915.7,
+      "r_star_rsun": 0.77
+    },
+    {
+      "tic_id": 6663331,
+      "toi": "1068.01",
+      "name": "TOI-1068.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.180362,
+      "depth_ppm": 21192.5,
+      "r_star_rsun": 0.92
+    },
+    {
+      "tic_id": 31858843,
+      "toi": "1069.01",
+      "name": "TOI-1069.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.977645,
+      "depth_ppm": 13022.0,
+      "r_star_rsun": 1.22
+    },
+    {
+      "tic_id": 92352620,
+      "toi": "107.01",
+      "name": "TOI-107.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.950201,
+      "depth_ppm": 13914.0,
+      "r_star_rsun": 1.71
+    },
+    {
+      "tic_id": 120247528,
+      "toi": "1071.01",
+      "name": "TOI-1071.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.554403,
+      "depth_ppm": 10164.9,
+      "r_star_rsun": 1.11
+    },
+    {
+      "tic_id": 158297421,
+      "toi": "1073.01",
+      "name": "TOI-1073.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.922802,
+      "depth_ppm": 31510.9,
+      "r_star_rsun": 0.7
+    },
+    {
+      "tic_id": 327301957,
+      "toi": "1074.01",
+      "name": "TOI-1074.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 13.94287,
+      "depth_ppm": 1015.4,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 351601843,
+      "toi": "1075.01",
+      "name": "TOI-1075.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.604739,
+      "depth_ppm": 1027.7,
+      "r_star_rsun": 0.58
+    },
+    {
+      "tic_id": 360742636,
+      "toi": "1076.01",
+      "name": "TOI-1076.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.549561,
+      "depth_ppm": 14921.4,
+      "r_star_rsun": 1.04
+    },
+    {
+      "tic_id": 369960846,
+      "toi": "1077.01",
+      "name": "TOI-1077.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.606269,
+      "depth_ppm": 16725.3,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 370133522,
+      "toi": "1078.01",
+      "name": "TOI-1078.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.518243,
+      "depth_ppm": 831.9,
+      "r_star_rsun": 0.39
+    },
+    {
+      "tic_id": 379240073,
+      "toi": "1079.01",
+      "name": "TOI-1079.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.164407,
+      "depth_ppm": 5603.5,
+      "r_star_rsun": 1.72
+    },
+    {
+      "tic_id": 289793076,
+      "toi": "108.01",
+      "name": "TOI-108.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.044049,
+      "depth_ppm": 22807.0,
+      "r_star_rsun": 0.81
+    },
+    {
+      "tic_id": 161032923,
+      "toi": "1080.01",
+      "name": "TOI-1080.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.965248,
+      "depth_ppm": 3680.8,
+      "r_star_rsun": 0.2
+    },
+    {
+      "tic_id": 253728991,
+      "toi": "1081.01",
+      "name": "TOI-1081.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.984087,
+      "depth_ppm": 6014.1,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 261108236,
+      "toi": "1082.01",
+      "name": "TOI-1082.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 16.346905,
+      "depth_ppm": 2212.4,
+      "r_star_rsun": 0.65
+    },
+    {
+      "tic_id": 322270620,
+      "toi": "1083.01",
+      "name": "TOI-1083.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 12.980295,
+      "depth_ppm": 2407.3,
+      "r_star_rsun": 0.49
+    },
+    {
+      "tic_id": 380589029,
+      "toi": "1084.01",
+      "name": "TOI-1084.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.348496,
+      "depth_ppm": 18463.8,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 468148930,
+      "toi": "1086.01",
+      "name": "TOI-1086.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.717883,
+      "depth_ppm": 4864.8,
+      "r_star_rsun": 2.08
+    },
+    {
+      "tic_id": 29344935,
+      "toi": "109.01",
+      "name": "TOI-109.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.76676,
+      "depth_ppm": 14947.4,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 193413306,
+      "toi": "1091.01",
+      "name": "TOI-1091.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.725841,
+      "depth_ppm": 2710.0,
+      "r_star_rsun": 2.39
+    },
+    {
+      "tic_id": 375223080,
+      "toi": "1095.01",
+      "name": "TOI-1095.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.482138,
+      "depth_ppm": 2102.7,
+      "r_star_rsun": 2.66
+    },
+    {
+      "tic_id": 360630575,
+      "toi": "1097.01",
+      "name": "TOI-1097.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 9.188506,
+      "depth_ppm": 460.0,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 360630575,
+      "toi": "1097.02",
+      "name": "TOI-1097.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 13.902839,
+      "depth_ppm": 647.3,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 383390264,
+      "toi": "1098.01",
+      "name": "TOI-1098.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 10.182698,
+      "depth_ppm": 667.5,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 290348383,
+      "toi": "1099.01",
+      "name": "TOI-1099.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.441006,
+      "depth_ppm": 914.0,
+      "r_star_rsun": 0.8
+    },
+    {
+      "tic_id": 281459670,
+      "toi": "110.01",
+      "name": "TOI-110.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.17435,
+      "depth_ppm": 15457.3,
+      "r_star_rsun": 1.16
+    },
+    {
+      "tic_id": 351603103,
+      "toi": "1103.01",
+      "name": "TOI-1103.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.94308,
+      "depth_ppm": 4490.0,
+      "r_star_rsun": 3.13
+    },
+    {
+      "tic_id": 274151135,
+      "toi": "1105.01",
+      "name": "TOI-1105.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.86798,
+      "depth_ppm": 1646.8,
+      "r_star_rsun": 0.76
+    },
+    {
+      "tic_id": 384513078,
+      "toi": "1106.01",
+      "name": "TOI-1106.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 11.1149,
+      "depth_ppm": 900.0,
+      "r_star_rsun": 4.94
+    },
+    {
+      "tic_id": 394561119,
+      "toi": "1107.01",
+      "name": "TOI-1107.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.078239,
+      "depth_ppm": 6667.7,
+      "r_star_rsun": 1.75
+    },
+    {
+      "tic_id": 355703913,
+      "toi": "111.01",
+      "name": "TOI-111.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.106157,
+      "depth_ppm": 12142.2,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 304100538,
+      "toi": "1116.01",
+      "name": "TOI-1116.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.010071,
+      "depth_ppm": 409.5,
+      "r_star_rsun": 0.91
+    },
+    {
+      "tic_id": 295541511,
+      "toi": "1117.01",
+      "name": "TOI-1117.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.228162,
+      "depth_ppm": 630.0,
+      "r_star_rsun": 1.02
+    },
+    {
+      "tic_id": 388104525,
+      "toi": "112.01",
+      "name": "TOI-112.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.4998,
+      "depth_ppm": 14621.2,
+      "r_star_rsun": 1.14
+    },
+    {
+      "tic_id": 80166433,
+      "toi": "1125.01",
+      "name": "TOI-1125.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.772482,
+      "depth_ppm": 211.3,
+      "r_star_rsun": 2.5
+    },
+    {
+      "tic_id": 97409519,
+      "toi": "113.01",
+      "name": "TOI-113.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.372877,
+      "depth_ppm": 17163.6,
+      "r_star_rsun": 1.02
+    },
+    {
+      "tic_id": 254113311,
+      "toi": "1130.01",
+      "name": "TOI-1130.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.34998,
+      "depth_ppm": 16680.0,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 254113311,
+      "toi": "1130.02",
+      "name": "TOI-1130.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.06864,
+      "depth_ppm": 2650.1,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 198213332,
+      "toi": "1131.01",
+      "name": "TOI-1131.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.586037,
+      "depth_ppm": 410.5,
+      "r_star_rsun": 2.4
+    },
+    {
+      "tic_id": 154872375,
+      "toi": "1135.01",
+      "name": "TOI-1135.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.027733,
+      "depth_ppm": 5705.0,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 142276270,
+      "toi": "1136.01",
+      "name": "TOI-1136.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 12.518728,
+      "depth_ppm": 2320.0,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 142276270,
+      "toi": "1136.02",
+      "name": "TOI-1136.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.258606,
+      "depth_ppm": 813.0,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 142276270,
+      "toi": "1136.03",
+      "name": "TOI-1136.03",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 26.320876,
+      "depth_ppm": 800.0,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 142276270,
+      "toi": "1136.04",
+      "name": "TOI-1136.04",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 18.795547,
+      "depth_ppm": 470.7,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 89389197,
+      "toi": "1137.01",
+      "name": "TOI-1137.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.320636,
+      "depth_ppm": 1052.4,
+      "r_star_rsun": 6.31
+    },
+    {
+      "tic_id": 202563254,
+      "toi": "1139.01",
+      "name": "TOI-1139.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.47808,
+      "depth_ppm": 1054.0,
+      "r_star_rsun": 1.83
+    },
+    {
+      "tic_id": 25155310,
+      "toi": "114.01",
+      "name": "TOI-114.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.28879,
+      "depth_ppm": 7005.7,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 28230919,
+      "toi": "1144.01",
+      "name": "TOI-1144.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.887804,
+      "depth_ppm": 4279.0,
+      "r_star_rsun": 0.76
+    },
+    {
+      "tic_id": 349827430,
+      "toi": "1148.01",
+      "name": "TOI-1148.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 5.551489,
+      "depth_ppm": 9493.0,
+      "r_star_rsun": 1.55
+    },
+    {
+      "tic_id": 281541555,
+      "toi": "115.01",
+      "name": "TOI-115.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.742371,
+      "depth_ppm": 12650.8,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 16740101,
+      "toi": "1150.01",
+      "name": "TOI-1150.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.48109,
+      "depth_ppm": 6788.5,
+      "r_star_rsun": 2.29
+    },
+    {
+      "tic_id": 69679391,
+      "toi": "1151.01",
+      "name": "TOI-1151.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.474101,
+      "depth_ppm": 15748.0,
+      "r_star_rsun": 1.62
+    },
+    {
+      "tic_id": 459970307,
+      "toi": "1154.01",
+      "name": "TOI-1154.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 21.745537,
+      "depth_ppm": 659.0,
+      "r_star_rsun": 0.93
+    },
+    {
+      "tic_id": 238176110,
+      "toi": "116.01",
+      "name": "TOI-116.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.79858,
+      "depth_ppm": 16708.7,
+      "r_star_rsun": 0.91
+    },
+    {
+      "tic_id": 158324245,
+      "toi": "1161.01",
+      "name": "TOI-1161.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.763588,
+      "depth_ppm": 6650.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 13419950,
+      "toi": "1162.01",
+      "name": "TOI-1162.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 7.316668,
+      "depth_ppm": 3210.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 375542276,
+      "toi": "1163.01",
+      "name": "TOI-1163.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.077161,
+      "depth_ppm": 4703.3,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 458478250,
+      "toi": "1165.01",
+      "name": "TOI-1165.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.255285,
+      "depth_ppm": 20820.0,
+      "r_star_rsun": 0.96
+    },
+    {
+      "tic_id": 302518439,
+      "toi": "1169.01",
+      "name": "TOI-1169.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.707543,
+      "depth_ppm": 11920.0,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 322307342,
+      "toi": "117.01",
+      "name": "TOI-117.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.586296,
+      "depth_ppm": 5729.3,
+      "r_star_rsun": 2.0
+    },
+    {
+      "tic_id": 232967440,
+      "toi": "1173.01",
+      "name": "TOI-1173.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 7.064398,
+      "depth_ppm": 8268.0,
+      "r_star_rsun": 0.96
+    },
+    {
+      "tic_id": 154089169,
+      "toi": "1174.01",
+      "name": "TOI-1174.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.953477,
+      "depth_ppm": 1136.0,
+      "r_star_rsun": 0.76
+    },
+    {
+      "tic_id": 230088370,
+      "toi": "1176.01",
+      "name": "TOI-1176.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 14.007767,
+      "depth_ppm": 5924.8,
+      "r_star_rsun": 1.57
+    },
+    {
+      "tic_id": 266980320,
+      "toi": "118.01",
+      "name": "TOI-118.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.034463,
+      "depth_ppm": 1750.6,
+      "r_star_rsun": 1.05
+    },
+    {
+      "tic_id": 158002130,
+      "toi": "1180.01",
+      "name": "TOI-1180.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 9.686752,
+      "depth_ppm": 1669.0,
+      "r_star_rsun": 0.73
+    },
+    {
+      "tic_id": 229510866,
+      "toi": "1181.01",
+      "name": "TOI-1181.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.103165,
+      "depth_ppm": 7142.0,
+      "r_star_rsun": 1.93
+    },
+    {
+      "tic_id": 233087860,
+      "toi": "1184.01",
+      "name": "TOI-1184.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.748444,
+      "depth_ppm": 1041.0,
+      "r_star_rsun": 0.69
+    },
+    {
+      "tic_id": 372757221,
+      "toi": "1187.01",
+      "name": "TOI-1187.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.594197,
+      "depth_ppm": 907.0,
+      "r_star_rsun": 1.4
+    },
+    {
+      "tic_id": 112026224,
+      "toi": "1189.01",
+      "name": "TOI-1189.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.968799,
+      "depth_ppm": 1760.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 278683844,
+      "toi": "119.01",
+      "name": "TOI-119.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.541111,
+      "depth_ppm": 597.3,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 278683844,
+      "toi": "119.02",
+      "name": "TOI-119.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.69173,
+      "depth_ppm": 498.5,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 147950620,
+      "toi": "1194.01",
+      "name": "TOI-1194.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.310643,
+      "depth_ppm": 6911.0,
+      "r_star_rsun": 0.99
+    },
+    {
+      "tic_id": 69068526,
+      "toi": "1196.01",
+      "name": "TOI-1196.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.537662,
+      "depth_ppm": 5390.0,
+      "r_star_rsun": 2.06
+    },
+    {
+      "tic_id": 92677094,
+      "toi": "1197.01",
+      "name": "TOI-1197.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.596038,
+      "depth_ppm": 5000.0,
+      "r_star_rsun": 2.12
+    },
+    {
+      "tic_id": 203189770,
+      "toi": "1198.01",
+      "name": "TOI-1198.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.612771,
+      "depth_ppm": 11794.0,
+      "r_star_rsun": 1.71
+    },
+    {
+      "tic_id": 99869022,
+      "toi": "1199.01",
+      "name": "TOI-1199.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.671472,
+      "depth_ppm": 4340.0,
+      "r_star_rsun": 1.54
+    },
+    {
+      "tic_id": 394137592,
+      "toi": "120.01",
+      "name": "TOI-120.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 11.535076,
+      "depth_ppm": 2389.9,
+      "r_star_rsun": 2.49
+    },
+    {
+      "tic_id": 29960110,
+      "toi": "1201.01",
+      "name": "TOI-1201.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.491977,
+      "depth_ppm": 2094.0,
+      "r_star_rsun": 0.48
+    },
+    {
+      "tic_id": 23434737,
+      "toi": "1203.01",
+      "name": "TOI-1203.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 25.519531,
+      "depth_ppm": 558.4,
+      "r_star_rsun": 1.17
+    },
+    {
+      "tic_id": 467666275,
+      "toi": "1204.01",
+      "name": "TOI-1204.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.381212,
+      "depth_ppm": 117.8,
+      "r_star_rsun": 1.78
+    },
+    {
+      "tic_id": 287776397,
+      "toi": "1205.01",
+      "name": "TOI-1205.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.39227,
+      "depth_ppm": 63.6,
+      "r_star_rsun": 4.2
+    },
+    {
+      "tic_id": 364393429,
+      "toi": "1207.01",
+      "name": "TOI-1207.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.628255,
+      "depth_ppm": 75.3,
+      "r_star_rsun": 1.11
+    },
+    {
+      "tic_id": 273985865,
+      "toi": "1208.01",
+      "name": "TOI-1208.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.423944,
+      "depth_ppm": 443.6,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 273985865,
+      "toi": "1208.02",
+      "name": "TOI-1208.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.983042,
+      "depth_ppm": 725.2,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 273985865,
+      "toi": "1208.03",
+      "name": "TOI-1208.03",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 17.726449,
+      "depth_ppm": 747.8,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 30037565,
+      "toi": "1209.01",
+      "name": "TOI-1209.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 40.719939,
+      "depth_ppm": 355.6,
+      "r_star_rsun": 1.56
+    },
+    {
+      "tic_id": 50312495,
+      "toi": "1211.01",
+      "name": "TOI-1211.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 18.166364,
+      "depth_ppm": 624.0,
+      "r_star_rsun": 1.14
+    },
+    {
+      "tic_id": 389924075,
+      "toi": "1212.01",
+      "name": "TOI-1212.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 105.585089,
+      "depth_ppm": 462.9,
+      "r_star_rsun": 1.11
+    },
+    {
+      "tic_id": 451606970,
+      "toi": "1214.01",
+      "name": "TOI-1214.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 19.180657,
+      "depth_ppm": 615.9,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 453260209,
+      "toi": "1215.01",
+      "name": "TOI-1215.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.212445,
+      "depth_ppm": 284.0,
+      "r_star_rsun": 0.52
+    },
+    {
+      "tic_id": 141527965,
+      "toi": "1216.01",
+      "name": "TOI-1216.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.554183,
+      "depth_ppm": 187.8,
+      "r_star_rsun": 0.64
+    },
+    {
+      "tic_id": 248092710,
+      "toi": "1217.01",
+      "name": "TOI-1217.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 41.485613,
+      "depth_ppm": 959.8,
+      "r_star_rsun": 3.49
+    },
+    {
+      "tic_id": 294781547,
+      "toi": "1218.01",
+      "name": "TOI-1218.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 13.773945,
+      "depth_ppm": 374.0,
+      "r_star_rsun": 1.02
+    },
+    {
+      "tic_id": 294981566,
+      "toi": "1219.01",
+      "name": "TOI-1219.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.914269,
+      "depth_ppm": 236.6,
+      "r_star_rsun": 1.59
+    },
+    {
+      "tic_id": 231702397,
+      "toi": "122.01",
+      "name": "TOI-122.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.078032,
+      "depth_ppm": 5923.1,
+      "r_star_rsun": 0.33
+    },
+    {
+      "tic_id": 349095149,
+      "toi": "1221.01",
+      "name": "TOI-1221.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 91.682783,
+      "depth_ppm": 713.2,
+      "r_star_rsun": 1.02
+    },
+    {
+      "tic_id": 374997123,
+      "toi": "1222.01",
+      "name": "TOI-1222.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.194499,
+      "depth_ppm": 317.3,
+      "r_star_rsun": 1.33
+    },
+    {
+      "tic_id": 299798795,
+      "toi": "1224.01",
+      "name": "TOI-1224.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.178266,
+      "depth_ppm": 2537.7,
+      "r_star_rsun": 0.4
+    },
+    {
+      "tic_id": 299798795,
+      "toi": "1224.02",
+      "name": "TOI-1224.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 17.945365,
+      "depth_ppm": 5480.7,
+      "r_star_rsun": 0.4
+    },
+    {
+      "tic_id": 150428703,
+      "toi": "1225.01",
+      "name": "TOI-1225.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 13.896396,
+      "depth_ppm": 748.5,
+      "r_star_rsun": 0.89
+    },
+    {
+      "tic_id": 150428703,
+      "toi": "1225.02",
+      "name": "TOI-1225.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 8.12131,
+      "depth_ppm": 594.6,
+      "r_star_rsun": 0.89
+    },
+    {
+      "tic_id": 177115354,
+      "toi": "1226.01",
+      "name": "TOI-1226.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.928785,
+      "depth_ppm": 486.0,
+      "r_star_rsun": 0.99
+    },
+    {
+      "tic_id": 360156606,
+      "toi": "1227.01",
+      "name": "TOI-1227.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 27.361378,
+      "depth_ppm": 20690.7,
+      "r_star_rsun": 0.44
+    },
+    {
+      "tic_id": 300038935,
+      "toi": "1228.01",
+      "name": "TOI-1228.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 29.04968,
+      "depth_ppm": 297.1,
+      "r_star_rsun": 1.8
+    },
+    {
+      "tic_id": 290131778,
+      "toi": "123.01",
+      "name": "TOI-123.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.308892,
+      "depth_ppm": 4736.0,
+      "r_star_rsun": 2.62
+    },
+    {
+      "tic_id": 287156968,
+      "toi": "1230.01",
+      "name": "TOI-1230.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 25.057347,
+      "depth_ppm": 567.4,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 447061717,
+      "toi": "1231.01",
+      "name": "TOI-1231.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 24.245497,
+      "depth_ppm": 6260.7,
+      "r_star_rsun": 0.47
+    },
+    {
+      "tic_id": 364395234,
+      "toi": "1232.01",
+      "name": "TOI-1232.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 14.254562,
+      "depth_ppm": 7899.7,
+      "r_star_rsun": 1.1
+    },
+    {
+      "tic_id": 260647166,
+      "toi": "1233.01",
+      "name": "TOI-1233.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 14.175895,
+      "depth_ppm": 907.1,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 260647166,
+      "toi": "1233.02",
+      "name": "TOI-1233.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 19.590158,
+      "depth_ppm": 1182.7,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 260647166,
+      "toi": "1233.03",
+      "name": "TOI-1233.03",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.203622,
+      "depth_ppm": 548.9,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 260647166,
+      "toi": "1233.04",
+      "name": "TOI-1233.04",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.79589,
+      "depth_ppm": 317.5,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 103633434,
+      "toi": "1235.01",
+      "name": "TOI-1235.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.444701,
+      "depth_ppm": 796.0,
+      "r_star_rsun": 0.63
+    },
+    {
+      "tic_id": 120757718,
+      "toi": "1236.01",
+      "name": "TOI-1236.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.030072,
+      "depth_ppm": 21794.6,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 120960812,
+      "toi": "1237.01",
+      "name": "TOI-1237.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 12.72038,
+      "depth_ppm": 1070.0,
+      "r_star_rsun": 1.48
+    },
+    {
+      "tic_id": 120960812,
+      "toi": "1237.02",
+      "name": "TOI-1237.02",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 6.238755,
+      "depth_ppm": 373.6,
+      "r_star_rsun": 1.48
+    },
+    {
+      "tic_id": 153951307,
+      "toi": "1238.01",
+      "name": "TOI-1238.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.294769,
+      "depth_ppm": 1324.0,
+      "r_star_rsun": 0.62
+    },
+    {
+      "tic_id": 153951307,
+      "toi": "1238.02",
+      "name": "TOI-1238.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.764581,
+      "depth_ppm": 395.0,
+      "r_star_rsun": 0.62
+    },
+    {
+      "tic_id": 154716798,
+      "toi": "1239.01",
+      "name": "TOI-1239.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 12.639698,
+      "depth_ppm": 3292.7,
+      "r_star_rsun": 0.79
+    },
+    {
+      "tic_id": 158170594,
+      "toi": "1240.01",
+      "name": "TOI-1240.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.720856,
+      "depth_ppm": 10014.3,
+      "r_star_rsun": 1.33
+    },
+    {
+      "tic_id": 159107668,
+      "toi": "1241.01",
+      "name": "TOI-1241.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.78026,
+      "depth_ppm": 1015.5,
+      "r_star_rsun": 2.34
+    },
+    {
+      "tic_id": 198212955,
+      "toi": "1242.01",
+      "name": "TOI-1242.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.381485,
+      "depth_ppm": 570.0,
+      "r_star_rsun": 0.71
+    },
+    {
+      "tic_id": 219698776,
+      "toi": "1243.01",
+      "name": "TOI-1243.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.659517,
+      "depth_ppm": 1725.2,
+      "r_star_rsun": 0.49
+    },
+    {
+      "tic_id": 219850915,
+      "toi": "1244.01",
+      "name": "TOI-1244.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.400281,
+      "depth_ppm": 1026.6,
+      "r_star_rsun": 0.72
+    },
+    {
+      "tic_id": 229781583,
+      "toi": "1245.01",
+      "name": "TOI-1245.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.820451,
+      "depth_ppm": 1930.0,
+      "r_star_rsun": 0.52
+    },
+    {
+      "tic_id": 230127302,
+      "toi": "1246.01",
+      "name": "TOI-1246.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 18.654883,
+      "depth_ppm": 1495.4,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 230127302,
+      "toi": "1246.02",
+      "name": "TOI-1246.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.307451,
+      "depth_ppm": 1094.8,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 230127302,
+      "toi": "1246.03",
+      "name": "TOI-1246.03",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.904128,
+      "depth_ppm": 773.9,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 230127302,
+      "toi": "1246.04",
+      "name": "TOI-1246.04",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 37.925198,
+      "depth_ppm": 1370.8,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 232540264,
+      "toi": "1247.01",
+      "name": "TOI-1247.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 15.923488,
+      "depth_ppm": 493.0,
+      "r_star_rsun": 1.08
+    },
+    {
+      "tic_id": 232612416,
+      "toi": "1248.01",
+      "name": "TOI-1248.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.360154,
+      "depth_ppm": 5592.3,
+      "r_star_rsun": 0.87
+    },
+    {
+      "tic_id": 232976128,
+      "toi": "1249.01",
+      "name": "TOI-1249.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 13.079158,
+      "depth_ppm": 1143.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 52368076,
+      "toi": "125.01",
+      "name": "TOI-125.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.651719,
+      "depth_ppm": 978.0,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 52368076,
+      "toi": "125.02",
+      "name": "TOI-125.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 9.154942,
+      "depth_ppm": 1101.0,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 52368076,
+      "toi": "125.03",
+      "name": "TOI-125.03",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 19.981571,
+      "depth_ppm": 909.0,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 233211762,
+      "toi": "1252.01",
+      "name": "TOI-1252.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.121971,
+      "depth_ppm": 3997.6,
+      "r_star_rsun": 0.62
+    },
+    {
+      "tic_id": 237222864,
+      "toi": "1255.01",
+      "name": "TOI-1255.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 10.288886,
+      "depth_ppm": 854.0,
+      "r_star_rsun": 0.87
+    },
+    {
+      "tic_id": 278348461,
+      "toi": "1257.01",
+      "name": "TOI-1257.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 5.452648,
+      "depth_ppm": 7750.0,
+      "r_star_rsun": 1.57
+    },
+    {
+      "tic_id": 288132261,
+      "toi": "1258.01",
+      "name": "TOI-1258.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.26134,
+      "depth_ppm": 726.0,
+      "r_star_rsun": 1.49
+    },
+    {
+      "tic_id": 288735205,
+      "toi": "1259.01",
+      "name": "TOI-1259.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.477978,
+      "depth_ppm": 27021.7,
+      "r_star_rsun": 0.77
+    },
+    {
+      "tic_id": 70440470,
+      "toi": "126.01",
+      "name": "TOI-126.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.035402,
+      "depth_ppm": 16196.2,
+      "r_star_rsun": 1.07
+    },
+    {
+      "tic_id": 355867695,
+      "toi": "1260.01",
+      "name": "TOI-1260.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.127463,
+      "depth_ppm": 1331.8,
+      "r_star_rsun": 0.69
+    },
+    {
+      "tic_id": 355867695,
+      "toi": "1260.02",
+      "name": "TOI-1260.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 7.493161,
+      "depth_ppm": 1650.6,
+      "r_star_rsun": 0.69
+    },
+    {
+      "tic_id": 355867695,
+      "toi": "1260.03",
+      "name": "TOI-1260.03",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 49.825166,
+      "depth_ppm": 2059.4,
+      "r_star_rsun": 0.69
+    },
+    {
+      "tic_id": 356311210,
+      "toi": "1261.01",
+      "name": "TOI-1261.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 18.057402,
+      "depth_ppm": 1198.1,
+      "r_star_rsun": 1.01
+    },
+    {
+      "tic_id": 365938305,
+      "toi": "1262.01",
+      "name": "TOI-1262.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 20.877441,
+      "depth_ppm": 771.0,
+      "r_star_rsun": 0.9
+    },
+    {
+      "tic_id": 406672232,
+      "toi": "1263.01",
+      "name": "TOI-1263.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.021456,
+      "depth_ppm": 319.0,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 416195870,
+      "toi": "1264.01",
+      "name": "TOI-1264.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.744167,
+      "depth_ppm": 5650.0,
+      "r_star_rsun": 0.97
+    },
+    {
+      "tic_id": 424865156,
+      "toi": "1265.01",
+      "name": "TOI-1265.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.204745,
+      "depth_ppm": 6872.0,
+      "r_star_rsun": 1.99
+    },
+    {
+      "tic_id": 467179528,
+      "toi": "1266.01",
+      "name": "TOI-1266.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 10.894842,
+      "depth_ppm": 3168.4,
+      "r_star_rsun": 0.44
+    },
+    {
+      "tic_id": 467179528,
+      "toi": "1266.02",
+      "name": "TOI-1266.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 18.801611,
+      "depth_ppm": 1686.8,
+      "r_star_rsun": 0.44
+    },
+    {
+      "tic_id": 158561566,
+      "toi": "1267.01",
+      "name": "TOI-1267.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 6.790098,
+      "depth_ppm": 2158.2,
+      "r_star_rsun": 2.0
+    },
+    {
+      "tic_id": 142394656,
+      "toi": "1268.01",
+      "name": "TOI-1268.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.157721,
+      "depth_ppm": 10273.0,
+      "r_star_rsun": 0.9
+    },
+    {
+      "tic_id": 198241702,
+      "toi": "1269.01",
+      "name": "TOI-1269.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.252964,
+      "depth_ppm": 758.6,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 198241702,
+      "toi": "1269.02",
+      "name": "TOI-1269.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 9.23787,
+      "depth_ppm": 660.0,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 234523599,
+      "toi": "127.01",
+      "name": "TOI-127.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.795518,
+      "depth_ppm": 52279.0,
+      "r_star_rsun": 0.45
+    },
+    {
+      "tic_id": 286923464,
+      "toi": "1271.01",
+      "name": "TOI-1271.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 6.134978,
+      "depth_ppm": 3860.0,
+      "r_star_rsun": 2.05
+    },
+    {
+      "tic_id": 417948359,
+      "toi": "1272.01",
+      "name": "TOI-1272.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.315977,
+      "depth_ppm": 2770.0,
+      "r_star_rsun": 0.81
+    },
+    {
+      "tic_id": 445859771,
+      "toi": "1273.01",
+      "name": "TOI-1273.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.631301,
+      "depth_ppm": 4860.0,
+      "r_star_rsun": 1.07
+    },
+    {
+      "tic_id": 459969957,
+      "toi": "1274.01",
+      "name": "TOI-1274.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 19.320348,
+      "depth_ppm": 13910.0,
+      "r_star_rsun": 0.8
+    },
+    {
+      "tic_id": 153949511,
+      "toi": "1277.02",
+      "name": "TOI-1277.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 14.855969,
+      "depth_ppm": 1127.0,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 163539739,
+      "toi": "1278.01",
+      "name": "TOI-1278.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 14.475106,
+      "depth_ppm": 9618.6,
+      "r_star_rsun": 0.55
+    },
+    {
+      "tic_id": 224297258,
+      "toi": "1279.01",
+      "name": "TOI-1279.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 9.614164,
+      "depth_ppm": 933.7,
+      "r_star_rsun": 0.84
+    },
+    {
+      "tic_id": 391949880,
+      "toi": "128.01",
+      "name": "TOI-128.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.94048,
+      "depth_ppm": 417.0,
+      "r_star_rsun": 1.13
+    },
+    {
+      "tic_id": 230017324,
+      "toi": "1280.01",
+      "name": "TOI-1280.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 9.692639,
+      "depth_ppm": 1838.2,
+      "r_star_rsun": 0.75
+    },
+    {
+      "tic_id": 232971294,
+      "toi": "1281.01",
+      "name": "TOI-1281.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.390888,
+      "depth_ppm": 435.0,
+      "r_star_rsun": 1.32
+    },
+    {
+      "tic_id": 236445129,
+      "toi": "1282.01",
+      "name": "TOI-1282.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 0.968993,
+      "depth_ppm": 13533.0,
+      "r_star_rsun": 1.41
+    },
+    {
+      "tic_id": 266593143,
+      "toi": "1283.01",
+      "name": "TOI-1283.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 10.338505,
+      "depth_ppm": 18162.0,
+      "r_star_rsun": 0.84
+    },
+    {
+      "tic_id": 352764091,
+      "toi": "1287.01",
+      "name": "TOI-1287.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 9.600113,
+      "depth_ppm": 380.4,
+      "r_star_rsun": 1.21
+    },
+    {
+      "tic_id": 365733349,
+      "toi": "1288.01",
+      "name": "TOI-1288.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.699829,
+      "depth_ppm": 2798.0,
+      "r_star_rsun": 0.92
+    },
+    {
+      "tic_id": 201248411,
+      "toi": "129.01",
+      "name": "TOI-129.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.980972,
+      "depth_ppm": 6178.4,
+      "r_star_rsun": 0.76
+    },
+    {
+      "tic_id": 417676622,
+      "toi": "1290.01",
+      "name": "TOI-1290.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 5.398735,
+      "depth_ppm": 352.0,
+      "r_star_rsun": 1.26
+    },
+    {
+      "tic_id": 198186769,
+      "toi": "1291.01",
+      "name": "TOI-1291.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 7.16199,
+      "depth_ppm": 800.0,
+      "r_star_rsun": 1.81
+    },
+    {
+      "tic_id": 202504234,
+      "toi": "1293.01",
+      "name": "TOI-1293.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.684994,
+      "depth_ppm": 990.0,
+      "r_star_rsun": 1.11
+    },
+    {
+      "tic_id": 219015370,
+      "toi": "1294.01",
+      "name": "TOI-1294.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.915274,
+      "depth_ppm": 3350.0,
+      "r_star_rsun": 1.58
+    },
+    {
+      "tic_id": 219852584,
+      "toi": "1295.01",
+      "name": "TOI-1295.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.196884,
+      "depth_ppm": 7959.0,
+      "r_star_rsun": 1.6
+    },
+    {
+      "tic_id": 219854185,
+      "toi": "1296.01",
+      "name": "TOI-1296.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.944367,
+      "depth_ppm": 6732.5,
+      "r_star_rsun": 1.75
+    },
+    {
+      "tic_id": 237104103,
+      "toi": "1298.01",
+      "name": "TOI-1298.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.537136,
+      "depth_ppm": 4199.8,
+      "r_star_rsun": 1.49
+    },
+    {
+      "tic_id": 263003176,
+      "toi": "130.01",
+      "name": "TOI-130.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 14.339139,
+      "depth_ppm": 363.2,
+      "r_star_rsun": 1.14
+    },
+    {
+      "tic_id": 293687315,
+      "toi": "1300.01",
+      "name": "TOI-1300.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.871698,
+      "depth_ppm": 8568.0,
+      "r_star_rsun": 1.91
+    },
+    {
+      "tic_id": 356867115,
+      "toi": "1301.01",
+      "name": "TOI-1301.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.096407,
+      "depth_ppm": 1142.5,
+      "r_star_rsun": 0.73
+    },
+    {
+      "tic_id": 441797803,
+      "toi": "1302.01",
+      "name": "TOI-1302.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.666617,
+      "depth_ppm": 9780.0,
+      "r_star_rsun": 1.47
+    },
+    {
+      "tic_id": 167092385,
+      "toi": "1318.01",
+      "name": "TOI-1318.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.986503,
+      "depth_ppm": 1341.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 89020549,
+      "toi": "132.01",
+      "name": "TOI-132.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.109681,
+      "depth_ppm": 1309.7,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 167403519,
+      "toi": "1320.01",
+      "name": "TOI-1320.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.972943,
+      "depth_ppm": 4558.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 395171208,
+      "toi": "1333.01",
+      "name": "TOI-1333.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.720191,
+      "depth_ppm": 6710.0,
+      "r_star_rsun": 1.8
+    },
+    {
+      "tic_id": 160708862,
+      "toi": "1337.01",
+      "name": "TOI-1337.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.344831,
+      "depth_ppm": 13626.0,
+      "r_star_rsun": 1.76
+    },
+    {
+      "tic_id": 260128333,
+      "toi": "1338.01",
+      "name": "TOI-1338.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 95.174,
+      "depth_ppm": 2600.1,
+      "r_star_rsun": 1.52
+    },
+    {
+      "tic_id": 269701147,
+      "toi": "1339.01",
+      "name": "TOI-1339.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.880328,
+      "depth_ppm": 1238.0,
+      "r_star_rsun": 0.92
+    },
+    {
+      "tic_id": 269701147,
+      "toi": "1339.02",
+      "name": "TOI-1339.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 28.580474,
+      "depth_ppm": 1081.4,
+      "r_star_rsun": 0.92
+    },
+    {
+      "tic_id": 269701147,
+      "toi": "1339.03",
+      "name": "TOI-1339.03",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 38.351122,
+      "depth_ppm": 1029.1,
+      "r_star_rsun": 0.92
+    },
+    {
+      "tic_id": 234994474,
+      "toi": "134.01",
+      "name": "TOI-134.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.401518,
+      "depth_ppm": 593.8,
+      "r_star_rsun": 0.6
+    },
+    {
+      "tic_id": 160487753,
+      "toi": "1345.01",
+      "name": "TOI-1345.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 8.47134,
+      "depth_ppm": 540.0,
+      "r_star_rsun": 4.88
+    },
+    {
+      "tic_id": 219852882,
+      "toi": "1346.01",
+      "name": "TOI-1346.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.502558,
+      "depth_ppm": 844.7,
+      "r_star_rsun": 0.78
+    },
+    {
+      "tic_id": 219852882,
+      "toi": "1346.02",
+      "name": "TOI-1346.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.762254,
+      "depth_ppm": 733.6,
+      "r_star_rsun": 0.78
+    },
+    {
+      "tic_id": 229747848,
+      "toi": "1347.01",
+      "name": "TOI-1347.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.847422,
+      "depth_ppm": 424.4,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 229747848,
+      "toi": "1347.02",
+      "name": "TOI-1347.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.842044,
+      "depth_ppm": 318.7,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 267263253,
+      "toi": "135.01",
+      "name": "TOI-135.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.126905,
+      "depth_ppm": 10831.0,
+      "r_star_rsun": 1.59
+    },
+    {
+      "tic_id": 233953967,
+      "toi": "1350.01",
+      "name": "TOI-1350.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.540237,
+      "depth_ppm": 2710.0,
+      "r_star_rsun": 3.39
+    },
+    {
+      "tic_id": 372264750,
+      "toi": "1355.01",
+      "name": "TOI-1355.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.170272,
+      "depth_ppm": 5156.8,
+      "r_star_rsun": 1.85
+    },
+    {
+      "tic_id": 277566483,
+      "toi": "1356.01",
+      "name": "TOI-1356.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 24.25447,
+      "depth_ppm": 8802.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 410153553,
+      "toi": "136.01",
+      "name": "TOI-136.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.46293,
+      "depth_ppm": 4507.3,
+      "r_star_rsun": 0.19
+    },
+    {
+      "tic_id": 277447970,
+      "toi": "1361.01",
+      "name": "TOI-1361.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.237462,
+      "depth_ppm": 4281.0,
+      "r_star_rsun": 1.66
+    },
+    {
+      "tic_id": 395142888,
+      "toi": "1362.01",
+      "name": "TOI-1362.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.917382,
+      "depth_ppm": 664.0,
+      "r_star_rsun": 7.39
+    },
+    {
+      "tic_id": 26880783,
+      "toi": "1364.01",
+      "name": "TOI-1364.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.775364,
+      "depth_ppm": 878.0,
+      "r_star_rsun": 3.23
+    },
+    {
+      "tic_id": 176899385,
+      "toi": "1373.01",
+      "name": "TOI-1373.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.853,
+      "depth_ppm": 8913.0,
+      "r_star_rsun": 1.57
+    },
+    {
+      "tic_id": 275722992,
+      "toi": "1381.01",
+      "name": "TOI-1381.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.560178,
+      "depth_ppm": 2474.0,
+      "r_star_rsun": 2.62
+    },
+    {
+      "tic_id": 343019899,
+      "toi": "1386.01",
+      "name": "TOI-1386.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 25.838642,
+      "depth_ppm": 1806.0,
+      "r_star_rsun": 1.03
+    },
+    {
+      "tic_id": 346338552,
+      "toi": "1388.01",
+      "name": "TOI-1388.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.465299,
+      "depth_ppm": 14440.0,
+      "r_star_rsun": 1.18
+    },
+    {
+      "tic_id": 353038705,
+      "toi": "1389.01",
+      "name": "TOI-1389.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.062624,
+      "depth_ppm": 580.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 62483237,
+      "toi": "139.01",
+      "name": "TOI-139.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 11.070858,
+      "depth_ppm": 1149.7,
+      "r_star_rsun": 0.7
+    },
+    {
+      "tic_id": 352239069,
+      "toi": "1404.01",
+      "name": "TOI-1404.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.867405,
+      "depth_ppm": 779.0,
+      "r_star_rsun": 1.03
+    },
+    {
+      "tic_id": 352239069,
+      "toi": "1404.02",
+      "name": "TOI-1404.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 14.431887,
+      "depth_ppm": 1687.0,
+      "r_star_rsun": 1.03
+    },
+    {
+      "tic_id": 231736113,
+      "toi": "1406.01",
+      "name": "TOI-1406.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 10.573982,
+      "depth_ppm": 5460.0,
+      "r_star_rsun": 1.27
+    },
+    {
+      "tic_id": 69747919,
+      "toi": "1407.01",
+      "name": "TOI-1407.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 9.978332,
+      "depth_ppm": 179.2,
+      "r_star_rsun": 1.47
+    },
+    {
+      "tic_id": 364186197,
+      "toi": "1408.01",
+      "name": "TOI-1408.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.424704,
+      "depth_ppm": 2447.0,
+      "r_star_rsun": 1.49
+    },
+    {
+      "tic_id": 364186197,
+      "toi": "1408.02",
+      "name": "TOI-1408.02",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.222209,
+      "depth_ppm": 87.0,
+      "r_star_rsun": 1.49
+    },
+    {
+      "tic_id": 403224672,
+      "toi": "141.01",
+      "name": "TOI-141.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.008236,
+      "depth_ppm": 228.0,
+      "r_star_rsun": 1.13
+    },
+    {
+      "tic_id": 199444169,
+      "toi": "1410.01",
+      "name": "TOI-1410.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.216873,
+      "depth_ppm": 1240.0,
+      "r_star_rsun": 0.78
+    },
+    {
+      "tic_id": 116483514,
+      "toi": "1411.01",
+      "name": "TOI-1411.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.452049,
+      "depth_ppm": 393.0,
+      "r_star_rsun": 0.69
+    },
+    {
+      "tic_id": 119700084,
+      "toi": "1413.01",
+      "name": "TOI-1413.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.118213,
+      "depth_ppm": 1805.2,
+      "r_star_rsun": 0.89
+    },
+    {
+      "tic_id": 148782377,
+      "toi": "1415.01",
+      "name": "TOI-1415.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 14.42049,
+      "depth_ppm": 1061.5,
+      "r_star_rsun": 1.41
+    },
+    {
+      "tic_id": 158025009,
+      "toi": "1416.01",
+      "name": "TOI-1416.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.069762,
+      "depth_ppm": 376.0,
+      "r_star_rsun": 0.8
+    },
+    {
+      "tic_id": 164173105,
+      "toi": "1417.01",
+      "name": "TOI-1417.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.072643,
+      "depth_ppm": 10471.5,
+      "r_star_rsun": 1.56
+    },
+    {
+      "tic_id": 311035838,
+      "toi": "1419.01",
+      "name": "TOI-1419.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.899741,
+      "depth_ppm": 13760.0,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 425934411,
+      "toi": "142.01",
+      "name": "TOI-142.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.853353,
+      "depth_ppm": 25080.3,
+      "r_star_rsun": 0.61
+    },
+    {
+      "tic_id": 321857016,
+      "toi": "1420.01",
+      "name": "TOI-1420.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.956113,
+      "depth_ppm": 15989.2,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 333473672,
+      "toi": "1422.01",
+      "name": "TOI-1422.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 13.001789,
+      "depth_ppm": 1339.6,
+      "r_star_rsun": 1.01
+    },
+    {
+      "tic_id": 25375553,
+      "toi": "143.01",
+      "name": "TOI-143.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.310969,
+      "depth_ppm": 6829.4,
+      "r_star_rsun": 1.95
+    },
+    {
+      "tic_id": 293954617,
+      "toi": "1430.01",
+      "name": "TOI-1430.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 7.434146,
+      "depth_ppm": 701.0,
+      "r_star_rsun": 0.78
+    },
+    {
+      "tic_id": 375506058,
+      "toi": "1431.01",
+      "name": "TOI-1431.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.650232,
+      "depth_ppm": 6449.0,
+      "r_star_rsun": 1.94
+    },
+    {
+      "tic_id": 256783784,
+      "toi": "1432.01",
+      "name": "TOI-1432.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.109576,
+      "depth_ppm": 510.0,
+      "r_star_rsun": 0.91
+    },
+    {
+      "tic_id": 138588540,
+      "toi": "1434.01",
+      "name": "TOI-1434.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 29.871853,
+      "depth_ppm": 712.6,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 153976959,
+      "toi": "1435.01",
+      "name": "TOI-1435.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.685818,
+      "depth_ppm": 148.2,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 154383539,
+      "toi": "1436.01",
+      "name": "TOI-1436.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.867588,
+      "depth_ppm": 321.5,
+      "r_star_rsun": 0.75
+    },
+    {
+      "tic_id": 198356533,
+      "toi": "1437.01",
+      "name": "TOI-1437.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 18.840891,
+      "depth_ppm": 331.0,
+      "r_star_rsun": 1.22
+    },
+    {
+      "tic_id": 229650439,
+      "toi": "1438.01",
+      "name": "TOI-1438.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.139667,
+      "depth_ppm": 769.6,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 229650439,
+      "toi": "1438.02",
+      "name": "TOI-1438.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 9.42809,
+      "depth_ppm": 799.0,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 232982558,
+      "toi": "1439.01",
+      "name": "TOI-1439.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 27.643862,
+      "depth_ppm": 560.0,
+      "r_star_rsun": 1.62
+    },
+    {
+      "tic_id": 261136679,
+      "toi": "144.01",
+      "name": "TOI-144.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.267814,
+      "depth_ppm": 321.0,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 233617847,
+      "toi": "1440.01",
+      "name": "TOI-1440.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 15.517452,
+      "depth_ppm": 434.0,
+      "r_star_rsun": 1.34
+    },
+    {
+      "tic_id": 233617847,
+      "toi": "1440.02",
+      "name": "TOI-1440.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.627421,
+      "depth_ppm": 152.4,
+      "r_star_rsun": 1.34
+    },
+    {
+      "tic_id": 233951353,
+      "toi": "1441.01",
+      "name": "TOI-1441.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 22.092974,
+      "depth_ppm": 435.0,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 235683377,
+      "toi": "1442.01",
+      "name": "TOI-1442.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.409068,
+      "depth_ppm": 1281.2,
+      "r_star_rsun": 0.31
+    },
+    {
+      "tic_id": 237232044,
+      "toi": "1443.01",
+      "name": "TOI-1443.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 23.540747,
+      "depth_ppm": 956.0,
+      "r_star_rsun": 0.75
+    },
+    {
+      "tic_id": 258514800,
+      "toi": "1444.01",
+      "name": "TOI-1444.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.470272,
+      "depth_ppm": 209.5,
+      "r_star_rsun": 0.92
+    },
+    {
+      "tic_id": 259172391,
+      "toi": "1445.01",
+      "name": "TOI-1445.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 9.81307,
+      "depth_ppm": 630.0,
+      "r_star_rsun": 1.06
+    },
+    {
+      "tic_id": 259172391,
+      "toi": "1445.02",
+      "name": "TOI-1445.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.784209,
+      "depth_ppm": 390.0,
+      "r_star_rsun": 1.06
+    },
+    {
+      "tic_id": 294471966,
+      "toi": "1446.01",
+      "name": "TOI-1446.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.317066,
+      "depth_ppm": 688.3,
+      "r_star_rsun": 0.83
+    },
+    {
+      "tic_id": 294471966,
+      "toi": "1446.02",
+      "name": "TOI-1446.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.505739,
+      "depth_ppm": 428.7,
+      "r_star_rsun": 0.83
+    },
+    {
+      "tic_id": 343628284,
+      "toi": "1448.01",
+      "name": "TOI-1448.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.097082,
+      "depth_ppm": 4723.1,
+      "r_star_rsun": 0.38
+    },
+    {
+      "tic_id": 356158613,
+      "toi": "1449.02",
+      "name": "TOI-1449.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.369185,
+      "depth_ppm": 699.3,
+      "r_star_rsun": 0.6
+    },
+    {
+      "tic_id": 265612438,
+      "toi": "145.01",
+      "name": "TOI-145.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.13002,
+      "depth_ppm": 3376.0,
+      "r_star_rsun": 1.58
+    },
+    {
+      "tic_id": 377293776,
+      "toi": "1450.01",
+      "name": "TOI-1450.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.043927,
+      "depth_ppm": 465.2,
+      "r_star_rsun": 0.47
+    },
+    {
+      "tic_id": 417931607,
+      "toi": "1451.01",
+      "name": "TOI-1451.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 16.537986,
+      "depth_ppm": 608.0,
+      "r_star_rsun": 1.03
+    },
+    {
+      "tic_id": 420112589,
+      "toi": "1452.01",
+      "name": "TOI-1452.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 11.061994,
+      "depth_ppm": 3249.1,
+      "r_star_rsun": 0.28
+    },
+    {
+      "tic_id": 198390247,
+      "toi": "1453.01",
+      "name": "TOI-1453.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.588688,
+      "depth_ppm": 852.0,
+      "r_star_rsun": 0.71
+    },
+    {
+      "tic_id": 198390247,
+      "toi": "1453.02",
+      "name": "TOI-1453.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.313526,
+      "depth_ppm": 274.0,
+      "r_star_rsun": 0.71
+    },
+    {
+      "tic_id": 294179385,
+      "toi": "1454.01",
+      "name": "TOI-1454.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.679417,
+      "depth_ppm": 13578.3,
+      "r_star_rsun": 1.14
+    },
+    {
+      "tic_id": 199376584,
+      "toi": "1456.01",
+      "name": "TOI-1456.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 18.712253,
+      "depth_ppm": 6066.0,
+      "r_star_rsun": 1.27
+    },
+    {
+      "tic_id": 191284318,
+      "toi": "1458.01",
+      "name": "TOI-1458.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.775968,
+      "depth_ppm": 13613.0,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 188768068,
+      "toi": "1462.01",
+      "name": "TOI-1462.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.177941,
+      "depth_ppm": 110.0,
+      "r_star_rsun": 1.26
+    },
+    {
+      "tic_id": 190998418,
+      "toi": "1463.01",
+      "name": "TOI-1463.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.879102,
+      "depth_ppm": 11426.6,
+      "r_star_rsun": 1.11
+    },
+    {
+      "tic_id": 229944666,
+      "toi": "1464.01",
+      "name": "TOI-1464.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 11.312527,
+      "depth_ppm": 861.7,
+      "r_star_rsun": 0.85
+    },
+    {
+      "tic_id": 236887394,
+      "toi": "1465.01",
+      "name": "TOI-1465.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.420025,
+      "depth_ppm": 23730.0,
+      "r_star_rsun": 0.77
+    },
+    {
+      "tic_id": 237086564,
+      "toi": "1466.01",
+      "name": "TOI-1466.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.871899,
+      "depth_ppm": 920.0,
+      "r_star_rsun": 0.75
+    },
+    {
+      "tic_id": 240968774,
+      "toi": "1467.01",
+      "name": "TOI-1467.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.971136,
+      "depth_ppm": 1437.1,
+      "r_star_rsun": 0.49
+    },
+    {
+      "tic_id": 243185500,
+      "toi": "1468.01",
+      "name": "TOI-1468.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 15.532438,
+      "depth_ppm": 2937.5,
+      "r_star_rsun": 0.37
+    },
+    {
+      "tic_id": 243185500,
+      "toi": "1468.02",
+      "name": "TOI-1468.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.880531,
+      "depth_ppm": 1214.0,
+      "r_star_rsun": 0.37
+    },
+    {
+      "tic_id": 283722336,
+      "toi": "1469.01",
+      "name": "TOI-1469.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.092939,
+      "depth_ppm": 254.2,
+      "r_star_rsun": 0.75
+    },
+    {
+      "tic_id": 283722336,
+      "toi": "1469.02",
+      "name": "TOI-1469.02",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 6.76504,
+      "depth_ppm": 269.0,
+      "r_star_rsun": 0.75
+    },
+    {
+      "tic_id": 284441182,
+      "toi": "1470.01",
+      "name": "TOI-1470.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.527282,
+      "depth_ppm": 1847.5,
+      "r_star_rsun": 0.49
+    },
+    {
+      "tic_id": 306263608,
+      "toi": "1471.01",
+      "name": "TOI-1471.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 20.772432,
+      "depth_ppm": 1415.0,
+      "r_star_rsun": 0.97
+    },
+    {
+      "tic_id": 306263608,
+      "toi": "1471.02",
+      "name": "TOI-1471.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 52.563706,
+      "depth_ppm": 1193.0,
+      "r_star_rsun": 0.97
+    },
+    {
+      "tic_id": 306955329,
+      "toi": "1472.01",
+      "name": "TOI-1472.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 6.363411,
+      "depth_ppm": 2368.7,
+      "r_star_rsun": 0.86
+    },
+    {
+      "tic_id": 352413427,
+      "toi": "1473.01",
+      "name": "TOI-1473.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.254488,
+      "depth_ppm": 567.0,
+      "r_star_rsun": 0.99
+    },
+    {
+      "tic_id": 431514478,
+      "toi": "1475.01",
+      "name": "TOI-1475.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 8.495351,
+      "depth_ppm": 718.5,
+      "r_star_rsun": 1.88
+    },
+    {
+      "tic_id": 432549364,
+      "toi": "1476.01",
+      "name": "TOI-1476.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.217494,
+      "depth_ppm": 6969.0,
+      "r_star_rsun": 1.46
+    },
+    {
+      "tic_id": 240681314,
+      "toi": "1477.01",
+      "name": "TOI-1477.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.732481,
+      "depth_ppm": 9548.3,
+      "r_star_rsun": 1.61
+    },
+    {
+      "tic_id": 409794137,
+      "toi": "1478.01",
+      "name": "TOI-1478.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 10.180201,
+      "depth_ppm": 11500.0,
+      "r_star_rsun": 1.04
+    },
+    {
+      "tic_id": 393940766,
+      "toi": "148.01",
+      "name": "TOI-148.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.867076,
+      "depth_ppm": 4965.8,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 252616865,
+      "toi": "1482.01",
+      "name": "TOI-1482.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.712192,
+      "depth_ppm": 7555.0,
+      "r_star_rsun": 1.79
+    },
+    {
+      "tic_id": 260985861,
+      "toi": "149.01",
+      "name": "TOI-149.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.339943,
+      "depth_ppm": 9074.1,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 53875855,
+      "toi": "1491.01",
+      "name": "TOI-1491.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.490267,
+      "depth_ppm": 2513.0,
+      "r_star_rsun": 1.23
+    },
+    {
+      "tic_id": 15692883,
+      "toi": "1493.01",
+      "name": "TOI-1493.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.147905,
+      "depth_ppm": 3710.0,
+      "r_star_rsun": 2.9
+    },
+    {
+      "tic_id": 411608801,
+      "toi": "1494.01",
+      "name": "TOI-1494.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.0268,
+      "depth_ppm": 6358.0,
+      "r_star_rsun": 1.48
+    },
+    {
+      "tic_id": 271893367,
+      "toi": "150.01",
+      "name": "TOI-150.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.857407,
+      "depth_ppm": 6489.7,
+      "r_star_rsun": 1.68
+    },
+    {
+      "tic_id": 376637093,
+      "toi": "1516.01",
+      "name": "TOI-1516.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.056015,
+      "depth_ppm": 17453.0,
+      "r_star_rsun": 1.24
+    },
+    {
+      "tic_id": 427761355,
+      "toi": "1518.01",
+      "name": "TOI-1518.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.902606,
+      "depth_ppm": 8985.0,
+      "r_star_rsun": 1.82
+    },
+    {
+      "tic_id": 202375913,
+      "toi": "1527.01",
+      "name": "TOI-1527.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.062581,
+      "depth_ppm": 2884.0,
+      "r_star_rsun": 2.76
+    },
+    {
+      "tic_id": 327579226,
+      "toi": "1532.01",
+      "name": "TOI-1532.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 8.905407,
+      "depth_ppm": 6702.0,
+      "r_star_rsun": 1.41
+    },
+    {
+      "tic_id": 345143460,
+      "toi": "1533.01",
+      "name": "TOI-1533.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.645805,
+      "depth_ppm": 1168.0,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 345143460,
+      "toi": "1533.02",
+      "name": "TOI-1533.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 8.063795,
+      "depth_ppm": 2301.0,
+      "r_star_rsun": 0.88
+    },
+    {
+      "tic_id": 173612049,
+      "toi": "1537.01",
+      "name": "TOI-1537.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.490265,
+      "depth_ppm": 1080.0,
+      "r_star_rsun": 0.96
+    },
+    {
+      "tic_id": 177244357,
+      "toi": "1538.01",
+      "name": "TOI-1538.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.54692,
+      "depth_ppm": 2400.0,
+      "r_star_rsun": 1.12
+    },
+    {
+      "tic_id": 455791689,
+      "toi": "1544.01",
+      "name": "TOI-1544.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.291833,
+      "depth_ppm": 1224.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 194203348,
+      "toi": "1546.01",
+      "name": "TOI-1546.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.13345,
+      "depth_ppm": 490.0,
+      "r_star_rsun": 1.4
+    },
+    {
+      "tic_id": 129637892,
+      "toi": "155.01",
+      "name": "TOI-155.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.449975,
+      "depth_ppm": 973.0,
+      "r_star_rsun": 1.79
+    },
+    {
+      "tic_id": 288348498,
+      "toi": "1551.01",
+      "name": "TOI-1551.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.67546,
+      "depth_ppm": 1250.0,
+      "r_star_rsun": 1.78
+    },
+    {
+      "tic_id": 299158887,
+      "toi": "1554.01",
+      "name": "TOI-1554.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 9.434159,
+      "depth_ppm": 4001.9,
+      "r_star_rsun": 0.94
+    },
+    {
+      "tic_id": 241040309,
+      "toi": "1559.01",
+      "name": "TOI-1559.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.464895,
+      "depth_ppm": 1339.0,
+      "r_star_rsun": 2.54
+    },
+    {
+      "tic_id": 241076290,
+      "toi": "1560.01",
+      "name": "TOI-1560.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.258001,
+      "depth_ppm": 812.7,
+      "r_star_rsun": 2.09
+    },
+    {
+      "tic_id": 249945230,
+      "toi": "1563.01",
+      "name": "TOI-1563.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1098.225859,
+      "depth_ppm": 4496.0,
+      "r_star_rsun": 0.74
+    },
+    {
+      "tic_id": 251384275,
+      "toi": "1565.01",
+      "name": "TOI-1565.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1099.256038,
+      "depth_ppm": 2970.0,
+      "r_star_rsun": 2.18
+    },
+    {
+      "tic_id": 140691463,
+      "toi": "157.01",
+      "name": "TOI-157.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.084543,
+      "depth_ppm": 12504.8,
+      "r_star_rsun": 1.11
+    },
+    {
+      "tic_id": 302773669,
+      "toi": "1573.01",
+      "name": "TOI-1573.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 21.216464,
+      "depth_ppm": 6499.0,
+      "r_star_rsun": 1.55
+    },
+    {
+      "tic_id": 354469661,
+      "toi": "1580.01",
+      "name": "TOI-1580.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.794775,
+      "depth_ppm": 6864.0,
+      "r_star_rsun": 2.18
+    },
+    {
+      "tic_id": 445144327,
+      "toi": "1586.01",
+      "name": "TOI-1586.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.80794,
+      "depth_ppm": 540.0,
+      "r_star_rsun": 8.61
+    },
+    {
+      "tic_id": 50120414,
+      "toi": "1588.01",
+      "name": "TOI-1588.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.581083,
+      "depth_ppm": 760.0,
+      "r_star_rsun": 5.96
+    },
+    {
+      "tic_id": 394657039,
+      "toi": "159.01",
+      "name": "TOI-159.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.762837,
+      "depth_ppm": 11360.0,
+      "r_star_rsun": 1.59
+    },
+    {
+      "tic_id": 67418624,
+      "toi": "1598.01",
+      "name": "TOI-1598.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.102072,
+      "depth_ppm": 580.0,
+      "r_star_rsun": 1.73
+    },
+    {
+      "tic_id": 129979528,
+      "toi": "1599.01",
+      "name": "TOI-1599.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 1.219838,
+      "depth_ppm": 12160.1,
+      "r_star_rsun": 1.6
+    },
+    {
+      "tic_id": 139375960,
+      "toi": "1601.01",
+      "name": "TOI-1601.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.33155,
+      "depth_ppm": 4220.0,
+      "r_star_rsun": 2.22
+    },
+    {
+      "tic_id": 73448352,
+      "toi": "1603.01",
+      "name": "TOI-1603.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.732174,
+      "depth_ppm": 8121.0,
+      "r_star_rsun": 1.56
+    },
+    {
+      "tic_id": 101037590,
+      "toi": "1605.01",
+      "name": "TOI-1605.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 8.709463,
+      "depth_ppm": 4510.0,
+      "r_star_rsun": 1.59
+    },
+    {
+      "tic_id": 348770361,
+      "toi": "161.01",
+      "name": "TOI-161.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.768433,
+      "depth_ppm": 3234.1,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 219776325,
+      "toi": "1610.01",
+      "name": "TOI-1610.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.528798,
+      "depth_ppm": 387.0,
+      "r_star_rsun": 1.19
+    },
+    {
+      "tic_id": 264678534,
+      "toi": "1611.01",
+      "name": "TOI-1611.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 16.201682,
+      "depth_ppm": 885.0,
+      "r_star_rsun": 0.78
+    },
+    {
+      "tic_id": 268403451,
+      "toi": "1612.01",
+      "name": "TOI-1612.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.864139,
+      "depth_ppm": 9597.0,
+      "r_star_rsun": 1.53
+    },
+    {
+      "tic_id": 322054600,
+      "toi": "1616.01",
+      "name": "TOI-1616.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.343302,
+      "depth_ppm": 1052.0,
+      "r_star_rsun": 1.45
+    },
+    {
+      "tic_id": 378291076,
+      "toi": "1620.01",
+      "name": "TOI-1620.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.598201,
+      "depth_ppm": 296.0,
+      "r_star_rsun": 1.49
+    },
+    {
+      "tic_id": 387260717,
+      "toi": "1621.01",
+      "name": "TOI-1621.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.453624,
+      "depth_ppm": 200.0,
+      "r_star_rsun": 1.02
+    },
+    {
+      "tic_id": 157586003,
+      "toi": "1626.01",
+      "name": "TOI-1626.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.332619,
+      "depth_ppm": 8310.5,
+      "r_star_rsun": 1.69
+    },
+    {
+      "tic_id": 424435940,
+      "toi": "1627.01",
+      "name": "TOI-1627.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 5.017215,
+      "depth_ppm": 14237.0,
+      "r_star_rsun": 1.1
+    },
+    {
+      "tic_id": 284475976,
+      "toi": "1628.01",
+      "name": "TOI-1628.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.143636,
+      "depth_ppm": 9203.8,
+      "r_star_rsun": 1.77
+    },
+    {
+      "tic_id": 310003988,
+      "toi": "1629.01",
+      "name": "TOI-1629.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 4.542159,
+      "depth_ppm": 9760.0,
+      "r_star_rsun": 1.73
+    },
+    {
+      "tic_id": 179317684,
+      "toi": "163.01",
+      "name": "TOI-163.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.231117,
+      "depth_ppm": 7261.3,
+      "r_star_rsun": 1.66
+    },
+    {
+      "tic_id": 317597583,
+      "toi": "1630.01",
+      "name": "TOI-1630.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 12.055735,
+      "depth_ppm": 807.0,
+      "r_star_rsun": 0.83
+    },
+    {
+      "tic_id": 201186294,
+      "toi": "1634.01",
+      "name": "TOI-1634.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.98933,
+      "depth_ppm": 1519.7,
+      "r_star_rsun": 0.47
+    },
+    {
+      "tic_id": 312862941,
+      "toi": "1638.01",
+      "name": "TOI-1638.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.915062,
+      "depth_ppm": 4304.9,
+      "r_star_rsun": 0.7
+    },
+    {
+      "tic_id": 396562848,
+      "toi": "1640.01",
+      "name": "TOI-1640.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.94954,
+      "depth_ppm": 2089.2,
+      "r_star_rsun": 0.26
+    },
+    {
+      "tic_id": 422923265,
+      "toi": "1641.01",
+      "name": "TOI-1641.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.864672,
+      "depth_ppm": 570.0,
+      "r_star_rsun": 3.4
+    },
+    {
+      "tic_id": 298647682,
+      "toi": "1643.01",
+      "name": "TOI-1643.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 20.079522,
+      "depth_ppm": 1065.5,
+      "r_star_rsun": 0.78
+    },
+    {
+      "tic_id": 376353509,
+      "toi": "1648.01",
+      "name": "TOI-1648.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 7.331568,
+      "depth_ppm": 893.0,
+      "r_star_rsun": 0.84
+    },
+    {
+      "tic_id": 138168780,
+      "toi": "1651.01",
+      "name": "TOI-1651.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.764995,
+      "depth_ppm": 14735.0,
+      "r_star_rsun": 1.42
+    },
+    {
+      "tic_id": 156724719,
+      "toi": "1653.01",
+      "name": "TOI-1653.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.956872,
+      "depth_ppm": 4643.0,
+      "r_star_rsun": 2.5
+    },
+    {
+      "tic_id": 258829450,
+      "toi": "1654.01",
+      "name": "TOI-1654.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.834789,
+      "depth_ppm": 242.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 266500992,
+      "toi": "1655.01",
+      "name": "TOI-1655.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.278662,
+      "depth_ppm": 1101.0,
+      "r_star_rsun": 1.15
+    },
+    {
+      "tic_id": 288631580,
+      "toi": "1659.01",
+      "name": "TOI-1659.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 5.877555,
+      "depth_ppm": 412.3,
+      "r_star_rsun": 1.01
+    },
+    {
+      "tic_id": 288631580,
+      "toi": "1659.02",
+      "name": "TOI-1659.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.398567,
+      "depth_ppm": 171.0,
+      "r_star_rsun": 1.01
+    },
+    {
+      "tic_id": 147203645,
+      "toi": "166.01",
+      "name": "TOI-166.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 5.061132,
+      "depth_ppm": 5276.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 353782445,
+      "toi": "1664.01",
+      "name": "TOI-1664.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 11.835079,
+      "depth_ppm": 336.0,
+      "r_star_rsun": 1.34
+    },
+    {
+      "tic_id": 428679607,
+      "toi": "1669.01",
+      "name": "TOI-1669.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.680054,
+      "depth_ppm": 456.0,
+      "r_star_rsun": 1.07
+    },
+    {
+      "tic_id": 149990841,
+      "toi": "167.01",
+      "name": "TOI-167.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 4.453185,
+      "depth_ppm": 5910.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 441739020,
+      "toi": "1670.01",
+      "name": "TOI-1670.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 40.750103,
+      "depth_ppm": 6026.0,
+      "r_star_rsun": 1.31
+    },
+    {
+      "tic_id": 441739020,
+      "toi": "1670.02",
+      "name": "TOI-1670.02",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 10.983672,
+      "depth_ppm": 315.0,
+      "r_star_rsun": 1.31
+    },
+    {
+      "tic_id": 441739020,
+      "toi": "1670.03",
+      "name": "TOI-1670.03",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 123.050751,
+      "depth_ppm": 432.5,
+      "r_star_rsun": 1.31
+    },
+    {
+      "tic_id": 81831095,
+      "toi": "1675.01",
+      "name": "TOI-1675.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 3.133084,
+      "depth_ppm": 1192.0,
+      "r_star_rsun": 2.06
+    },
+    {
+      "tic_id": 8400842,
+      "toi": "1676.01",
+      "name": "TOI-1676.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 3.191526,
+      "depth_ppm": 8587.0,
+      "r_star_rsun": 1.69
+    },
+    {
+      "tic_id": 87090944,
+      "toi": "1677.01",
+      "name": "TOI-1677.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 0.643581,
+      "depth_ppm": 876.7,
+      "r_star_rsun": 1.49
+    },
+    {
+      "tic_id": 369457671,
+      "toi": "168.01",
+      "name": "TOI-168.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 2.31446,
+      "depth_ppm": 1190.0,
+      "r_star_rsun": 0.73
+    },
+    {
+      "tic_id": 259168516,
+      "toi": "1680.01",
+      "name": "TOI-1680.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 4.802656,
+      "depth_ppm": 4358.1,
+      "r_star_rsun": 0.21
+    },
+    {
+      "tic_id": 321041369,
+      "toi": "1681.01",
+      "name": "TOI-1681.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.537924,
+      "depth_ppm": 1135.0,
+      "r_star_rsun": 0.93
+    },
+    {
+      "tic_id": 367366318,
+      "toi": "1682.01",
+      "name": "TOI-1682.01",
+      "nasa_tfopwg_disp": "KP",
+      "period_days": 2.734765,
+      "depth_ppm": 9209.0,
+      "r_star_rsun": 1.77
+    },
+    {
+      "tic_id": 58542531,
+      "toi": "1683.01",
+      "name": "TOI-1683.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.057524,
+      "depth_ppm": 1118.0,
+      "r_star_rsun": 0.7
+    },
+    {
+      "tic_id": 85031598,
+      "toi": "1684.01",
+      "name": "TOI-1684.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 1.154993,
+      "depth_ppm": 739.0,
+      "r_star_rsun": 2.99
+    },
+    {
+      "tic_id": 28900646,
+      "toi": "1685.01",
+      "name": "TOI-1685.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 0.669145,
+      "depth_ppm": 1254.4,
+      "r_star_rsun": 0.46
+    },
+    {
+      "tic_id": 102672709,
+      "toi": "1686.01",
+      "name": "TOI-1686.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 6.705395,
+      "depth_ppm": 575.2,
+      "r_star_rsun": 1.46
+    },
+    {
+      "tic_id": 103448870,
+      "toi": "1687.01",
+      "name": "TOI-1687.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 10.259632,
+      "depth_ppm": 1080.9,
+      "r_star_rsun": 0.98
+    },
+    {
+      "tic_id": 183120439,
+      "toi": "169.01",
+      "name": "TOI-169.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 2.255446,
+      "depth_ppm": 5283.7,
+      "r_star_rsun": 1.3
+    },
+    {
+      "tic_id": 267574918,
+      "toi": "1690.01",
+      "name": "TOI-1690.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.407937,
+      "depth_ppm": 484643.7,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 268334473,
+      "toi": "1691.01",
+      "name": "TOI-1691.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 16.736899,
+      "depth_ppm": 989.0,
+      "r_star_rsun": 1.0
+    },
+    {
+      "tic_id": 288636342,
+      "toi": "1692.01",
+      "name": "TOI-1692.01",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 17.728661,
+      "depth_ppm": 1086.5,
+      "r_star_rsun": 1.46
+    },
+    {
+      "tic_id": 288636342,
+      "toi": "1692.02",
+      "name": "TOI-1692.02",
+      "nasa_tfopwg_disp": "PC",
+      "period_days": 32.20797,
+      "depth_ppm": 2409.3,
+      "r_star_rsun": 1.46
+    },
+    {
+      "tic_id": 353475866,
+      "toi": "1693.01",
+      "name": "TOI-1693.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 1.766692,
+      "depth_ppm": 830.5,
+      "r_star_rsun": 0.46
+    },
+    {
+      "tic_id": 396740648,
+      "toi": "1694.01",
+      "name": "TOI-1694.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.77013,
+      "depth_ppm": 4361.2,
+      "r_star_rsun": 0.82
+    },
+    {
+      "tic_id": 422756130,
+      "toi": "1695.01",
+      "name": "TOI-1695.01",
+      "nasa_tfopwg_disp": "CP",
+      "period_days": 3.134295,
+      "depth_ppm": 1183.6,
+      "r_star_rsun": 0.52
+    }
+  ]
+}
