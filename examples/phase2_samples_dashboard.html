@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astro-Exo | Dashboard Fase 2 - Fotometria Real & Vetting WCS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            space: {
+              900: '#060913',
+              800: '#0B132B',
+              700: '#1C2541',
+              600: '#3A506B',
+              accent: '#48CAE4',
+              pink: '#F72585',
+              gold: '#FFB703',
+              green: '#10B981'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060913;
+      color: #E2E8F0;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-6">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <header class="bg-space-800 border border-space-600/40 rounded-2xl p-6 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🪐</span>
+          <h1 class="text-2xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">
+            Astro-Exo | Pipeline Fase 2: Fotometria Real TESS
+          </h1>
+          <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1 rounded-full font-medium">
+            4 Amostras Observacionais
+          </span>
+        </div>
+        <p class="text-slate-400 text-sm mt-1">
+          Ingestão FITS do MAST/STScI • Desestacionalização wotan • Imagem de Diferença e Vetting Astrométrico WCS Sub-Pixel
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs bg-space-700 text-slate-300 px-3 py-1.5 rounded-lg border border-space-600/50 mono">
+          Status: 100% PASS
+        </span>
+      </div>
+    </header>
+
+    <!-- Top KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-space-800 border border-space-600/30 rounded-xl p-5 shadow-lg">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Amostras Reais TESS</div>
+        <div class="text-3xl font-extrabold text-cyan-400 mt-2 mono">4 / 4</div>
+        <div class="text-xs text-slate-400 mt-1">100% Baixadas & Calibradas</div>
+      </div>
+      <div class="bg-space-800 border border-space-600/30 rounded-xl p-5 shadow-lg">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Cadências Fotométricas</div>
+        <div class="text-3xl font-extrabold text-sky-400 mt-2 mono">69.659</div>
+        <div class="text-xs text-slate-400 mt-1">Fótons 2-min SPOC do TESS</div>
+      </div>
+      <div class="bg-space-800 border border-space-600/30 rounded-xl p-5 shadow-lg">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Acurácia Astrométrica Média</div>
+        <div class="text-3xl font-extrabold text-emerald-400 mt-2 mono">6.31"</div>
+        <div class="text-xs text-emerald-400 mt-1">0.30 pixels (Sub-pixel)</div>
+      </div>
+      <div class="bg-space-800 border border-space-600/30 rounded-xl p-5 shadow-lg">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Taxa de Vetting On-Target</div>
+        <div class="text-3xl font-extrabold text-amber-400 mt-2 mono">100.0%</div>
+        <div class="text-xs text-slate-400 mt-1">0 Falsos Positivos Detectados</div>
+      </div>
+    </div>
+
+    <!-- Graphical Panel Banner -->
+    <div class="bg-space-800 border border-space-600/30 rounded-2xl p-6 shadow-xl space-y-4">
+      <h2 class="text-lg font-semibold text-slate-200 flex items-center gap-2">
+        <span>📊</span> Painel Científico Comparativo (Séries Temporais, Fase Dobrada & Imagens de Diferença)
+      </h2>
+      <div class="rounded-xl overflow-hidden border border-space-600/50 bg-space-900 flex justify-center">
+        <img src="phase2_4_samples_diagnostics.png" alt="Painel Científico das 4 Amostras" class="max-w-full h-auto rounded-lg">
+      </div>
+    </div>
+
+    <!-- Target Table -->
+    <div class="bg-space-800 border border-space-600/30 rounded-2xl p-6 shadow-xl space-y-4">
+      <h2 class="text-lg font-semibold text-slate-200 flex items-center gap-2">
+        <span>📋</span> Diagnóstico Detalhado das 4 Amostras
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-slate-300">
+          <thead class="bg-space-700/60 text-xs uppercase text-slate-400 border-b border-space-600/40">
+            <tr>
+              <th class="py-3 px-4">Alvo / TOI</th>
+              <th class="py-3 px-4">TIC ID</th>
+              <th class="py-3 px-4">Setor</th>
+              <th class="py-3 px-4">Período (d)</th>
+              <th class="py-3 px-4">Duração (h)</th>
+              <th class="py-3 px-4">Prof. Catálogo</th>
+              <th class="py-3 px-4">Prof. Observada</th>
+              <th class="py-3 px-4">Centróide Offset</th>
+              <th class="py-3 px-4">Incerteza (1σ)</th>
+              <th class="py-3 px-4 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-space-600/20">
+            <tr class="hover:bg-space-700/30">
+              <td class="py-3 px-4 font-semibold text-cyan-400">TOI-101.01 (WASP-46b)</td>
+              <td class="py-3 px-4 mono">231663901</td>
+              <td class="py-3 px-4 mono">27</td>
+              <td class="py-3 px-4 mono">1.4304</td>
+              <td class="py-3 px-4 mono">1.62</td>
+              <td class="py-3 px-4 mono">18.961 ppm</td>
+              <td class="py-3 px-4 mono text-amber-300 font-medium">16.079 ppm</td>
+              <td class="py-3 px-4 mono text-emerald-400 font-semibold">2.79" (0.133 pix)</td>
+              <td class="py-3 px-4 mono">0.47"</td>
+              <td class="py-3 px-4 text-center">
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-xs font-semibold">PASS</span>
+              </td>
+            </tr>
+            <tr class="hover:bg-space-700/30">
+              <td class="py-3 px-4 font-semibold text-cyan-400">TOI-102.01 (WASP-62b)</td>
+              <td class="py-3 px-4 mono">149603524</td>
+              <td class="py-3 px-4 mono">27</td>
+              <td class="py-3 px-4 mono">4.4119</td>
+              <td class="py-3 px-4 mono">3.63</td>
+              <td class="py-3 px-4 mono">14.712 ppm</td>
+              <td class="py-3 px-4 mono text-amber-300 font-medium">12.967 ppm</td>
+              <td class="py-3 px-4 mono text-emerald-400 font-semibold">7.44" (0.354 pix)</td>
+              <td class="py-3 px-4 mono">0.28"</td>
+              <td class="py-3 px-4 text-center">
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-xs font-semibold">PASS</span>
+              </td>
+            </tr>
+            <tr class="hover:bg-space-700/30">
+              <td class="py-3 px-4 font-semibold text-cyan-400">TOI-103.01 (HATS-3b)</td>
+              <td class="py-3 px-4 mono">336732616</td>
+              <td class="py-3 px-4 mono">1</td>
+              <td class="py-3 px-4 mono">3.5479</td>
+              <td class="py-3 px-4 mono">3.49</td>
+              <td class="py-3 px-4 mono">10.424 ppm</td>
+              <td class="py-3 px-4 mono text-amber-300 font-medium">9.189 ppm</td>
+              <td class="py-3 px-4 mono text-emerald-400 font-semibold">6.58" (0.313 pix)</td>
+              <td class="py-3 px-4 mono">0.33"</td>
+              <td class="py-3 px-4 text-center">
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-xs font-semibold">PASS</span>
+              </td>
+            </tr>
+            <tr class="hover:bg-space-700/30">
+              <td class="py-3 px-4 font-semibold text-cyan-400">TOI-1050.01</td>
+              <td class="py-3 px-4 mono">66818296</td>
+              <td class="py-3 px-4 mono">38</td>
+              <td class="py-3 px-4 mono">3.7355</td>
+              <td class="py-3 px-4 mono">4.14</td>
+              <td class="py-3 px-4 mono">17.030 ppm</td>
+              <td class="py-3 px-4 mono text-amber-300 font-medium">15.192 ppm</td>
+              <td class="py-3 px-4 mono text-emerald-400 font-semibold">8.43" (0.401 pix)</td>
+              <td class="py-3 px-4 mono">0.23"</td>
+              <td class="py-3 px-4 text-center">
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-xs font-semibold">PASS</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

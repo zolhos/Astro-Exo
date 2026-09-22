@@ -91,7 +91,15 @@ def resolve_tess_download_urls(
 
     # Filtra por autor de preferência (ex: SPOC)
     spoc_obs = [o for o in obs_list if o.get("provenance_name") == author_preference]
-    target_obs = spoc_obs[0] if spoc_obs else obs_list[0]
+    # Prioriza cadência padrão de 2 minutos (-s_lc.fits) em relação a fast-cadence
+    std_spoc_obs = [o for o in spoc_obs if "-s_lc.fits" in o.get("dataURL", "")]
+    
+    if std_spoc_obs:
+        target_obs = std_spoc_obs[0]
+    elif spoc_obs:
+        target_obs = spoc_obs[0]
+    else:
+        target_obs = obs_list[0]
 
     lc_data_url = target_obs.get("dataURL", "")
     sec_num = target_obs.get("sequence_number")
