@@ -46,13 +46,19 @@ Unlike classical 1D transit pipelines that treat photometric points in isolation
 
 ## Core Scientific Features
 
-### 1. Spatial Vetting & Blend Disambiguation
-* **Difference Imaging:** Subtracts in-transit average from out-of-transit baseline on raw Target Pixel Files (TPFs) with Monte Carlo error propagation.
+### 1. Observational Photometry Ingestion & Detrending (Phase 2)
+* **Direct MAST REST API Client:** Automated query and download of official TESS calibrated light curves (`_lc.fits`) and Target Pixel Files (`_tp.fits`) via STScI CAOM endpoints with local disk caching.
+* **High-Performance FITS Parser:** Direct extraction of binary tables (`PDCSAP_FLUX`, `SAP_FLUX`, `QUALITY`), 3D pixel cubes, and automated WCS astrometric calibration from `APERTURE` FITS headers.
+* **Stellar Detrending (`wotan`):** Preservation of transit geometries and depth using robust iterative filters (biweight, Huber-spline) with cadence-break tolerance.
+
+### 2. Spatial Vetting & Blend Disambiguation
+* **Difference Imaging on Real TPFs:** Subtracts in-transit average from out-of-transit baseline on raw Target Pixel Files with Monte Carlo error propagation.
+* **Sub-Pixel WCS Astrometric Centroiding:** Maps difference flux deficits directly to catalog celestial coordinates (RA/Dec $\to$ sub-pixel coordinates), validating whether the deficit is on-target ($< 0.5$ TESS pixels) or originating from nearby blended eclipsing binaries (BEBs).
 * **Sub-Pixel PRF Fitting:** Fits a 2D analytical Pixel Response Function to the difference flux to localize transit deficits down to sub-arcsecond precision.
 * **Gaia DR3 Cross-Match & Blend Limits:** Queries all stars within 1 arcminute and analytically calculates the maximum possible transit depth each neighbor could inject into the aperture ($\Delta m_{\text{max}}$), mathematically ruling out blended eclipsing binaries (BEBs).
 * **TRICERATOPS Integration:** Calculates False Positive Probability (FPP) and Nearby False Positive Probability (NFPP) against TRILEGAL galactic stellar population models.
 
-### 2. High-Dimensional Bayesian Modeling
+### 3. High-Dimensional Bayesian Modeling
 * **Kipping (2013) Triangular Parameterization:** Samples unconstrained uniform parameters $(q_1, q_2) \in [0, 1]^2$ mapping directly to physically stable, monotonically decreasing limb-darkening profiles ($u_1 + u_2 < 1$, $u_1 > 0$, $u_1 + 2u_2 > 0$).
 * **Eccentric Orbit Reparameterization:** Samples $h = \sqrt{e}\cos\omega$ and $k = \sqrt{e}\sin\omega$ with uniform disk priors to avoid boundary biases at $e \to 0$.
 * **Empirical Stellar Density Prior:** Integrates Gaia DR3 / spectroscopic density priors ($\rho_*$) into the likelihood to break the classical photo-eccentric degeneracy between orbital eccentricity and transit duration.
@@ -188,6 +194,7 @@ pytest tests/ -v
 
 # Or run tests directly with python3:
 python3 tests/test_smoke.py
+python3 tests/test_phase2_real_photometry.py
 python3 tests/test_quick_sample.py
 python3 tests/test_large_sample.py
 python3 tests/test_batch_runner.py

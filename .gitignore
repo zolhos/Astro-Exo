@@ -60,5 +60,6 @@ scratch/
 chrome_profile*
 *.log
 results/
+.matplotlib_cache/
 
 

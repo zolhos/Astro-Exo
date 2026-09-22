@@ -108,7 +108,94 @@ def measure_centroid_offset(
     return {
         "x_diff_cen": x_diff_cen,
         "y_diff_cen": y_diff_cen,
+        "target_x": pix_x_target,
+        "target_y": pix_y_target,
+        "offset_pix": float(offset_pix),
         "offset_arcsec": offset_arcsec,
         "sigma_offset_arcsec": sigma_offset_arcsec,
         "offset_significance_sigma": significance
+    }
+
+
+def vet_target_pixel_file(
+    tpf_data: Dict[str, Any],
+    period: float,
+    t0: float,
+    duration_hours: float,
+    max_allowed_offset_arcsec: float = 10.0,
+    max_significance_sigma: float = 3.0
+) -> Dict[str, Any]:
+    """
+    High-level automated vetting pipeline running difference imaging on a TPF dataset.
+
+    Parameters
+    ----------
+    tpf_data : dict
+        Output from read_tess_tpf(), containing 'time', 'flux', 'flux_err', 'target_pix'.
+    period : float
+        Orbital period in days.
+    t0 : float
+        Transit epoch in BTJD.
+    duration_hours : float
+        Transit duration in hours.
+    max_allowed_offset_arcsec : float
+        Maximum allowable centroid shift to consider transit on-target (default 10 arcsec, ~0.5 TESS pixel).
+    max_significance_sigma : float
+        Maximum statistical significance of the offset to rule out background eclipsing binaries (default 3.0-sigma).
+
+    Returns
+    -------
+    result : dict
+        Vetting metrics including difference images, centroids, offsets, and pass/fail classification.
+    """
+    time = tpf_data["time"]
+    flux = tpf_data["flux"]
+    flux_err = tpf_data["flux_err"]
+    duration_days = duration_hours / 24.0
+
+    # Determina a coordenada de referência do alvo
+    target_pix = tpf_data.get("target_pix")
+    if target_pix is None:
+        # Fallback: centro geométrico da matriz de pixels
+        ny, nx = flux.shape[1:]
+        target_pix = (nx / 2.0 - 0.5, ny / 2.0 - 0.5)
+
+    # Calcula imagens de diferença
+    i_out, i_in, i_diff, sigma_diff = calculate_difference_image(
+        time=time,
+        flux=flux,
+        flux_err=flux_err,
+        period=period,
+        t0=t0,
+        duration_days=duration_days
+    )
+
+    # Mede deslocamento do centróide
+    offset_results = measure_centroid_offset(
+        i_diff=i_diff,
+        sigma_diff=sigma_diff,
+        target_pix_coord=target_pix
+    )
+
+    offset_arcsec = offset_results["offset_arcsec"]
+    sig_sigma = offset_results["offset_significance_sigma"]
+
+    # Critério de aprovação: centróide centrado no alvo (< limiar angular ou insignificante estatisticamente)
+    is_on_target = (offset_arcsec <= max_allowed_offset_arcsec) or (sig_sigma < max_significance_sigma)
+
+    return {
+        "passed": bool(is_on_target),
+        "status": "PASS" if is_on_target else "FAIL_POSSIBLE_NEB",
+        "offset_arcsec": offset_arcsec,
+        "offset_pix": offset_results["offset_pix"],
+        "sigma_offset_arcsec": offset_results["sigma_offset_arcsec"],
+        "offset_significance_sigma": sig_sigma,
+        "target_pix": target_pix,
+        "diff_centroid_pix": (offset_results["x_diff_cen"], offset_results["y_diff_cen"]),
+        "images": {
+            "i_out": i_out,
+            "i_in": i_in,
+            "i_diff": i_diff,
+            "sigma_diff": sigma_diff
+        }
     }
