@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+*-checkpoint.ipynb
+
+# Astronomical Data & Large Archives
+*.fits
+*.fits.gz
+*.fit
+*.fit.gz
+*.tpf
+*.tar
+*.tar.gz
+*.zip
+*.h5
+*.hdf5
+*.nc
+data/raw/
+data/cache/
+mastDownload/
+.lightkurve-cache/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Scratch & Temporary Logs
+scratch/
+chrome_profile*
+*.log

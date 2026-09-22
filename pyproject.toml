@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astro-exo"
+version = "0.1.0"
+description = "High-precision Bayesian inference, spatial vetting, and GPU-accelerated pipeline for exoplanet discovery and transit characterization"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Diego Zolhos", email = "diego@zolhos.com" }
+]
+keywords = [
+    "astronomy",
+    "astrophysics",
+    "exoplanets",
+    "transit-photometry",
+    "tess",
+    "kepler",
+    "gaia",
+    "bayesian-inference",
+    "jax",
+    "numpyro",
+    "mcmc"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+dependencies = [
+    "numpy>=1.23.0",
+    "scipy>=1.9.0",
+    "matplotlib>=3.6.0",
+    "astropy>=5.1",
+    "lightkurve>=2.4.0",
+    "astroquery>=0.4.6",
+    "corner>=2.2.1",
+    "emcee>=3.1.4",
+    "wotan>=1.10",
+    "transitleastsquares>=1.0.31",
+    "batman-package>=2.4.9"
+]
+
+[project.optional-dependencies]
+jax = [
+    "jax>=0.4.14",
+    "numpyro>=0.13.0",
+    "arviz>=0.16.0"
+]
+gp = [
+    "celerite2>=0.3.1"
+]
+vetting = [
+    "triceratops>=1.0.15"
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0"
+]
+all = [
+    "astro-exo[jax,gp,vetting,dev]"
+]
+
+[project.urls]
+Homepage = "https://github.com/zolhos/Astro-Exo"
+Repository = "https://github.com/zolhos/Astro-Exo.git"
+Issues = "https://github.com/zolhos/Astro-Exo/issues"
+
+[project.scripts]
+astro-exo = "astro_exo.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

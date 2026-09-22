@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software in your astrophysical research, please cite it as below."
+authors:
+  - family-names: "Zolhos"
+    given-names: "Diego"
+    orcid: "https://orcid.org/0009-0000-0000-0000"
+title: "Astro-Exo: High-Precision Bayesian Inference and Spatial Vetting Pipeline for Exoplanet Discovery"
+version: 0.1.0
+date-released: 2026-09-22
+url: "https://github.com/zolhos/Astro-Exo"
+repository-code: "https://github.com/zolhos/Astro-Exo.git"
+keywords:
+  - exoplanets
+  - astrophysics
+  - bayesian-inference
+  - "TESS"
+  - "Gaia DR3"
+  - "JAX"
+  - "NumPyro"
+  - "MCMC"
+license: MIT
