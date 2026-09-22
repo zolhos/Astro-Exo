@@ -17,6 +17,8 @@ def query_gaia_neighbors(
     """
     try:
         from astroquery.gaia import Gaia
+        from astropy.coordinates import SkyCoord
+        import astropy.units as u
 
         coord = SkyCoord(ra=ra_deg * u.deg, dec=dec_deg * u.deg, frame="icrs")
         j = Gaia.cone_search_async(coord, radius=radius_arcmin * u.arcmin)

@@ -52,7 +52,9 @@ def flatten_lightcurve(
         )
         return flatten_flux, trend
     except ImportError:
-        # Fallback to Savitzky-Golay if scipy is present, else pure numpy moving average
+        win = max(int(window_length * 48), 11)
+        if win % 2 == 0:
+            win += 1
         try:
             from scipy.signal import savgol_filter
             trend = savgol_filter(flux, window_length=win, polyorder=2)

@@ -42,6 +42,8 @@ def fit_tess_prf_subpixel(
     y_coords, x_coords = np.mgrid[0:ny, 0:nx]
     xy_grid = (x_coords, y_coords)
 
+    from scipy.optimize import minimize
+
     # Initial estimates
     x_init, y_init = target_catalog_xy
     amp_init = np.nanmax(i_diff)

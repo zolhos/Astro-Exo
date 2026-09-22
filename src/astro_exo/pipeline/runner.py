@@ -3,11 +3,12 @@ End-to-end pipeline runner orchestrating Ingestion -> Vetting -> Sampling -> Rep
 """
 
 import os
+from typing import Optional
 import numpy as np
 from astro_exo.pipeline.config import TargetConfig, PipelineConfig
 from astro_exo.pipeline.schemas import VettingReport, TransitInferenceResult, FullCandidateProduct
 from astro_exo.ingestion.mast_tess import fetch_tess_lightcurve, fetch_tess_tpf
-from astro_exo.ingestion.detrending import flatten_lightcurve
+from astro_exo.ingestion.detrending import flatten_lightcurve, iterative_flatten
 from astro_exo.ingestion.search import verify_against_exoplanet_archive
 from astro_exo.vetting.difference_img import calculate_difference_image, measure_centroid_offset
 from astro_exo.vetting.gaia import query_gaia_neighbors, overlay_gaia_on_wcs
@@ -33,21 +34,21 @@ class ExoplanetPipelineRunner:
         f_raw = lc.flux.value
         e_raw = lc.flux_err.value
 
-        # Detrending
-        flux_flat, trend = flatten_lightcurve(t_raw, f_raw)
-
-        # 2. Ephemeris defaults if not provided
+        # 2. Ephemeris defaults
         period = self.target.period_days or 3.5
         t0 = self.target.t0_bjd or float(np.nanmin(t_raw) + 0.5)
         dur_hours = self.target.duration_hours or 3.0
         dur_days = dur_hours / 24.0
+
+        # Iterative detrending with transit mask
+        flux_flat, trend, _ = iterative_flatten(t_raw, f_raw, period, t0, dur_days)
 
         # Cross-match with NASA Exoplanet Archive
         is_new, match_info = verify_against_exoplanet_archive(self.target.tic_id, period, t0)
         print(f"[ARCHIVE] {match_info}")
 
         # 3. Spatial Vetting on TPF
-        passed_vetting = True
+        passed_vetting = False
         vetting_report = VettingReport(
             centroid_offset_arcsec=0.0,
             centroid_significance_sigma=0.0,
@@ -57,7 +58,7 @@ class ExoplanetPipelineRunner:
             diff_centroid_y=0.0,
             gaia_neighbors_count=0,
             neighbors_ruling_out_count=0,
-            passed_spatial_vetting=True
+            passed_spatial_vetting=False
         )
 
         if self.config.run_vetting:
@@ -101,7 +102,9 @@ class ExoplanetPipelineRunner:
                     passed_spatial_vetting=passed_vetting
                 )
             except Exception as e:
-                print(f"[WARN] Spatial vetting encountered issue: {e}. Continuing pipeline.")
+                print(f"[WARN] Spatial vetting encountered issue: {e}. Marking passed_vetting=False.")
+                passed_vetting = False
+                vetting_report.passed_spatial_vetting = False
 
         # 4. Bayesian Transit Modeling
         print(f"[MCMC] Running transit inference via backend={self.config.sampler_backend}...")
@@ -111,33 +114,69 @@ class ExoplanetPipelineRunner:
         f_fit = flux_flat[transit_mask]
         e_fit = e_raw[transit_mask]
 
-        fitter = EmceeTransitFitter(
-            time=t_fit,
-            flux=f_fit,
-            flux_err=e_fit,
-            period=period,
-            t0_expected=t0
-        )
-        fitter.run_mcmc(
-            nwalkers=self.config.mcmc_walkers,
-            nburn=self.config.mcmc_burnin,
-            nprod=self.config.mcmc_production
-        )
-        summary = fitter.get_summary()
+        summary = None
+        if self.config.sampler_backend == "jax_nuts":
+            try:
+                from astro_exo.models.jax_nuts import JaxNutsTransitFitter
+                print("[JAX/NUTS] Initializing Hamiltonian Monte Carlo sampler...")
+                jax_fitter = JaxNutsTransitFitter(
+                    time=t_fit,
+                    flux=f_fit,
+                    flux_err=e_fit,
+                    period=period,
+                    t0_prior_mean=t0
+                )
+                idata = jax_fitter.run_nuts(
+                    num_warmup=self.config.nuts_warmup,
+                    num_samples=self.config.nuts_samples
+                )
+                post = idata.posterior
+                rp_med = float(np.median(post["rp"].values))
+                rp_err = float(np.std(post["rp"].values))
+                a_rs_med = float(np.median(post["a_rs"].values))
+                a_rs_err = float(np.std(post["a_rs"].values))
+                b_med = float(np.median(post["b"].values))
+                b_err = float(np.std(post["b"].values))
+                t0_med = float(np.median(post["t0"].values))
+                t0_err = float(np.std(post["t0"].values))
+                q1_med = float(np.median(post["q1"].values))
+                q2_med = float(np.median(post["q2"].values))
+            except Exception as jax_err:
+                print(f"[WARN] JAX/NUTS fallback to emcee: {jax_err}")
+                summary = "fallback"
 
-        rp_med = summary["rp"]["median"]
-        rp_err = 0.5 * (summary["rp"]["err_plus"] + summary["rp"]["err_minus"])
-        a_rs_med = summary["a_rs"]["median"]
-        a_rs_err = 0.5 * (summary["a_rs"]["err_plus"] + summary["a_rs"]["err_minus"])
-        b_med = summary["b"]["median"]
-        b_err = 0.5 * (summary["b"]["err_plus"] + summary["b"]["err_minus"])
+        if self.config.sampler_backend != "jax_nuts" or summary == "fallback":
+            fitter = EmceeTransitFitter(
+                time=t_fit,
+                flux=f_fit,
+                flux_err=e_fit,
+                period=period,
+                t0_expected=t0
+            )
+            fitter.run_mcmc(
+                nwalkers=self.config.mcmc_walkers,
+                nburn=self.config.mcmc_burnin,
+                nprod=self.config.mcmc_production
+            )
+            summary_mcmc = fitter.get_summary()
+
+            rp_med = summary_mcmc["rp"]["median"]
+            rp_err = 0.5 * (summary_mcmc["rp"]["err_plus"] + summary_mcmc["rp"]["err_minus"])
+            a_rs_med = summary_mcmc["a_rs"]["median"]
+            a_rs_err = 0.5 * (summary_mcmc["a_rs"]["err_plus"] + summary_mcmc["a_rs"]["err_minus"])
+            b_med = summary_mcmc["b"]["median"]
+            b_err = 0.5 * (summary_mcmc["b"]["err_plus"] + summary_mcmc["b"]["err_minus"])
+            t0_med = summary_mcmc["t0"]["median"]
+            t0_err = 0.5 * (summary_mcmc["t0"]["err_plus"] + summary_mcmc["t0"]["err_minus"])
+            q1_med = summary_mcmc["q1"]["median"]
+            q2_med = summary_mcmc["q2"]["median"]
 
         inc_med = impact_param_to_inclination(b_med, a_rs_med)
         rho_star = compute_stellar_density(period, a_rs_med)
 
         inference_result = TransitInferenceResult(
-            t0_bjd=summary["t0"]["median"],
-            t0_err=0.5 * (summary["t0"]["err_plus"] + summary["t0"]["err_minus"]),
+            t0_bjd=t0_med,
+            t0_err=t0_err,
             rp_rs=rp_med,
             rp_rs_err=rp_err,
             a_rs=a_rs_med,
