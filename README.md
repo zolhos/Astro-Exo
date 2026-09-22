@@ -133,8 +133,7 @@ Astro-Exo/
 │   └── cli.py           # Command-line interface
 ├── tests/               # Unit tests verifying mathematical transformations and vetting logic
 ├── pyproject.toml       # Modern Python packaging configuration (PEP 621)
-├── CITATION.cff         # Academic citation metadata
-└── all_turns.json       # Complete 27-turn analytical specification
+└── CITATION.cff         # Academic citation metadata
 ```
 
 ---

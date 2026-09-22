@@ -59,3 +59,5 @@ mastDownload/
 scratch/
 chrome_profile*
 *.log
+all_turns.json
+*turns*.json
