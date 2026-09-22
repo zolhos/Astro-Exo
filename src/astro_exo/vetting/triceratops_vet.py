@@ -53,10 +53,11 @@ def run_triceratops_validation(
             "validated": is_validated
         }
     except ImportError:
-        # Fallback informative mock when triceratops is not installed
+        # Strict scientific integrity: do not emit false validation without real calculation
         return {
-            "fpp": 0.005,
-            "nfpp": 0.0001,
-            "validated": True,
-            "note": "triceratops library not installed; mock validation returned."
+            "fpp": None,
+            "nfpp": None,
+            "validated": False,
+            "status": "UNVETTED_STATISTICALLY",
+            "note": "triceratops library not installed; statistical validation pending."
         }

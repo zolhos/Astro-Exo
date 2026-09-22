@@ -58,13 +58,33 @@ def fit_tess_prf_subpixel(
     res = minimize(loss, p0, method="Nelder-Mead")
     x_fit, y_fit, amp_fit, sx_fit, sy_fit, bg_fit = res.x
 
+    # Compute numerical curvature (second derivatives) along x and y to get formal uncertainties
+    eps = 1e-4
+    f0 = loss(res.x)
+    p_x_plus = res.x.copy(); p_x_plus[0] += eps
+    p_x_minus = res.x.copy(); p_x_minus[0] -= eps
+    d2_x = max((loss(p_x_plus) - 2.0 * f0 + loss(p_x_minus)) / (eps ** 2), 1e-6)
+    sigma_x_pix = 1.0 / np.sqrt(0.5 * d2_x)
+
+    p_y_plus = res.x.copy(); p_y_plus[1] += eps
+    p_y_minus = res.x.copy(); p_y_minus[1] -= eps
+    d2_y = max((loss(p_y_plus) - 2.0 * f0 + loss(p_y_minus)) / (eps ** 2), 1e-6)
+    sigma_y_pix = 1.0 / np.sqrt(0.5 * d2_y)
+
     offset_pix = np.hypot(x_fit - x_init, y_fit - y_init)
     offset_arcsec = float(offset_pix * tess_pixel_scale_arcsec)
+    sigma_offset_arcsec = float(np.hypot(sigma_x_pix, sigma_y_pix) * tess_pixel_scale_arcsec)
+    significance = float(offset_arcsec / (sigma_offset_arcsec + 1e-9))
 
     return {
         "prf_x": float(x_fit),
         "prf_y": float(y_fit),
+        "sigma_prf_x_arcsec": float(sigma_x_pix * tess_pixel_scale_arcsec),
+        "sigma_prf_y_arcsec": float(sigma_y_pix * tess_pixel_scale_arcsec),
         "prf_amplitude": float(amp_fit),
         "offset_arcsec": offset_arcsec,
+        "sigma_offset_arcsec": sigma_offset_arcsec,
+        "offset_significance_sigma": significance,
         "fit_success": bool(res.success)
     }
+
