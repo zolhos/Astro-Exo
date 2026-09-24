@@ -115,3 +115,35 @@ def compute_stellar_density(period_days: float, a_rs: float) -> float:
     rho_ratio_to_sun = (4.0 * (np.pi ** 2) / (G_ASTRO * (period_days ** 2))) * (a_rs ** 3)
     # 1 Solar mean density = 1.408 g / cm^3
     return float(rho_ratio_to_sun * 1.408)
+
+
+def compute_transit_duration(period_days: float, rp_rs: float, a_rs: float, b: float) -> float:
+    """
+    Compute total transit duration T_14 (first to fourth contact) in hours for a circular orbit.
+
+    T_14 = (P / pi) * arcsin( (1 / (a/R_*)) * sqrt((1 + Rp/R_*)^2 - b^2) / sin(i) )
+    """
+    if a_rs <= 0 or (1.0 + rp_rs)**2 < b**2:
+        return 0.0
+
+    cos_i = np.clip(b / a_rs, -1.0, 1.0)
+    sin_i = np.sqrt(np.maximum(0.0, 1.0 - cos_i**2))
+    if sin_i == 0.0:
+        return 0.0
+
+    arg = (1.0 / a_rs) * np.sqrt(np.maximum(0.0, (1.0 + rp_rs)**2 - b**2)) / sin_i
+    if arg >= 1.0:
+        return float(period_days * 24.0)
+
+    t14_days = (period_days / np.pi) * np.arcsin(arg)
+    return float(t14_days * 24.0)
+
+
+def align_t0_to_dataset(t0: float, period: float, time_arr: np.ndarray) -> float:
+    """
+    Shifts reference transit epoch t0 by an integer number of orbital periods P
+    so that it lies closest to the median time of the observation dataset.
+    """
+    t_mid = float(np.nanmedian(time_arr))
+    n_epochs = round((t_mid - t0) / period)
+    return float(t0 + n_epochs * period)

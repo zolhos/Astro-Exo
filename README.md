@@ -195,6 +195,7 @@ pytest tests/ -v
 # Or run tests directly with python3:
 python3 tests/test_smoke.py
 python3 tests/test_phase2_real_photometry.py
+python3 tests/test_phase3_bayesian.py
 python3 tests/test_quick_sample.py
 python3 tests/test_large_sample.py
 python3 tests/test_batch_runner.py

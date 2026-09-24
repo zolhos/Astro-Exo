@@ -145,6 +145,7 @@ class ExoplanetPipelineRunner:
                 print(f"[WARN] JAX/NUTS fallback to emcee: {jax_err}")
                 summary = "fallback"
 
+        rhat_max = None
         if self.config.sampler_backend != "jax_nuts" or summary == "fallback":
             fitter = EmceeTransitFitter(
                 time=t_fit,
@@ -161,15 +162,34 @@ class ExoplanetPipelineRunner:
             summary_mcmc = fitter.get_summary()
 
             rp_med = summary_mcmc["rp"]["median"]
-            rp_err = 0.5 * (summary_mcmc["rp"]["err_plus"] + summary_mcmc["rp"]["err_minus"])
+            rp_err = 0.5 * (summary_mcmc["rp"]["err_plus_1s"] + summary_mcmc["rp"]["err_minus_1s"])
             a_rs_med = summary_mcmc["a_rs"]["median"]
-            a_rs_err = 0.5 * (summary_mcmc["a_rs"]["err_plus"] + summary_mcmc["a_rs"]["err_minus"])
+            a_rs_err = 0.5 * (summary_mcmc["a_rs"]["err_plus_1s"] + summary_mcmc["a_rs"]["err_minus_1s"])
             b_med = summary_mcmc["b"]["median"]
-            b_err = 0.5 * (summary_mcmc["b"]["err_plus"] + summary_mcmc["b"]["err_minus"])
+            b_err = 0.5 * (summary_mcmc["b"]["err_plus_1s"] + summary_mcmc["b"]["err_minus_1s"])
             t0_med = summary_mcmc["t0"]["median"]
-            t0_err = 0.5 * (summary_mcmc["t0"]["err_plus"] + summary_mcmc["t0"]["err_minus"])
+            t0_err = 0.5 * (summary_mcmc["t0"]["err_plus_1s"] + summary_mcmc["t0"]["err_minus_1s"])
             q1_med = summary_mcmc["q1"]["median"]
             q2_med = summary_mcmc["q2"]["median"]
+
+            diag = fitter.get_diagnostics()
+            rhat_vals = [v for v in diag["r_hat"].values() if np.isfinite(v)]
+            rhat_max = float(max(rhat_vals)) if rhat_vals else None
+
+            # Generate corner & fit plot in target folder
+            target_plot_dir = os.path.join(self.config.output_dir, f"TIC_{self.target.tic_id}")
+            os.makedirs(target_plot_dir, exist_ok=True)
+            try:
+                fitter.plot_corner(
+                    os.path.join(target_plot_dir, "mcmc_corner.png"),
+                    title=f"TIC {self.target.tic_id} - MCMC Posteriors"
+                )
+                fitter.plot_fit(
+                    os.path.join(target_plot_dir, "transit_fit.png"),
+                    title=f"TIC {self.target.tic_id} (P = {period:.4f} d) - Transit Fit"
+                )
+            except Exception as plot_err:
+                print(f"[WARN] Could not generate MCMC plots: {plot_err}")
 
         inc_med = impact_param_to_inclination(b_med, a_rs_med)
         rho_star = compute_stellar_density(period, a_rs_med)
@@ -185,9 +205,10 @@ class ExoplanetPipelineRunner:
             impact_parameter_err=b_err,
             inclination_deg=inc_med,
             inclination_err=1.0,
-            limb_dark_q1=summary["q1"]["median"],
-            limb_dark_q2=summary["q2"]["median"],
-            stellar_density_g_cm3=rho_star
+            limb_dark_q1=q1_med,
+            limb_dark_q2=q2_med,
+            stellar_density_g_cm3=rho_star,
+            gelman_rubin_rhat_max=rhat_max
         )
 
         disposition = "CANDIDATE"
