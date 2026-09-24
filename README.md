@@ -51,12 +51,13 @@ Unlike classical 1D transit pipelines that treat photometric points in isolation
 * **High-Performance FITS Parser:** Direct extraction of binary tables (`PDCSAP_FLUX`, `SAP_FLUX`, `QUALITY`), 3D pixel cubes, and automated WCS astrometric calibration from `APERTURE` FITS headers.
 * **Stellar Detrending (`wotan`):** Preservation of transit geometries and depth using robust iterative filters (biweight, Huber-spline) with cadence-break tolerance.
 
-### 2. Spatial Vetting & Blend Disambiguation
+### 2. Spatial Vetting, Gaia DR3 Dilution & Statistical Validation (Phase 4)
 * **Difference Imaging on Real TPFs:** Subtracts in-transit average from out-of-transit baseline on raw Target Pixel Files with Monte Carlo error propagation.
 * **Sub-Pixel WCS Astrometric Centroiding:** Maps difference flux deficits directly to catalog celestial coordinates (RA/Dec $\to$ sub-pixel coordinates), validating whether the deficit is on-target ($< 0.5$ TESS pixels) or originating from nearby blended eclipsing binaries (BEBs).
 * **Sub-Pixel PRF Fitting:** Fits a 2D analytical Pixel Response Function to the difference flux to localize transit deficits down to sub-arcsecond precision.
-* **Gaia DR3 Cross-Match & Blend Limits:** Queries all stars within 1 arcminute and analytically calculates the maximum possible transit depth each neighbor could inject into the aperture ($\Delta m_{\text{max}}$), mathematically ruling out blended eclipsing binaries (BEBs).
-* **TRICERATOPS Integration:** Calculates False Positive Probability (FPP) and Nearby False Positive Probability (NFPP) against TRILEGAL galactic stellar population models.
+* **Gaia DR3 2.5' Multispectral Screening:** Queries all stars within 2.5 arcmin, derives synthetic TESS magnitudes ($T_{\text{mag}}$) from Gaia $G, BP, RP$ colors (TIC v8), and analytically computes critical magnitude bounds ($\Delta m_{\text{crit}} = -2.5 \log_{10} \delta_{\text{obs}}$) ruling out background blends.
+* **Analytical De-dilution (Transit Restoration):** Reverses transit depth attenuation in close binary blends (e.g. WASP-77b at 3.3"), restoring true physical transit depth $\delta_{\text{true}} = \delta_{\text{obs}} / D$ and true radius ratio $(R_p/R_\star)_{\text{true}}$.
+* **TRICERATOPS Statistical Validation:** Computes marginalized posterior probabilities across 6 astrophysical hypotheses (TP, PTP, EB, EBx2P, HEB, BEB), deriving False Positive Probability (FPP < 1%) and Nearby False Positive Probability (NFPP < 0.1%).
 
 ### 3. High-Dimensional Bayesian Modeling
 * **Kipping (2013) Triangular Parameterization:** Samples unconstrained uniform parameters $(q_1, q_2) \in [0, 1]^2$ mapping directly to physically stable, monotonically decreasing limb-darkening profiles ($u_1 + u_2 < 1$, $u_1 > 0$, $u_1 + 2u_2 > 0$).

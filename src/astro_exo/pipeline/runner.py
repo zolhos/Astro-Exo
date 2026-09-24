@@ -12,7 +12,12 @@ from astro_exo.ingestion.detrending import flatten_lightcurve, iterative_flatten
 from astro_exo.ingestion.search import verify_against_exoplanet_archive
 from astro_exo.vetting.difference_img import calculate_difference_image, measure_centroid_offset
 from astro_exo.vetting.gaia import query_gaia_neighbors, overlay_gaia_on_wcs
-from astro_exo.vetting.dilution import rule_out_neighbors_as_blends
+from astro_exo.vetting.dilution import (
+    rule_out_neighbors_as_blends,
+    calculate_dilution_factor,
+    calculate_critical_delta_mag,
+    restore_true_radius_ratio
+)
 from astro_exo.vetting.triceratops_vet import run_triceratops_validation
 from astro_exo.models.emcee_sampler import EmceeTransitFitter
 from astro_exo.models.transforms import compute_stellar_density, impact_param_to_inclination
@@ -49,17 +54,17 @@ class ExoplanetPipelineRunner:
 
         # 3. Spatial Vetting on TPF
         passed_vetting = False
-        vetting_report = VettingReport(
-            centroid_offset_arcsec=0.0,
-            centroid_significance_sigma=0.0,
-            target_pixel_x=0.0,
-            target_pixel_y=0.0,
-            diff_centroid_x=0.0,
-            diff_centroid_y=0.0,
-            gaia_neighbors_count=0,
-            neighbors_ruling_out_count=0,
-            passed_spatial_vetting=False
-        )
+        cen_res = {
+            "offset_arcsec": 0.0,
+            "offset_significance_sigma": 0.0,
+            "x_diff_cen": 0.0,
+            "y_diff_cen": 0.0,
+            "sigma_offset_arcsec": 1.0
+        }
+        pix_x_tgt, pix_y_tgt = 0.0, 0.0
+        neighbors = []
+        vetted_neighbors = []
+        target_tmag = 10.0
 
         if self.config.run_vetting:
             try:
@@ -76,35 +81,22 @@ class ExoplanetPipelineRunner:
                 # Target WCS pixel coordinate
                 ra, dec = tpf.ra, tpf.dec
                 pix_x_tgt, pix_y_tgt = tpf.wcs.all_world2pix(ra, dec, 0)
+                if hasattr(tpf, "header") and "TESSMAG" in tpf.header:
+                    target_tmag = float(tpf.header["TESSMAG"])
 
                 # Centroid offset
                 cen_res = measure_centroid_offset(i_diff, sigma_diff, (pix_x_tgt, pix_y_tgt))
                 passed_vetting = cen_res["offset_significance_sigma"] < 3.0
 
-                # Gaia DR3 query
-                neighbors = query_gaia_neighbors(ra, dec, radius_arcmin=1.0)
-                vetted_neighbors = rule_out_neighbors_as_blends(
-                    observed_transit_depth_ppm=1000.0,  # approximate depth
-                    target_mag=10.0,
-                    neighbors=neighbors
-                )
-                ruled_out_count = sum(1 for n in vetted_neighbors if n.get("ruled_out", False))
-
-                vetting_report = VettingReport(
-                    centroid_offset_arcsec=cen_res["offset_arcsec"],
-                    centroid_significance_sigma=cen_res["offset_significance_sigma"],
-                    target_pixel_x=float(pix_x_tgt),
-                    target_pixel_y=float(pix_y_tgt),
-                    diff_centroid_x=cen_res["x_diff_cen"],
-                    diff_centroid_y=cen_res["y_diff_cen"],
-                    gaia_neighbors_count=len(neighbors),
-                    neighbors_ruling_out_count=ruled_out_count,
-                    passed_spatial_vetting=passed_vetting
+                # Gaia DR3 query (2.5 arcmin cone search)
+                neighbors = query_gaia_neighbors(
+                    ra, dec,
+                    radius_arcmin=2.5,
+                    target_tic=self.target.tic_id
                 )
             except Exception as e:
                 print(f"[WARN] Spatial vetting encountered issue: {e}. Marking passed_vetting=False.")
                 passed_vetting = False
-                vetting_report.passed_spatial_vetting = False
 
         # 4. Bayesian Transit Modeling
         print(f"[MCMC] Running transit inference via backend={self.config.sampler_backend}...")
@@ -211,11 +203,77 @@ class ExoplanetPipelineRunner:
             gelman_rubin_rhat_max=rhat_max
         )
 
+        # 5. Dilution Screening & TRICERATOPS Statistical Validation
+        observed_depth_ppm = (rp_med ** 2) * 1e6
+        delta_m_crit = calculate_critical_delta_mag(observed_depth_ppm)
+
+        vetted_neighbors = rule_out_neighbors_as_blends(
+            observed_transit_depth_ppm=observed_depth_ppm,
+            target_mag=target_tmag,
+            neighbors=neighbors
+        )
+        ruled_out_count = sum(1 for n in vetted_neighbors if n.get("ruled_out", False))
+
+        dilution_info = calculate_dilution_factor(
+            target_mag=target_tmag,
+            neighbors=vetted_neighbors
+        )
+        dilution_factor = dilution_info["dilution_factor"]
+
+        # De-dilute if blend is non-negligible
+        corr_rp, corr_rp_err = None, None
+        if dilution_factor < 0.999:
+            corr_rp, corr_rp_err = restore_true_radius_ratio(
+                rp_rs_obs=rp_med,
+                dilution_factor=dilution_factor,
+                rp_rs_err=rp_err
+            )
+
+        # Run statistical validation
+        val_res = run_triceratops_validation(
+            tic_id=self.target.tic_id,
+            sectors=[self.target.sector] if self.target.sector else [1],
+            period=period,
+            depth=observed_depth_ppm,
+            duration_days=dur_days,
+            rp_rs=rp_med,
+            target_tmag=target_tmag,
+            centroid_offset_arcsec=cen_res.get("offset_arcsec", 0.0),
+            centroid_sigma_arcsec=cen_res.get("sigma_offset_arcsec", 1.0),
+            neighbors=vetted_neighbors
+        )
+
+        fpp = val_res.get("fpp", 1.0)
+        nfpp = val_res.get("nfpp", 1.0)
+        stat_valid = bool(val_res.get("validated", False))
+
+        vetting_report = VettingReport(
+            centroid_offset_arcsec=cen_res.get("offset_arcsec", 0.0),
+            centroid_significance_sigma=cen_res.get("offset_significance_sigma", 0.0),
+            target_pixel_x=float(pix_x_tgt),
+            target_pixel_y=float(pix_y_tgt),
+            diff_centroid_x=cen_res.get("x_diff_cen", 0.0),
+            diff_centroid_y=cen_res.get("y_diff_cen", 0.0),
+            gaia_neighbors_count=len(neighbors),
+            neighbors_ruling_out_count=ruled_out_count,
+            dilution_factor=dilution_factor,
+            critical_delta_mag=delta_m_crit,
+            corrected_rp_rs=corr_rp,
+            corrected_rp_rs_err=corr_rp_err,
+            triceratops_fpp=fpp,
+            triceratops_nfpp=nfpp,
+            statistical_validation_passed=stat_valid,
+            scenario_probabilities=val_res.get("probabilities", None),
+            passed_spatial_vetting=passed_vetting
+        )
+
         disposition = "CANDIDATE"
-        if not passed_vetting:
+        if not passed_vetting or not stat_valid:
             disposition = "FALSE_POSITIVE"
-        elif is_new and passed_vetting:
+        elif is_new and passed_vetting and stat_valid:
             disposition = "VALIDATED_PLANET"
+        elif not is_new and passed_vetting and stat_valid:
+            disposition = "CONFIRMED_PLANET"
 
         product = FullCandidateProduct(
             tic_id=self.target.tic_id,

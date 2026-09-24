@@ -18,8 +18,14 @@ class VettingReport:
     diff_centroid_y: float
     gaia_neighbors_count: int
     neighbors_ruling_out_count: int
+    dilution_factor: float = 1.0
+    critical_delta_mag: Optional[float] = None
+    corrected_rp_rs: Optional[float] = None
+    corrected_rp_rs_err: Optional[float] = None
     triceratops_fpp: Optional[float] = None
     triceratops_nfpp: Optional[float] = None
+    statistical_validation_passed: bool = False
+    scenario_probabilities: Optional[Dict[str, float]] = None
     passed_spatial_vetting: bool = False
 
 
