@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "astro-exo"
-version = "0.1.0"
+version = "1.0.0"
 description = "High-precision Bayesian inference, spatial vetting, and GPU-accelerated pipeline for exoplanet discovery and transit characterization"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -17,6 +17,7 @@ keywords = [
     "astrophysics",
     "exoplanets",
     "transit-photometry",
+    "radial-velocity",
     "tess",
     "kepler",
     "gaia",
@@ -26,7 +27,7 @@ keywords = [
     "mcmc"
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Astronomy",
     "License :: OSI Approved :: MIT License",
@@ -50,6 +51,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+gpu = [
+    "jax>=0.4.14",
+    "numpyro>=0.13.0",
+    "arviz>=0.16.0"
+]
 jax = [
     "jax>=0.4.14",
     "numpyro>=0.13.0",
@@ -61,14 +67,22 @@ gp = [
 vetting = [
     "triceratops>=1.0.15"
 ]
+rv = [
+    "scipy>=1.9.0",
+    "emcee>=3.1.4",
+    "corner>=2.2.1",
+    "astropy>=5.1"
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "black>=23.0.0",
-    "flake8>=6.0.0"
+    "flake8>=6.0.0",
+    "build>=1.0.0",
+    "twine>=4.0.0"
 ]
 all = [
-    "astro-exo[jax,gp,vetting,dev]"
+    "astro-exo[gpu,gp,vetting,rv,dev]"
 ]
 
 [project.urls]

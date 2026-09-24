@@ -5,8 +5,8 @@ authors:
     given-names: "Diego"
     orcid: "https://orcid.org/0009-0000-0000-0000"
 title: "Astro-Exo: High-Precision Bayesian Inference and Spatial Vetting Pipeline for Exoplanet Discovery"
-version: 0.1.0
-date-released: 2026-09-22
+version: 1.0.0
+date-released: 2026-09-24
 url: "https://github.com/zolhos/Astro-Exo"
 repository-code: "https://github.com/zolhos/Astro-Exo.git"
 keywords:

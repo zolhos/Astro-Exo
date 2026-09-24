@@ -3,9 +3,10 @@
 **High-Precision Bayesian Inference, Spatial Vetting, and GPU-Accelerated Pipeline for Exoplanet Discovery and Transit Characterization.**
 
 [![CI](https://github.com/zolhos/Astro-Exo/actions/workflows/ci.yml/badge.svg)](https://github.com/zolhos/Astro-Exo/actions/workflows/ci.yml)
+[![Version: 1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![Tests: 32 passing](https://img.shields.io/badge/tests-32%20passing-brightgreen.svg)](tests/)
+[![Tests: 37 passing](https://img.shields.io/badge/tests-37%20passing-brightgreen.svg)](tests/)
 [![arXiv](https://img.shields.io/badge/astro--ph.EP-arXiv-B31B1B.svg)](https://arxiv.org)
 
 ---
@@ -125,6 +126,21 @@ astro-exo run --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 
 astro-exo vet --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 2.5
 ```
 
+#### Run Multi-Spectrograph Joint Doppler Radial Velocity (RV)
+```bash
+# Run benchmark demo on WASP-77b with multi-instrument data (HARPS + CORALIE)
+astro-exo joint-rv --demo
+
+# Or run on custom dataset
+astro-exo joint-rv --target TOI-1001.01 --rv-file data/rv_data/TOI-1001.01_rv.csv --period 1.9316 --t0 2458500.0 --rp-rs 0.105
+```
+
+#### Generate Scientific Interactive Web Dashboard
+```bash
+# Generate dashboard from novel round results
+astro-exo dashboard --results-dir results/rodada_amostras_ineditas --output results/dashboard_astro_exo.html --open
+```
+
 ### 2. Full Test Round with Novel Samples (Complete Pipeline Verification)
 
 Execute all modules across novel, previously unseen targets and output all diagnostic plots, catalogs, and reports:
@@ -235,10 +251,11 @@ Astro-Exo/
 Execute the automated test suite with standard `unittest` or `pytest`:
 
 ```bash
-# Run all 32 automated tests
+# Run all 37 automated tests
 python3 -m unittest discover tests
 
 # Or run tests individually:
+python3 tests/test_cli_v1.py
 python3 tests/test_all_modules_novel_samples.py
 python3 tests/test_phase5_joint_rv.py
 python3 tests/test_phase4_vetting.py

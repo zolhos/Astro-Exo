@@ -13,6 +13,7 @@ from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional
 import numpy as np
 
+from astro_exo import __version__
 from astro_exo.pipeline.config import TargetConfig, PipelineConfig
 from astro_exo.pipeline.schemas import VettingReport
 from astro_exo.models.transforms import compute_stellar_density, impact_param_to_inclination, kipping_to_quadratic
@@ -346,7 +347,7 @@ class BatchProcessor:
 
         metadata = {
             "run_timestamp_utc": datetime.now(timezone.utc).isoformat(),
-            "pipeline_version": "0.1.0",
+            "pipeline_version": __version__,
             "mode": self.mode,
             "input_catalog": {
                 "filepath": os.path.abspath(catalog_path) if catalog_path else None,
