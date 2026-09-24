@@ -15,7 +15,12 @@ from astro_exo.models.transforms import (
     compute_stellar_density,
     impact_param_to_inclination,
 )
-from astro_exo.models.diagnostics import compute_gelman_rubin, compute_effective_sample_size
+from astro_exo.models.diagnostics import (
+    compute_gelman_rubin,
+    compute_effective_sample_size,
+    ConvergenceWarning,
+)
+from astro_exo.models.gp_noise import CeleriteGPNoiseModel
 from astro_exo.models.emcee_sampler import EmceeTransitFitter, evaluate_batman_model
 
 
@@ -60,6 +65,34 @@ class TestPhase3BayesianInference(unittest.TestCase):
         r_hat_unconv = compute_gelman_rubin(mock_unconverged)
         for val in r_hat_unconv:
             self.assertGreater(val, 1.1)
+
+        # ESS calculation with valid tau
+        mock_flat = mock_converged.reshape(-1, params)
+        valid_tau = np.array([20.0, 15.0, 25.0])
+        ess = compute_effective_sample_size(mock_flat, tau=valid_tau)
+        expected_ess = np.round(len(mock_flat) / (2.0 * valid_tau))
+        np.testing.assert_array_equal(ess, expected_ess)
+
+        # ESS when tau is None, negative, or contains NaN should return NaNs and emit ConvergenceWarning/UserWarning
+        import warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            ess_none = compute_effective_sample_size(mock_flat, tau=None)
+            self.assertTrue(any(issubclass(item.category, UserWarning) for item in w))
+            self.assertTrue(np.all(np.isnan(ess_none)))
+            self.assertEqual(len(ess_none), params)
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            ess_nan = compute_effective_sample_size(mock_flat, tau=np.array([12.0, np.nan, 18.0]))
+            self.assertTrue(any(issubclass(item.category, UserWarning) for item in w))
+            self.assertTrue(np.all(np.isnan(ess_nan)))
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            ess_nonpos = compute_effective_sample_size(mock_flat, tau=np.array([12.0, 0.0, -1.0]))
+            self.assertTrue(any(issubclass(item.category, UserWarning) for item in w))
+            self.assertTrue(np.all(np.isnan(ess_nonpos)))
 
     def test_03_synthetic_mcmc_recovery(self):
         """Generates synthetic transit data and verifies MAP & MCMC parameter recovery."""
@@ -166,6 +199,49 @@ class TestPhase3BayesianInference(unittest.TestCase):
         depth_ppm = summary["depth_ppm"]["median"]
         self.assertGreater(depth_ppm, 4000.0)
         self.assertLess(depth_ppm, 9000.0)
+
+    def test_05_gp_noise_sho_fallback_and_safeguard(self):
+        """Verifies analytical critically damped SHO GP kernel fallback and rho_gp safeguard."""
+        t_pts = np.linspace(0, 1.0, 60)
+        yerr = np.full(60, 0.001)
+        rng = np.random.default_rng(123)
+        residuals = rng.normal(0, 0.001, 60)
+
+        # 1. Test rho_gp safeguard with explicit transit_duration
+        transit_dur = 0.1  # e.g. 2.4 hours
+        gp_model = CeleriteGPNoiseModel(t_pts, yerr, transit_duration=transit_dur)
+        # Passed rho_gp is smaller than 2 * transit_dur (0.05 < 0.20)
+        safe_rho = gp_model._apply_rho_safeguard(0.05)
+        self.assertEqual(safe_rho, 2.0 * transit_dur)
+
+        # Passed rho_gp larger than 2 * transit_dur (0.50 > 0.20)
+        safe_rho_large = gp_model._apply_rho_safeguard(0.50)
+        self.assertEqual(safe_rho_large, 0.50)
+
+        # Default minimum safeguard when transit_duration is None
+        gp_model_nodur = CeleriteGPNoiseModel(t_pts, yerr)
+        safe_rho_def = gp_model_nodur._apply_rho_safeguard(0.001)
+        self.assertEqual(safe_rho_def, 0.01)
+
+        # 2. Analytical SHO covariance fallback calculation
+        sigma = 0.002
+        rho = 0.3
+        log_l = gp_model.compute_gp_log_likelihood(residuals, sigma_gp=sigma, rho_gp=rho)
+        self.assertTrue(np.isfinite(log_l))
+
+        # Check SHO formula explicitly:
+        # k(dt) = sigma^2 * exp(-w0 * dt / sqrt(2)) * [cos(w0 * dt / sqrt(2)) + sin(w0 * dt / sqrt(2))]
+        # w0 = 2 * pi / rho
+        w0 = 2.0 * np.pi / rho
+        dt = np.abs(t_pts[:, None] - t_pts[None, :])
+        eta = (w0 * dt) / np.sqrt(2.0)
+        expected_k = (sigma ** 2) * np.exp(-eta) * (np.cos(eta) + np.sin(eta))
+        expected_k += np.diag(yerr ** 2 + 1e-14)
+        _, expected_logdet = np.linalg.slogdet(expected_k)
+        expected_quad = residuals @ np.linalg.solve(expected_k, residuals)
+        expected_log_l = -0.5 * (expected_quad + expected_logdet + len(residuals) * np.log(2.0 * np.pi))
+
+        self.assertAlmostEqual(log_l, expected_log_l, places=6)
 
 
 if __name__ == "__main__":

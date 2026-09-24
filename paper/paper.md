@@ -133,7 +133,7 @@ The analysis of **TOI-1002.01** exemplifies the power of `Astro-Exo`'s pixel-lev
 - `astro_exo.pipeline`: Execution runners for single targets, batch clusters, and automated summary generators;
 - `astro_exo.cli`: Rich command-line interface with subcommands `run`, `vet`, `joint-rv`, `batch`, `dashboard`, and `smoke`.
 
-The software includes an automated test suite with 37 tests covering unit, integration, and mock TAP operations, continuously validated across Linux, macOS, and Windows via GitHub Actions CI/CD.
+The software includes an automated test suite with 42 tests covering unit, integration, and mock TAP operations, continuously validated across Linux, macOS, and Windows via GitHub Actions CI/CD.
 
 # Research Impact & FAIR Principles
 

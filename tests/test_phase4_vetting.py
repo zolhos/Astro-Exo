@@ -153,6 +153,46 @@ class TestPhase4Vetting(unittest.TestCase):
         self.assertEqual(stars[0]["dist_arcsec"], 0.0)
         self.assertIn("tess_mag", stars[0])
 
+    def test_triceratops_2d_vector_breaks_ring_degeneracy(self):
+        """Test that 2D Euclidean vector distance distinguishes between opposite neighbors at equal scalar distance."""
+        # Deficit is at (+10.0", 0.0")
+        centroid_vec = (10.0, 0.0)
+
+        # Star A is at (+10.0", 0.0") -> exact match
+        neighbor_a = [{"source_id": 101, "tess_mag": 12.0, "dist_arcsec": 10.0, "d_ra_arcsec": 10.0, "d_dec_arcsec": 0.0, "can_cause_transit": True}]
+        engine_a = BayesianFalsePositiveEngine(
+            target_tmag=10.0,
+            period_days=3.0,
+            depth_ppm=15000.0,
+            duration_hours=2.5,
+            rp_rs=0.12,
+            centroid_offset_arcsec=10.0,
+            centroid_sigma_arcsec=1.0,
+            centroid_vec_arcsec=centroid_vec,
+            neighbors=neighbor_a
+        )
+        res_a = engine_a.calculate_scenario_probabilities()
+
+        # Star B is at opposite position (-10.0", 0.0") -> 20 arcsec separation from deficit
+        neighbor_b = [{"source_id": 102, "tess_mag": 12.0, "dist_arcsec": 10.0, "d_ra_arcsec": -10.0, "d_dec_arcsec": 0.0, "can_cause_transit": True}]
+        engine_b = BayesianFalsePositiveEngine(
+            target_tmag=10.0,
+            period_days=3.0,
+            depth_ppm=15000.0,
+            duration_hours=2.5,
+            rp_rs=0.12,
+            centroid_offset_arcsec=10.0,
+            centroid_sigma_arcsec=1.0,
+            centroid_vec_arcsec=centroid_vec,
+            neighbors=neighbor_b
+        )
+        res_b = engine_b.calculate_scenario_probabilities()
+
+        # Star A must have significant BEB probability, while Star B must have negligible BEB probability
+        self.assertGreater(res_a["probabilities"]["BEB"], 0.40, "Star A matches 2D deficit vector and must have high BEB")
+        self.assertLess(res_b["probabilities"]["BEB"], 0.01, "Star B is on opposite side (20 arcsec from deficit) and must have low BEB")
+
 
 if __name__ == "__main__":
     unittest.main()
+

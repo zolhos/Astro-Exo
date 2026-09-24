@@ -36,6 +36,52 @@ R_EARTH_M = 6.3781e6      # m
 AU_M = 1.495978707e11     # m
 
 
+def solve_kepler(
+    mean_anom: Union[float, np.ndarray],
+    ecc: float,
+    max_iter: int = 15,
+    tol: float = 1e-14
+) -> Union[float, np.ndarray]:
+    """
+    Solves Kepler's equation M = E - e*sin(E) for eccentric anomaly E using
+    Danby's cubic expansion starting value and adaptive Newton-Raphson iteration.
+
+    Parameters
+    ----------
+    mean_anom : float or np.ndarray
+        Mean anomaly in radians.
+    ecc : float
+        Orbital eccentricity (0 <= ecc < 1).
+    max_iter : int, optional
+        Maximum number of Newton-Raphson iterations (default: 15).
+    tol : float, optional
+        Adaptive convergence threshold max(|delta_E|) < tol (default: 1e-14).
+
+    Returns
+    -------
+    e_anom : float or np.ndarray
+        Eccentric anomaly in radians.
+    """
+    m = np.asarray(mean_anom, dtype=np.float64)
+    if ecc <= 1e-7:
+        return float(m) if np.ndim(mean_anom) == 0 else m.copy()
+
+    # Danby / cubic initial guess: E_0 = M + e*sin(M) + (e^2 / 2)*sin(2M)
+    e_anom = m + ecc * np.sin(m) + 0.5 * (ecc ** 2) * np.sin(2.0 * m)
+
+    for _ in range(max_iter):
+        f_eval = e_anom - ecc * np.sin(e_anom) - m
+        f_prime = 1.0 - ecc * np.cos(e_anom)
+        delta_e = f_eval / f_prime
+        e_anom -= delta_e
+        if np.max(np.abs(delta_e)) < tol:
+            break
+
+    if np.ndim(mean_anom) == 0:
+        return float(e_anom)
+    return e_anom
+
+
 def keplerian_rv(
     time: np.ndarray,
     period: float,
@@ -92,12 +138,8 @@ def keplerian_rv(
     # Mean anomaly at time t
     mean_anom = ((2.0 * np.pi * (time - t0) / period) + m_tra) % (2.0 * np.pi)
 
-    # Solve Kepler's equation E - e*sin(E) = M via Newton-Raphson iteration
-    e_anom = mean_anom.copy()
-    for _ in range(7):
-        f_eval = e_anom - ecc * np.sin(e_anom) - mean_anom
-        f_prime = 1.0 - ecc * np.cos(e_anom)
-        e_anom -= f_eval / f_prime
+    # Solve Kepler's equation E - e*sin(E) = M via adaptive Newton-Raphson with Danby starting guess
+    e_anom = solve_kepler(mean_anom, ecc, max_iter=15, tol=1e-14)
 
     # True anomaly f
     true_anom = 2.0 * np.arctan2(
@@ -145,11 +187,19 @@ def compute_planetary_mass_density(
     k_semiamp_ms: float,
     rp_rs: float,
     ecc: float = 0.0,
-    inc_deg: float = 90.0
+    inc_deg: float = 90.0,
+    m_star_err: Optional[float] = None,
+    r_star_err: Optional[float] = None,
+    k_semiamp_err: Optional[float] = None,
+    rp_rs_err: Optional[float] = None,
+    n_mc_samples: int = 1000,
+    random_seed: int = 42
 ) -> Dict[str, Union[float, str]]:
     """
     Derive physical planetary mass, radius, bulk density, surface gravity,
     semi-major axis, and interior structure classification.
+    Optionally propagates uncertainties via Monte Carlo sampling when error parameters
+    are supplied.
     """
     p_sec = period_days * 86400.0
     m_star_kg = m_star_msun * M_SUN_KG
@@ -197,7 +247,7 @@ def compute_planetary_mass_density(
 
     interior_class = classify_planetary_interior(m_p_earth, rho_g_cm3)
 
-    return {
+    out = {
         "mass_earth": float(m_p_earth),
         "mass_jupiter": float(m_p_jup),
         "radius_earth": float(r_p_earth),
@@ -208,6 +258,55 @@ def compute_planetary_mass_density(
         "a_au": float(a_au),
         "interior_classification": interior_class
     }
+
+    # If any error is specified, perform Monte Carlo uncertainty propagation
+    if any(e is not None for e in (m_star_err, r_star_err, k_semiamp_err, rp_rs_err)):
+        sig_m = float(m_star_err) if m_star_err is not None else 0.05 * m_star_msun
+        sig_r = float(r_star_err) if r_star_err is not None else 0.03 * r_star_rsun
+        sig_k = float(k_semiamp_err) if k_semiamp_err is not None else 0.0
+        sig_rp = float(rp_rs_err) if rp_rs_err is not None else 0.03 * rp_rs
+
+        rng = np.random.default_rng(random_seed)
+        m_samples = np.clip(rng.normal(m_star_msun, sig_m, n_mc_samples), 0.01, None)
+        r_samples = np.clip(rng.normal(r_star_rsun, sig_r, n_mc_samples), 0.01, None)
+        k_samples = np.clip(rng.normal(k_semiamp_ms, sig_k, n_mc_samples), 0.0, None)
+        rp_samples = np.clip(rng.normal(rp_rs, sig_rp, n_mc_samples), 1e-5, None)
+
+        m_jup_mc = []
+        m_earth_mc = []
+        r_jup_mc = []
+        r_earth_mc = []
+        rho_mc = []
+
+        for i in range(n_mc_samples):
+            sub = compute_planetary_mass_density(
+                m_star_msun=float(m_samples[i]),
+                r_star_rsun=float(r_samples[i]),
+                period_days=period_days,
+                k_semiamp_ms=float(k_samples[i]),
+                rp_rs=float(rp_samples[i]),
+                ecc=ecc,
+                inc_deg=inc_deg
+            )
+            m_jup_mc.append(sub["mass_jupiter"])
+            m_earth_mc.append(sub["mass_earth"])
+            r_jup_mc.append(sub["radius_jupiter"])
+            r_earth_mc.append(sub["radius_earth"])
+            rho_mc.append(sub["density_g_cm3"])
+
+        p_mjup = np.percentile(m_jup_mc, [16, 50, 84])
+        p_mearth = np.percentile(m_earth_mc, [16, 50, 84])
+        p_rjup = np.percentile(r_jup_mc, [16, 50, 84])
+        p_rearth = np.percentile(r_earth_mc, [16, 50, 84])
+        p_rho = np.percentile(rho_mc, [16, 50, 84])
+
+        out["mass_jupiter_err"] = float((p_mjup[2] - p_mjup[0]) / 2.0)
+        out["mass_earth_err"] = float((p_mearth[2] - p_mearth[0]) / 2.0)
+        out["radius_jupiter_err"] = float((p_rjup[2] - p_rjup[0]) / 2.0)
+        out["radius_earth_err"] = float((p_rearth[2] - p_rearth[0]) / 2.0)
+        out["density_g_cm3_err"] = float((p_rho[2] - p_rho[0]) / 2.0)
+
+    return out
 
 
 class JointTransitRVSampler:
@@ -225,7 +324,10 @@ class JointTransitRVSampler:
         m_star_msun: float = 1.0,
         r_star_rsun: float = 1.0,
         rp_rs_prior: float = 0.1,
-        fit_eccentricity: bool = False
+        fit_eccentricity: bool = False,
+        m_star_err: Optional[float] = None,
+        r_star_err: Optional[float] = None,
+        rp_rs_err: Optional[float] = None
     ):
         self.rv = rv_dataset
         self.phot_time = phot_time
@@ -238,6 +340,12 @@ class JointTransitRVSampler:
         self.r_star = float(r_star_rsun)
         self.rp_rs_init = float(rp_rs_prior)
         self.fit_eccentricity = fit_eccentricity
+
+        # Literature-conservative stellar and photometric uncertainties if not explicitly provided:
+        # Default: 5% stellar mass uncertainty, 3% stellar radius uncertainty, 3% radius ratio uncertainty
+        self.m_star_err = float(m_star_err) if m_star_err is not None else 0.05 * self.m_star
+        self.r_star_err = float(r_star_err) if r_star_err is not None else 0.03 * self.r_star
+        self.rp_rs_err = float(rp_rs_err) if rp_rs_err is not None else 0.03 * self.rp_rs_init
 
         self.instruments = self.rv.instrument_names
         self.n_inst = len(self.instruments)
@@ -270,7 +378,10 @@ class JointTransitRVSampler:
         nburn: int = 400,
         nsteps: int = 800,
         k_guess_ms: Optional[float] = None,
-        random_seed: int = 42
+        random_seed: int = 42,
+        m_star_err: Optional[float] = None,
+        r_star_err: Optional[float] = None,
+        rp_rs_err: Optional[float] = None
     ) -> Dict[str, Any]:
         """
         Runs MCMC sampling for the radial velocity parameters (semi-amplitude K,
@@ -415,29 +526,62 @@ class JointTransitRVSampler:
             inc_deg=90.0
         )
 
-        # Compute uncertainties on Mp and density via sample propagation
+        # Compute uncertainties on Mp, Rp, and bulk density via sample propagation (Monte Carlo)
+        # incorporating posterior (K, e) and host star / photometric radius ratio uncertainties (M*, R*, Rp/R*)
+        sig_m_star = float(m_star_err) if m_star_err is not None else self.m_star_err
+        sig_r_star = float(r_star_err) if r_star_err is not None else self.r_star_err
+        sig_rp_rs = float(rp_rs_err) if rp_rs_err is not None else self.rp_rs_err
+
         k_chain = samples[:, 0]
         ecc_chain = samples[:, 1] if self.fit_eccentricity else np.zeros_like(k_chain)
+
+        sub_k = k_chain[::5]
+        sub_ecc = ecc_chain[::5]
+        n_phys = len(sub_k)
+
+        # Draw physical host star and radius ratio samples
+        rng_mc = np.random.default_rng(random_seed + 1000)
+        m_star_samples = rng_mc.normal(self.m_star, sig_m_star, size=n_phys) if sig_m_star > 0 else np.full(n_phys, self.m_star)
+        m_star_samples = np.clip(m_star_samples, 0.01, None)
+
+        r_star_samples = rng_mc.normal(self.r_star, sig_r_star, size=n_phys) if sig_r_star > 0 else np.full(n_phys, self.r_star)
+        r_star_samples = np.clip(r_star_samples, 0.01, None)
+
+        rp_rs_samples = rng_mc.normal(self.rp_rs_init, sig_rp_rs, size=n_phys) if sig_rp_rs > 0 else np.full(n_phys, self.rp_rs_init)
+        rp_rs_samples = np.clip(rp_rs_samples, 1e-5, None)
+
         m_jup_chain = []
+        m_earth_chain = []
+        r_jup_chain = []
+        r_earth_chain = []
         rho_chain = []
 
-        for k_val, e_val in zip(k_chain[::5], ecc_chain[::5]):
+        for i in range(n_phys):
             phys_sample = compute_planetary_mass_density(
-                m_star_msun=self.m_star,
-                r_star_rsun=self.r_star,
+                m_star_msun=float(m_star_samples[i]),
+                r_star_rsun=float(r_star_samples[i]),
                 period_days=self.period,
-                k_semiamp_ms=k_val,
-                rp_rs=self.rp_rs_init,
-                ecc=e_val,
+                k_semiamp_ms=float(sub_k[i]),
+                rp_rs=float(rp_rs_samples[i]),
+                ecc=float(sub_ecc[i]),
                 inc_deg=90.0
             )
             m_jup_chain.append(phys_sample["mass_jupiter"])
+            m_earth_chain.append(phys_sample["mass_earth"])
+            r_jup_chain.append(phys_sample["radius_jupiter"])
+            r_earth_chain.append(phys_sample["radius_earth"])
             rho_chain.append(phys_sample["density_g_cm3"])
 
         m_jup_pcts = np.percentile(m_jup_chain, [16, 50, 84])
+        m_earth_pcts = np.percentile(m_earth_chain, [16, 50, 84])
+        r_jup_pcts = np.percentile(r_jup_chain, [16, 50, 84])
+        r_earth_pcts = np.percentile(r_earth_chain, [16, 50, 84])
         rho_pcts = np.percentile(rho_chain, [16, 50, 84])
 
         physical["mass_jupiter_err"] = float((m_jup_pcts[2] - m_jup_pcts[0]) / 2.0)
+        physical["mass_earth_err"] = float((m_earth_pcts[2] - m_earth_pcts[0]) / 2.0)
+        physical["radius_jupiter_err"] = float((r_jup_pcts[2] - r_jup_pcts[0]) / 2.0)
+        physical["radius_earth_err"] = float((r_earth_pcts[2] - r_earth_pcts[0]) / 2.0)
         physical["density_g_cm3_err"] = float((rho_pcts[2] - rho_pcts[0]) / 2.0)
 
         # Residuals calculation with median parameters

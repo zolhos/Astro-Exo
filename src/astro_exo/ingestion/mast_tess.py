@@ -123,7 +123,10 @@ def fetch_tess_tpf(
                 "flux_err": tpf.flux_err.value,
                 "tic_id": tic_id,
                 "sector": sector or 0,
-                "spatial_shape": tpf.flux.shape[1:]
+                "spatial_shape": tpf.flux.shape[1:],
+                "ra": getattr(tpf, "ra", 0.0),
+                "dec": getattr(tpf, "dec", 0.0),
+                "wcs": getattr(tpf, "wcs", None)
             }
         except ImportError:
             raise RuntimeError(f"Falha ao obter TPF para TIC {tic_id}: {e}")

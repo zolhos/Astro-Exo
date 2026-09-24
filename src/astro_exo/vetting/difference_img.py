@@ -82,8 +82,12 @@ def measure_centroid_offset(
     y_diff_cen = float(np.sum(y_grid * weights) / weight_sum)
 
     pix_x_target, pix_y_target = target_pix_coord
-    offset_pix = np.hypot(x_diff_cen - pix_x_target, y_diff_cen - pix_y_target)
+    dx_pix = x_diff_cen - pix_x_target
+    dy_pix = y_diff_cen - pix_y_target
+    offset_pix = np.hypot(dx_pix, dy_pix)
     offset_arcsec = float(offset_pix * tess_pixel_scale_arcsec)
+    dx_arcsec = float(dx_pix * tess_pixel_scale_arcsec)
+    dy_arcsec = float(dy_pix * tess_pixel_scale_arcsec)
 
     # Monte Carlo perturbation for uncertainty
     mc_x = np.zeros(n_mc_perturbations)
@@ -110,6 +114,9 @@ def measure_centroid_offset(
         "y_diff_cen": y_diff_cen,
         "target_x": pix_x_target,
         "target_y": pix_y_target,
+        "dx_arcsec": dx_arcsec,
+        "dy_arcsec": dy_arcsec,
+        "centroid_vec_arcsec": (dx_arcsec, dy_arcsec),
         "offset_pix": float(offset_pix),
         "offset_arcsec": offset_arcsec,
         "sigma_offset_arcsec": sigma_offset_arcsec,
@@ -122,7 +129,7 @@ def vet_target_pixel_file(
     period: float,
     t0: float,
     duration_hours: float,
-    max_allowed_offset_arcsec: float = 10.0,
+    max_allowed_offset_arcsec: float = 4.0,
     max_significance_sigma: float = 3.0
 ) -> Dict[str, Any]:
     """
@@ -139,7 +146,7 @@ def vet_target_pixel_file(
     duration_hours : float
         Transit duration in hours.
     max_allowed_offset_arcsec : float
-        Maximum allowable centroid shift to consider transit on-target (default 10 arcsec, ~0.5 TESS pixel).
+        Maximum allowable centroid shift to consider transit on-target (default 4.0 arcsec, ~0.2 TESS pixel).
     max_significance_sigma : float
         Maximum statistical significance of the offset to rule out background eclipsing binaries (default 3.0-sigma).
 
@@ -187,6 +194,9 @@ def vet_target_pixel_file(
         "passed": bool(is_on_target),
         "status": "PASS" if is_on_target else "FAIL_POSSIBLE_NEB",
         "offset_arcsec": offset_arcsec,
+        "dx_arcsec": offset_results["dx_arcsec"],
+        "dy_arcsec": offset_results["dy_arcsec"],
+        "centroid_vec_arcsec": offset_results["centroid_vec_arcsec"],
         "offset_pix": offset_results["offset_pix"],
         "sigma_offset_arcsec": offset_results["sigma_offset_arcsec"],
         "offset_significance_sigma": sig_sigma,

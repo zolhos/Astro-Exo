@@ -60,23 +60,52 @@ def fit_tess_prf_subpixel(
     res = minimize(loss, p0, method="Nelder-Mead")
     x_fit, y_fit, amp_fit, sx_fit, sy_fit, bg_fit = res.x
 
-    # Compute numerical curvature (second derivatives) along x and y to get formal uncertainties
+    # Compute 2D numerical Hessian matrix for position parameters (x0, y0)
     eps = 1e-4
     f0 = loss(res.x)
-    p_x_plus = res.x.copy(); p_x_plus[0] += eps
-    p_x_minus = res.x.copy(); p_x_minus[0] -= eps
-    d2_x = max((loss(p_x_plus) - 2.0 * f0 + loss(p_x_minus)) / (eps ** 2), 1e-6)
-    sigma_x_pix = 1.0 / np.sqrt(0.5 * d2_x)
 
-    p_y_plus = res.x.copy(); p_y_plus[1] += eps
-    p_y_minus = res.x.copy(); p_y_minus[1] -= eps
-    d2_y = max((loss(p_y_plus) - 2.0 * f0 + loss(p_y_minus)) / (eps ** 2), 1e-6)
-    sigma_y_pix = 1.0 / np.sqrt(0.5 * d2_y)
+    p_xp = res.x.copy(); p_xp[0] += eps
+    p_xm = res.x.copy(); p_xm[0] -= eps
+    p_yp = res.x.copy(); p_yp[1] += eps
+    p_ym = res.x.copy(); p_ym[1] -= eps
+
+    p_xp_yp = res.x.copy(); p_xp_yp[0] += eps; p_xp_yp[1] += eps
+    p_xp_ym = res.x.copy(); p_xp_yp[0] += eps; p_xp_ym[1] -= eps
+    p_xm_yp = res.x.copy(); p_xm_yp[0] -= eps; p_xm_yp[1] += eps
+    p_xm_ym = res.x.copy(); p_xm_ym[0] -= eps; p_xm_ym[1] -= eps
+
+    h_xx = (loss(p_xp) - 2.0 * f0 + loss(p_xm)) / (eps ** 2)
+    h_yy = (loss(p_yp) - 2.0 * f0 + loss(p_ym)) / (eps ** 2)
+    h_xy = (loss(p_xp_yp) - loss(p_xp_ym) - loss(p_xm_yp) + loss(p_xm_ym)) / (4.0 * eps ** 2)
+
+    # Invert 2D Fisher Information Matrix: F = 0.5 * H => Cov = 2.0 * H^{-1}
+    det_h = h_xx * h_yy - (h_xy ** 2)
+    min_curv = 1e-6
+    sigma_min_pix = 1e-4  # Safeguard: uncertainty cannot be zero or negative (~0.002 arcsec floor)
+    sigma_max_pix = 5.0   # Safeguard: bounded upper limit to prevent numerical divergence
+
+    try:
+        if h_xx > min_curv and h_yy > min_curv and det_h > (min_curv ** 2):
+            cov_xx = 2.0 * h_yy / det_h
+            cov_yy = 2.0 * h_xx / det_h
+            sigma_x_pix = float(np.sqrt(max(cov_xx, sigma_min_pix ** 2)))
+            sigma_y_pix = float(np.sqrt(max(cov_yy, sigma_min_pix ** 2)))
+        else:
+            # Fallback to decoupled diagonal elements with safe positivity
+            sigma_x_pix = float(1.0 / np.sqrt(0.5 * max(h_xx, min_curv)))
+            sigma_y_pix = float(1.0 / np.sqrt(0.5 * max(h_yy, min_curv)))
+    except Exception:
+        sigma_x_pix = 0.10
+        sigma_y_pix = 0.10
+
+    # Ensure strictly positive, finite, and bounded uncertainties
+    sigma_x_pix = float(np.clip(sigma_x_pix if np.isfinite(sigma_x_pix) else 0.10, sigma_min_pix, sigma_max_pix))
+    sigma_y_pix = float(np.clip(sigma_y_pix if np.isfinite(sigma_y_pix) else 0.10, sigma_min_pix, sigma_max_pix))
 
     offset_pix = np.hypot(x_fit - x_init, y_fit - y_init)
     offset_arcsec = float(offset_pix * tess_pixel_scale_arcsec)
-    sigma_offset_arcsec = float(np.hypot(sigma_x_pix, sigma_y_pix) * tess_pixel_scale_arcsec)
-    significance = float(offset_arcsec / (sigma_offset_arcsec + 1e-9))
+    sigma_offset_arcsec = float(max(np.hypot(sigma_x_pix, sigma_y_pix) * tess_pixel_scale_arcsec, 1e-3))
+    significance = float(offset_arcsec / sigma_offset_arcsec)
 
     return {
         "prf_x": float(x_fit),

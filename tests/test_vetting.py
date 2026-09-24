@@ -71,3 +71,68 @@ def test_dilution_and_ruling_out_neighbors():
     )
     assert vetted[0]["ruled_out"] is True
     assert vetted[0]["can_cause_transit"] is False
+
+
+def test_centroid_conjunction_acceptance():
+    """Verify vet_target_pixel_file requires simultaneous angular and statistical compliance."""
+    from astro_exo.vetting.difference_img import vet_target_pixel_file
+
+    n_cadences = 100
+    ny, nx = 7, 7
+    time = np.linspace(0, 10, n_cadences)
+    period = 5.0
+    t0 = 2.5
+    dur_days = 0.5
+
+    # Case A: On-target deficit at target pixel (3.0, 3.0)
+    flux_on = np.full((n_cadences, ny, nx), 1000.0)
+    flux_err = np.full((n_cadences, ny, nx), 1.0)
+    phase = (time - t0 + 0.5 * period) % period - 0.5 * period
+    in_transit = np.abs(phase) <= (0.5 * dur_days)
+    flux_on[in_transit, 3, 3] -= 100.0
+
+    tpf_on = {
+        "time": time,
+        "flux": flux_on,
+        "flux_err": flux_err,
+        "target_pix": (3.0, 3.0)
+    }
+    res_on = vet_target_pixel_file(tpf_on, period, t0, dur_days * 24.0, max_allowed_offset_arcsec=4.0)
+    assert res_on["passed"] is True
+    assert res_on["status"] == "PASS"
+    assert res_on["offset_arcsec"] < 1.0
+
+    # Case B: Significant off-target contaminant at pixel (5.0, 3.0), ~42 arcsec offset
+    flux_off = np.full((n_cadences, ny, nx), 1000.0)
+    flux_off[in_transit, 3, 5] -= 100.0
+    tpf_off = {
+        "time": time,
+        "flux": flux_off,
+        "flux_err": flux_err,
+        "target_pix": (3.0, 3.0)
+    }
+    res_off = vet_target_pixel_file(tpf_off, period, t0, dur_days * 24.0, max_allowed_offset_arcsec=4.0)
+    assert res_off["passed"] is False
+    assert res_off["status"] == "FAIL_POSSIBLE_NEB"
+    assert res_off["offset_arcsec"] > 35.0
+
+
+def test_prf_fit_2d_hessian_uncertainty():
+    """Verify PRF subpixel fitting with 2D Hessian computes stable, positive uncertainties."""
+    from astro_exo.vetting.prf_fit import fit_tess_prf_subpixel, gaussian_2d_prf
+
+    ny, nx = 7, 7
+    y_coords, x_coords = np.mgrid[0:ny, 0:nx]
+    xy_grid = (x_coords, y_coords)
+    i_diff = gaussian_2d_prf(xy_grid, 3.2, 3.1, 400.0, 1.1, 1.1, 0.0, 0.0)
+    sigma_diff = np.full((ny, nx), 1.0)
+
+    res = fit_tess_prf_subpixel(i_diff, sigma_diff, (3.0, 3.0))
+
+    assert res["fit_success"] is True
+    assert res["sigma_prf_x_arcsec"] > 0.0
+    assert res["sigma_prf_y_arcsec"] > 0.0
+    assert res["sigma_offset_arcsec"] > 0.0
+    assert np.isfinite(res["sigma_offset_arcsec"])
+    assert res["offset_significance_sigma"] > 0.0
+

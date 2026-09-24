@@ -180,13 +180,40 @@ def fetch_tess_photometry(
     filepath : str
         Path to local calibrated FITS file.
     """
+    prod_type = "lc" if product.lower() in ["lc", "lightcurve"] else "tp"
+    tic_folder = os.path.join(cache_dir, f"TIC_{tic_id}")
+
+    # 1. Verifica cache local ANTES de qualquer requisição de rede ao MAST
+    if os.path.isdir(tic_folder):
+        if sector is not None:
+            candidate_names = [
+                f"tess_tic{tic_id}_s{int(sector):04d}_{prod_type}.fits",
+                f"tess_tic{tic_id}_s{int(sector)}_{prod_type}.fits",
+                f"tess_tic{tic_id}_{prod_type}.fits"
+            ]
+            for c_name in candidate_names:
+                c_path = os.path.join(tic_folder, c_name)
+                if os.path.isfile(c_path) and os.path.getsize(c_path) > 10000:
+                    print(f"[CACHE FOTOMÉTRICO] Reutilizando arquivo FITS local: {os.path.basename(c_path)} ({os.path.getsize(c_path) / 1024:.1f} KB)")
+                    return c_path
+        else:
+            matches = [
+                f for f in sorted(os.listdir(tic_folder))
+                if f.startswith(f"tess_tic{tic_id}") and f.endswith(f"_{prod_type}.fits")
+            ]
+            for m_name in matches:
+                m_path = os.path.join(tic_folder, m_name)
+                if os.path.isfile(m_path) and os.path.getsize(m_path) > 10000:
+                    print(f"[CACHE FOTOMÉTRICO] Reutilizando arquivo FITS local: {os.path.basename(m_path)} ({os.path.getsize(m_path) / 1024:.1f} KB)")
+                    return m_path
+
+    # 2. Se não encontrado em cache local, consulta MAST via API REST e baixa
     resolved = resolve_tess_download_urls(tic_id, sector=sector)
     sec = resolved["sector"]
 
-    tic_folder = os.path.join(cache_dir, f"TIC_{tic_id}")
     os.makedirs(tic_folder, exist_ok=True)
 
-    if product.lower() in ["lc", "lightcurve"]:
+    if prod_type == "lc":
         filename = f"tess_tic{tic_id}_s{sec:04d}_lc.fits" if sec else f"tess_tic{tic_id}_lc.fits"
         dest_path = os.path.join(tic_folder, filename)
         return download_fits_file(resolved["lc_url"], dest_path)

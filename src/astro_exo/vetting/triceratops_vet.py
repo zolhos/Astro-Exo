@@ -4,7 +4,7 @@ Computes False Positive Probability (FPP) and Nearby False Positive Probability 
 astrophysical scenarios: TP, PTP, EB, EBx2P, BEB, and HEB.
 """
 
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 import numpy as np
 
 
@@ -25,7 +25,9 @@ class BayesianFalsePositiveEngine:
         impact_parameter_b: float = 0.30,
         centroid_offset_arcsec: float = 0.0,
         centroid_sigma_arcsec: float = 1.0,
-        neighbors: Optional[List[Dict[str, Any]]] = None
+        neighbors: Optional[List[Dict[str, Any]]] = None,
+        centroid_vec_arcsec: Optional[Tuple[float, float]] = None,
+        target_coord: Optional[Tuple[float, float]] = None
     ):
         self.target_tmag = float(target_tmag)
         self.period = float(period_days)
@@ -33,9 +35,33 @@ class BayesianFalsePositiveEngine:
         self.duration_hours = float(duration_hours)
         self.rp_rs = float(rp_rs)
         self.b = float(impact_parameter_b)
-        self.centroid_offset = float(centroid_offset_arcsec)
-        self.centroid_sigma = max(float(centroid_sigma_arcsec), 0.20)
         self.neighbors = neighbors or []
+
+        # Vector centroid offset handling (d_ra_arcsec, d_dec_arcsec)
+        if centroid_vec_arcsec is not None:
+            self.centroid_vec = (float(centroid_vec_arcsec[0]), float(centroid_vec_arcsec[1]))
+            if centroid_offset_arcsec == 0.0:
+                self.centroid_offset = float(np.hypot(self.centroid_vec[0], self.centroid_vec[1]))
+            else:
+                self.centroid_offset = float(centroid_offset_arcsec)
+        elif isinstance(centroid_offset_arcsec, (tuple, list, np.ndarray)):
+            self.centroid_vec = (float(centroid_offset_arcsec[0]), float(centroid_offset_arcsec[1]))
+            self.centroid_offset = float(np.hypot(self.centroid_vec[0], self.centroid_vec[1]))
+        else:
+            self.centroid_vec = None
+            self.centroid_offset = float(centroid_offset_arcsec)
+
+        self.centroid_sigma = max(float(centroid_sigma_arcsec), 0.20)
+
+        # Target coordinates for sky-plane projection (ra_deg, dec_deg)
+        if target_coord is not None:
+            self.target_coord = (float(target_coord[0]), float(target_coord[1]))
+        else:
+            self.target_coord = None
+            for s in self.neighbors:
+                if s.get("dist_arcsec", 99.0) < 0.1 and "ra" in s and "dec" in s:
+                    self.target_coord = (float(s["ra"]), float(s["dec"]))
+                    break
 
     def calculate_scenario_probabilities(self) -> Dict[str, Any]:
         """
@@ -117,9 +143,36 @@ class BayesianFalsePositiveEngine:
             if not can_cause:
                 continue
 
-            # Astrometric match: how close is this neighbor to the measured deficit position?
-            # Difference between neighbor separation and measured centroid offset
-            pos_mismatch = abs(dist_arcsec - self.centroid_offset)
+            # Astrometric match: 2D Euclidean distance on the sky plane (\Delta \alpha, \Delta \delta)
+            # between neighbor position and measured centroid vector relative to primary target.
+            star_vec = None
+            if "d_ra_arcsec" in star and "d_dec_arcsec" in star:
+                star_vec = (float(star["d_ra_arcsec"]), float(star["d_dec_arcsec"]))
+            elif "delta_ra_arcsec" in star and "delta_dec_arcsec" in star:
+                star_vec = (float(star["delta_ra_arcsec"]), float(star["delta_dec_arcsec"]))
+            elif "dx_arcsec" in star and "dy_arcsec" in star:
+                star_vec = (float(star["dx_arcsec"]), float(star["dy_arcsec"]))
+            elif "ra" in star and "dec" in star and self.target_coord is not None:
+                tgt_ra, tgt_dec = self.target_coord
+                cos_dec = np.cos(np.radians(tgt_dec))
+                star_d_ra = (float(star["ra"]) - tgt_ra) * cos_dec * 3600.0
+                star_d_dec = (float(star["dec"]) - tgt_dec) * 3600.0
+                star_vec = (star_d_ra, star_d_dec)
+            elif "pa_deg" in star or "position_angle_deg" in star:
+                pa = float(star.get("pa_deg", star.get("position_angle_deg", 0.0)))
+                star_d_ra = dist_arcsec * np.sin(np.radians(pa))
+                star_d_dec = dist_arcsec * np.cos(np.radians(pa))
+                star_vec = (star_d_ra, star_d_dec)
+
+            if star_vec is not None and self.centroid_vec is not None:
+                # 2D Euclidean distance on the sky plane
+                d_alpha = star_vec[0] - self.centroid_vec[0]
+                d_delta = star_vec[1] - self.centroid_vec[1]
+                pos_mismatch = float(np.hypot(d_alpha, d_delta))
+            else:
+                # Fallback to 1D scalar difference if 2D vector coordinates are unavailable
+                pos_mismatch = abs(dist_arcsec - self.centroid_offset)
+
             lhood_astro_neighbor = float(np.exp(-0.5 * (pos_mismatch / self.centroid_sigma) ** 2))
 
             # Prior probability of this neighbor being an EB: ~ 0.008
@@ -184,7 +237,9 @@ def run_triceratops_validation(
     centroid_offset_arcsec: float = 0.0,
     centroid_sigma_arcsec: float = 1.0,
     neighbors: Optional[List[Dict[str, Any]]] = None,
-    contrast_curve_file: Optional[str] = None
+    contrast_curve_file: Optional[str] = None,
+    centroid_vec_arcsec: Optional[Tuple[float, float]] = None,
+    target_coord: Optional[Tuple[float, float]] = None
 ) -> Dict[str, Any]:
     """
     Executes TRICERATOPS statistical validation.
@@ -229,7 +284,9 @@ def run_triceratops_validation(
             impact_parameter_b=impact_parameter_b,
             centroid_offset_arcsec=centroid_offset_arcsec,
             centroid_sigma_arcsec=centroid_sigma_arcsec,
-            neighbors=neighbors
+            neighbors=neighbors,
+            centroid_vec_arcsec=centroid_vec_arcsec,
+            target_coord=target_coord
         )
         res = engine.calculate_scenario_probabilities()
         res["engine"] = "bayesian_analytical_engine"

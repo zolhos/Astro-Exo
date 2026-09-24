@@ -35,9 +35,14 @@ class ExoplanetPipelineRunner:
 
         # 1. Ingestion
         lc = fetch_tess_lightcurve(self.target.tic_id, sector=self.target.sector, author=self.target.author)
-        t_raw = lc.time.value
-        f_raw = lc.flux.value
-        e_raw = lc.flux_err.value
+        if isinstance(lc, dict):
+            t_raw = lc["time"].value if hasattr(lc["time"], "value") else lc["time"]
+            f_raw = lc["flux"].value if hasattr(lc["flux"], "value") else lc["flux"]
+            e_raw = lc["flux_err"].value if hasattr(lc["flux_err"], "value") else lc["flux_err"]
+        else:
+            t_raw = lc.time.value
+            f_raw = lc.flux.value
+            e_raw = lc.flux_err.value
 
         # 2. Ephemeris defaults
         period = self.target.period_days or 3.5
@@ -69,24 +74,60 @@ class ExoplanetPipelineRunner:
         if self.config.run_vetting:
             try:
                 tpf = fetch_tess_tpf(self.target.tic_id, sector=self.target.sector, author=self.target.author)
-                t_tpf = tpf.time.value
-                f_tpf = tpf.flux.value
-                e_tpf = tpf.flux_err.value
+                if isinstance(tpf, dict):
+                    t_tpf = tpf["time"].value if hasattr(tpf["time"], "value") else tpf["time"]
+                    f_tpf = tpf["flux"].value if hasattr(tpf["flux"], "value") else tpf["flux"]
+                    e_tpf_val = tpf.get("flux_err")
+                    if e_tpf_val is not None:
+                        e_tpf = e_tpf_val.value if hasattr(e_tpf_val, "value") else e_tpf_val
+                    else:
+                        e_tpf = np.ones_like(f_tpf)
+
+                    ra = tpf.get("ra", tpf.get("ra_obj", 0.0))
+                    dec = tpf.get("dec", tpf.get("dec_obj", 0.0))
+
+                    if tpf.get("target_pix") is not None:
+                        pix_x_tgt, pix_y_tgt = tpf["target_pix"]
+                    elif tpf.get("wcs") is not None:
+                        pix_x_tgt, pix_y_tgt = tpf["wcs"].all_world2pix(ra, dec, 0)
+                    else:
+                        pix_x_tgt, pix_y_tgt = 0.0, 0.0
+
+                    if "header" in tpf and isinstance(tpf["header"], dict) and "TESSMAG" in tpf["header"]:
+                        target_tmag = float(tpf["header"]["TESSMAG"])
+                    elif "tessmag" in tpf:
+                        target_tmag = float(tpf["tessmag"])
+                else:
+                    t_tpf = tpf.time.value
+                    f_tpf = tpf.flux.value
+                    e_tpf = tpf.flux_err.value
+                    ra, dec = tpf.ra, tpf.dec
+                    pix_x_tgt, pix_y_tgt = tpf.wcs.all_world2pix(ra, dec, 0)
+                    if hasattr(tpf, "header") and "TESSMAG" in tpf.header:
+                        target_tmag = float(tpf.header["TESSMAG"])
 
                 # Difference imaging
                 i_out, i_in, i_diff, sigma_diff = calculate_difference_image(
                     t_tpf, f_tpf, e_tpf, period, t0, dur_days
                 )
 
-                # Target WCS pixel coordinate
-                ra, dec = tpf.ra, tpf.dec
-                pix_x_tgt, pix_y_tgt = tpf.wcs.all_world2pix(ra, dec, 0)
-                if hasattr(tpf, "header") and "TESSMAG" in tpf.header:
-                    target_tmag = float(tpf.header["TESSMAG"])
-
                 # Centroid offset
                 cen_res = measure_centroid_offset(i_diff, sigma_diff, (pix_x_tgt, pix_y_tgt))
-                passed_vetting = cen_res["offset_significance_sigma"] < 3.0
+                passed_vetting = (cen_res["offset_arcsec"] < 4.0) and (cen_res["offset_significance_sigma"] < 3.0)
+
+                # Compute 2D sky-plane offset vector via WCS if available
+                wcs_obj = tpf.get("wcs") if isinstance(tpf, dict) else getattr(tpf, "wcs", None)
+                if wcs_obj is not None:
+                    try:
+                        ra_diff, dec_diff = wcs_obj.all_pix2world(cen_res["x_diff_cen"], cen_res["y_diff_cen"], 0)
+                        cos_dec = np.cos(np.radians(dec))
+                        d_ra_arcsec = float((ra_diff - ra) * cos_dec * 3600.0)
+                        d_dec_arcsec = float((dec_diff - dec) * 3600.0)
+                        cen_res["d_ra_arcsec"] = d_ra_arcsec
+                        cen_res["d_dec_arcsec"] = d_dec_arcsec
+                        cen_res["centroid_vec_arcsec"] = (d_ra_arcsec, d_dec_arcsec)
+                    except Exception:
+                        pass
 
                 # Gaia DR3 query (2.5 arcmin cone search)
                 neighbors = query_gaia_neighbors(
@@ -245,7 +286,9 @@ class ExoplanetPipelineRunner:
             target_tmag=target_tmag,
             centroid_offset_arcsec=cen_res.get("offset_arcsec", 0.0),
             centroid_sigma_arcsec=cen_res.get("sigma_offset_arcsec", 1.0),
-            neighbors=vetted_neighbors
+            neighbors=vetted_neighbors,
+            centroid_vec_arcsec=cen_res.get("centroid_vec_arcsec", None),
+            target_coord=(ra, dec) if ("ra" in locals() and "dec" in locals()) else None
         )
 
         fpp = val_res.get("fpp", 1.0)
@@ -272,13 +315,12 @@ class ExoplanetPipelineRunner:
             passed_spatial_vetting=passed_vetting
         )
 
-        disposition = "CANDIDATE"
-        if not passed_vetting or not stat_valid:
+        if not self.config.run_vetting:
+            disposition = "CANDIDATE_UNVETTED"
+        elif not passed_vetting or not stat_valid:
             disposition = "FALSE_POSITIVE"
-        elif is_new and passed_vetting and stat_valid:
+        else:
             disposition = "VALIDATED_PLANET"
-        elif not is_new and passed_vetting and stat_valid:
-            disposition = "CONFIRMED_PLANET"
 
         product = FullCandidateProduct(
             tic_id=self.target.tic_id,

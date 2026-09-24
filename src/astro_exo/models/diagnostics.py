@@ -4,7 +4,14 @@ Includes Gelman-Rubin R-hat, effective sample size (ESS), and autocorrelation ti
 """
 
 from typing import Dict, Any, Optional
+import warnings
 import numpy as np
+
+
+class ConvergenceWarning(UserWarning):
+    """Warning emitted when MCMC chains fail convergence criteria."""
+    pass
+
 
 
 def compute_gelman_rubin(chains: np.ndarray) -> np.ndarray:
@@ -57,19 +64,29 @@ def compute_effective_sample_size(chain_flat: np.ndarray, tau: Optional[np.ndarr
     Parameters
     ----------
     chain_flat : np.ndarray
-        Array of shape (n_samples, n_params).
+        Array of shape (n_samples, n_params) or (n_samples,).
     tau : Optional[np.ndarray]
         Integrated autocorrelation time for each parameter.
 
     Returns
     -------
     n_eff : np.ndarray
-        Effective number of independent samples.
+        Effective number of independent samples. Returns np.nan for parameters
+        if tau is not available, <= 0, or contains NaN (unconverged chain).
     """
-    n_samples = chain_flat.shape[0]
-    if tau is None or np.any(np.isnan(tau)) or np.any(tau <= 0):
-        # Default approximation if tau is not available
-        return np.full(chain_flat.shape[1], float(n_samples))
+    if chain_flat.ndim == 1:
+        chain_flat = chain_flat[:, np.newaxis]
 
-    n_eff = n_samples / (2.0 * np.maximum(1.0, tau))
+    n_samples, n_params = chain_flat.shape
+    if tau is None or np.any(np.isnan(tau)) or np.any(np.asarray(tau) <= 0):
+        warnings.warn(
+            "MCMC chain has not converged according to Foreman-Mackey autocorrelation criterion; "
+            "effective sample size (ESS) cannot be reliably computed.",
+            ConvergenceWarning,
+            stacklevel=2,
+        )
+        return np.full(n_params, np.nan)
+
+    tau_arr = np.asarray(tau, dtype=np.float64)
+    n_eff = n_samples / (2.0 * np.maximum(1.0, tau_arr))
     return np.round(n_eff).astype(float)

@@ -9,6 +9,7 @@ import unittest
 import numpy as np
 
 from astro_exo.models.joint_rv import (
+    solve_kepler,
     keplerian_rv,
     compute_planetary_mass_density,
     classify_planetary_interior,
@@ -191,6 +192,99 @@ class TestPhase5JointRV(unittest.TestCase):
         self.assertAlmostEqual(phys["mass_jupiter"], 1.76, delta=0.20)
         self.assertAlmostEqual(phys["density_g_cm3"], 1.20, delta=0.25)
         self.assertEqual(phys["interior_classification"], "Dense / Massive Hot Jupiter")
+
+    def test_08_kepler_solver_danby_high_eccentricity(self):
+        """
+        Verify Danby initial guess and adaptive Newton-Raphson Kepler solver:
+        Achieves max |E - e*sin(E) - M| < 10^-14 across all orbital phases
+        and high eccentricities up to e -> 1.0 within <= 15 iterations.
+        """
+        m_grid = np.linspace(0.0, 2.0 * np.pi, 500)
+        eccentricities = [0.0, 0.1, 0.5, 0.85, 0.95, 0.99]
+
+        for ecc in eccentricities:
+            e_sol = solve_kepler(m_grid, ecc, max_iter=15, tol=1e-14)
+            # Check Kepler equation residual: |E - e*sin(E) - M|
+            residual = np.abs(e_sol - ecc * np.sin(e_sol) - m_grid)
+            max_res = float(np.max(residual))
+            self.assertLess(
+                max_res, 1e-13,
+                f"Kepler solver failed for ecc={ecc}: max residual={max_res:.2e}"
+            )
+
+        # Verify scalar input support
+        e_scalar = solve_kepler(np.pi / 3.0, 0.75, max_iter=15, tol=1e-14)
+        self.assertIsInstance(e_scalar, float)
+        self.assertLess(abs(e_scalar - 0.75 * np.sin(e_scalar) - np.pi / 3.0), 1e-13)
+
+    def test_09_uncertainty_propagation_density_and_mass(self):
+        """
+        Verify physical uncertainty propagation for planetary mass and bulk density:
+        - Incorportates M*, R*, and Rp/R* uncertainties.
+        - Ensures density uncertainty reflects cubic dependence on radius: sigma_rho / rho >= 3 * sigma_R / R.
+        """
+        csv_path = os.path.join(self.rv_dir, "wasp77_rv.csv")
+        dataset = load_rv_csv(csv_path)
+
+        # 1. Default conservative literature uncertainties (5% M*, 3% R*, 3% Rp/Rs)
+        sampler_default = JointTransitRVSampler(
+            rv_dataset=dataset,
+            period_days=1.36003,
+            t0_bjd=2456200.5,
+            m_star_msun=1.00,
+            r_star_rsun=0.95,
+            rp_rs_prior=0.1324
+        )
+        self.assertEqual(sampler_default.m_star_err, 0.05 * 1.00)
+        self.assertEqual(sampler_default.r_star_err, 0.03 * 0.95)
+        self.assertEqual(sampler_default.rp_rs_err, 0.03 * 0.1324)
+
+        fit_res = sampler_default.run_rv_mcmc(nwalkers=24, nburn=100, nsteps=200, random_seed=42)
+        phys = fit_res["physical"]
+
+        self.assertIn("mass_jupiter_err", phys)
+        self.assertIn("radius_jupiter_err", phys)
+        self.assertIn("density_g_cm3_err", phys)
+        self.assertGreater(phys["mass_jupiter_err"], 0.0)
+        self.assertGreater(phys["radius_jupiter_err"], 0.0)
+        self.assertGreater(phys["density_g_cm3_err"], 0.0)
+
+        # Relative density uncertainty must reflect cubic radius dependence:
+        # sigma_rho / rho >= 3 * (sigma_R* / R*) = 3 * 0.03 = 0.09 (9%)
+        rel_rho_err = phys["density_g_cm3_err"] / phys["density_g_cm3"]
+        self.assertGreater(rel_rho_err, 0.08, f"Relative density uncertainty too low: {rel_rho_err:.3f}")
+
+        # 2. Explicit custom uncertainties test
+        sampler_custom = JointTransitRVSampler(
+            rv_dataset=dataset,
+            period_days=1.36003,
+            t0_bjd=2456200.5,
+            m_star_msun=1.00,
+            r_star_rsun=0.95,
+            rp_rs_prior=0.1324,
+            m_star_err=0.08,
+            r_star_err=0.06,
+            rp_rs_err=0.005
+        )
+        self.assertEqual(sampler_custom.m_star_err, 0.08)
+        self.assertEqual(sampler_custom.r_star_err, 0.06)
+        self.assertEqual(sampler_custom.rp_rs_err, 0.005)
+
+        # Standalone compute_planetary_mass_density with uncertainties
+        phys_direct = compute_planetary_mass_density(
+            m_star_msun=1.00,
+            r_star_rsun=0.95,
+            period_days=1.36003,
+            k_semiamp_ms=320.0,
+            rp_rs=0.1324,
+            m_star_err=0.05,
+            r_star_err=0.03,
+            k_semiamp_err=5.0,
+            rp_rs_err=0.003
+        )
+        self.assertIn("mass_jupiter_err", phys_direct)
+        self.assertIn("density_g_cm3_err", phys_direct)
+        self.assertGreater(phys_direct["density_g_cm3_err"], 0.05)
 
 
 if __name__ == "__main__":

@@ -44,11 +44,12 @@ def read_tess_lightcurve(filepath: str, flux_column: str = "PDCSAP_FLUX") -> Dic
             tic_id = hdr0.get("TICID", hdr1.get("TICID", 0))
             sector = hdr0.get("SECTOR", hdr1.get("SECTOR", 0))
 
-        # Filtra NaNs e cadências de má qualidade por padrão
-        good_mask = ~np.isnan(time_raw) & ~np.isnan(flux_raw) & (quality == 0)
+        # Filtra NaNs, erros inválidos (<= 0) e cadências de má qualidade por padrão
+        valid_err = ~np.isnan(err_raw) & (err_raw > 0)
+        good_mask = ~np.isnan(time_raw) & ~np.isnan(flux_raw) & valid_err & (quality == 0)
         if np.sum(good_mask) < 10:
             # Relaxa filtro de qualidade caso quality == 0 seja excessivamente estrito
-            good_mask = ~np.isnan(time_raw) & ~np.isnan(flux_raw)
+            good_mask = ~np.isnan(time_raw) & ~np.isnan(flux_raw) & valid_err
 
         time_clean = time_raw[good_mask]
         flux_clean = flux_raw[good_mask]
@@ -136,9 +137,9 @@ def read_tess_tpf(filepath: str) -> Dict[str, Any]:
     err_clean = err_cube[valid_time]
     quality_clean = quality[valid_time]
 
-    # Substitui NaNs espaciais por zero ou mediana para estabilidade matemática
+    # Substitui NaNs espaciais por zero ou inf para ponderação estatística correta
     flux_clean = np.nan_to_num(flux_clean, nan=0.0)
-    err_clean = np.nan_to_num(err_clean, nan=1.0)
+    err_clean = np.nan_to_num(err_clean, nan=np.inf)
 
     return {
         "time": time_clean,
@@ -147,6 +148,8 @@ def read_tess_tpf(filepath: str) -> Dict[str, Any]:
         "quality": quality_clean,
         "tic_id": int(tic_id),
         "sector": int(sector),
+        "ra": ra_obj,
+        "dec": dec_obj,
         "ra_obj": ra_obj,
         "dec_obj": dec_obj,
         "target_pix": target_pix,

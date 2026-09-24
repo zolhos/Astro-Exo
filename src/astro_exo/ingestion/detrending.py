@@ -47,26 +47,52 @@ def flatten_lightcurve(
             method=method,
             window_length=window_length,
             edge_cutoff=0.5,
+            break_tolerance=0.5,
             mask=transit_mask,
             return_trend=True
         )
         return flatten_flux, trend
     except ImportError:
-        win = max(int(window_length * 48), 11)
+        # Calcula a cadência temporal real amostrada
+        if len(time) > 1:
+            diffs = np.diff(time)
+            valid_diffs = diffs[~np.isnan(diffs) & (diffs > 0)]
+            dt = float(np.nanmedian(valid_diffs)) if len(valid_diffs) > 0 else (1.0 / 48.0)
+        else:
+            dt = 1.0 / 48.0
+
+        win = max(int(window_length / dt), 11)
         if win % 2 == 0:
             win += 1
+        if win >= len(flux):
+            win = len(flux) - 1 if len(flux) % 2 == 0 else len(flux)
+            win = max(win, 3)
+
+        # Se transit_mask fornecido, interpola os pontos de trânsito a partir dos pontos fora do trânsito
+        # para que o filtro nunca atenue a profundidade do trânsito
+        if transit_mask is not None and np.any(transit_mask):
+            flux_for_filter = np.copy(flux)
+            out_mask = ~transit_mask & ~np.isnan(flux)
+            if np.sum(out_mask) >= 2:
+                flux_for_filter[transit_mask] = np.interp(
+                    time[transit_mask],
+                    time[out_mask],
+                    flux[out_mask]
+                )
+        else:
+            flux_for_filter = flux
+
         try:
             from scipy.signal import savgol_filter
-            trend = savgol_filter(flux, window_length=win, polyorder=2)
+            polyorder = min(2, win - 1)
+            trend = savgol_filter(flux_for_filter, window_length=win, polyorder=polyorder)
         except ImportError:
             # Pure numpy moving average fallback
-            k = max(int(window_length * 48), 5)
-            if k % 2 == 0:
-                k += 1
+            k = win
             kernel = np.ones(k) / k
-            trend = np.convolve(flux, kernel, mode="same")
-            trend[:k//2] = trend[k//2]
-            trend[-k//2:] = trend[-k//2 - 1]
+            trend = np.convolve(flux_for_filter, kernel, mode="same")
+            trend[:k // 2] = trend[k // 2]
+            trend[-k // 2:] = trend[-k // 2 - 1]
         
         flatten_flux = flux / (trend + 1e-12)
         return flatten_flux, trend
