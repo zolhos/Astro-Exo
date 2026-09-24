@@ -171,7 +171,16 @@ python3 examples/generate_visual_report.py
 open examples/sample_dashboard.html
 ```
 
-### 4. Python API
+### 4. Real Sub-Pixel Difference Imaging & Centroid Vetting Benchmark
+
+Validate the spatial difference imaging algorithm on real raw TESS Target Pixel Files (`_tp.fits`), contrasting a confirmed on-target planet (`WASP-126b`, PASS) against an off-target contaminated false positive (`TOI-1009.01`, FAIL_POSSIBLE_NEB):
+
+```bash
+python3 examples/benchmark_real_centroid_vetting.py
+```
+This evaluates $11 \times 11$ pixel matrices with 500 Monte Carlo iterations and exports the publication-grade diagnostic panel to `docs/assets/figures/real_centroid_vetting_benchmark.png`.
+
+### 5. Python API
 
 ```python
 from astro_exo.pipeline import TargetConfig, PipelineConfig, ExoplanetPipelineRunner
