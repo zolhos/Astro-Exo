@@ -111,7 +111,12 @@
     "k_semiamp_ms": 321.4,
     "interior_classification": "Dense / Massive Hot Jupiter",
     "figures": {
-      "rv": "assets/figures/phase5_rv/rv_curve_wasp_77b.png"
+      "transit": "assets/figures/TIC_16288184/transit_fit.png",
+      "corner": "assets/figures/TIC_16288184/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_16288184/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_16288184/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_16288184/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_16288184/rv_keplerian_fit.png"
     }
   },
   {
@@ -136,7 +141,12 @@
     "k_semiamp_ms": 36.7,
     "interior_classification": "Standard Gas Giant / Hot Jupiter",
     "figures": {
-      "rv": "assets/figures/phase5_rv/rv_curve_wasp_126b.png"
+      "transit": "assets/figures/TIC_25155310/transit_fit.png",
+      "corner": "assets/figures/TIC_25155310/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_25155310/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_25155310/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_25155310/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_25155310/rv_keplerian_fit.png"
     }
   },
   {
@@ -161,7 +171,12 @@
     "k_semiamp_ms": 68.9,
     "interior_classification": "Inflated Gas Giant",
     "figures": {
-      "rv": "assets/figures/phase5_rv/rv_curve_wasp_62b.png"
+      "transit": "assets/figures/TIC_149603524/transit_fit.png",
+      "corner": "assets/figures/TIC_149603524/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_149603524/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_149603524/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_149603524/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_149603524/rv_keplerian_fit.png"
     }
   },
   {
@@ -186,7 +201,12 @@
     "k_semiamp_ms": 348.5,
     "interior_classification": "Dense / Massive Hot Jupiter",
     "figures": {
-      "rv": "assets/figures/phase5_rv/rv_curve_wasp_46b.png"
+      "transit": "assets/figures/TIC_231663901/transit_fit.png",
+      "corner": "assets/figures/TIC_231663901/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_231663901/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_231663901/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_231663901/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_231663901/rv_keplerian_fit.png"
     }
   },
   {
@@ -211,7 +231,12 @@
     "k_semiamp_ms": 4.3,
     "interior_classification": "Water World / Sub-Neptune",
     "figures": {
-      "rv": "assets/figures/phase5_rv/rv_curve_toi_1009.01.png"
+      "transit": "assets/figures/TIC_107782586/transit_fit.png",
+      "corner": "assets/figures/TIC_107782586/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_107782586/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_107782586/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_107782586/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_107782586/rv_keplerian_fit.png"
     }
   },
   {
@@ -235,7 +260,14 @@
     "m_star_msun": 0.92,
     "k_semiamp_ms": 1.9,
     "interior_classification": "Dense Rocky Super-Earth",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_114018671/transit_fit.png",
+      "corner": "assets/figures/TIC_114018671/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_114018671/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_114018671/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_114018671/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_114018671/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1019.01",
@@ -258,7 +290,14 @@
     "m_star_msun": 1.22,
     "k_semiamp_ms": 158.0,
     "interior_classification": "Inflated / Low-Density Hot Jupiter",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_341420329/transit_fit.png",
+      "corner": "assets/figures/TIC_341420329/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_341420329/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_341420329/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_341420329/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_341420329/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1027.01",
@@ -281,7 +320,14 @@
     "m_star_msun": 0.7,
     "k_semiamp_ms": 3.8,
     "interior_classification": "Water World / Sub-Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_20318757_TOI-1027.01/transit_fit.png",
+      "corner": "assets/figures/TIC_20318757_TOI-1027.01/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_20318757_TOI-1027.01/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_20318757_TOI-1027.01/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_20318757_TOI-1027.01/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_20318757_TOI-1027.01/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1027.02",
@@ -304,7 +350,14 @@
     "m_star_msun": 0.7,
     "k_semiamp_ms": 2.6,
     "interior_classification": "Water World / Sub-Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_20318757_TOI-1027.02/transit_fit.png",
+      "corner": "assets/figures/TIC_20318757_TOI-1027.02/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_20318757_TOI-1027.02/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_20318757_TOI-1027.02/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_20318757_TOI-1027.02/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_20318757_TOI-1027.02/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1027.03",
@@ -327,7 +380,14 @@
     "m_star_msun": 0.7,
     "k_semiamp_ms": 2.9,
     "interior_classification": "Dense Sub-Neptune / Water World",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_20318757_TOI-1027.03/transit_fit.png",
+      "corner": "assets/figures/TIC_20318757_TOI-1027.03/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_20318757_TOI-1027.03/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_20318757_TOI-1027.03/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_20318757_TOI-1027.03/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_20318757_TOI-1027.03/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-103.01",
@@ -350,7 +410,14 @@
     "m_star_msun": 1.15,
     "k_semiamp_ms": 112.5,
     "interior_classification": "Standard Gas Giant / Hot Jupiter",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_336732616/transit_fit.png",
+      "corner": "assets/figures/TIC_336732616/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_336732616/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_336732616/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_336732616/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_336732616/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1032.01",
@@ -373,7 +440,14 @@
     "m_star_msun": 1.3,
     "k_semiamp_ms": 52.0,
     "interior_classification": "Inflated Gas Giant",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_146589986/transit_fit.png",
+      "corner": "assets/figures/TIC_146589986/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_146589986/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_146589986/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_146589986/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_146589986/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1035.01",
@@ -396,7 +470,14 @@
     "m_star_msun": 1.35,
     "k_semiamp_ms": 86.4,
     "interior_classification": "Massive Inflated Hot Jupiter",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_361413119/transit_fit.png",
+      "corner": "assets/figures/TIC_361413119/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_361413119/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_361413119/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_361413119/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_361413119/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1036.01",
@@ -419,7 +500,14 @@
     "m_star_msun": 1.05,
     "k_semiamp_ms": 34.2,
     "interior_classification": "Dense Sub-Saturn",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_146172354/transit_fit.png",
+      "corner": "assets/figures/TIC_146172354/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_146172354/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_146172354/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_146172354/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_146172354/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-104.01",
@@ -442,7 +530,14 @@
     "m_star_msun": 1.28,
     "k_semiamp_ms": 74.0,
     "interior_classification": "Standard Gas Giant / Hot Jupiter",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_231670397/transit_fit.png",
+      "corner": "assets/figures/TIC_231670397/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_231670397/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_231670397/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_231670397/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_231670397/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1044.01",
@@ -465,7 +560,14 @@
     "m_star_msun": 0.98,
     "k_semiamp_ms": 36.8,
     "interior_classification": "Ultra-Short-Period Hot Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_463402815/transit_fit.png",
+      "corner": "assets/figures/TIC_463402815/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_463402815/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_463402815/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_463402815/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_463402815/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1050.01",
@@ -488,7 +590,14 @@
     "m_star_msun": 1.2,
     "k_semiamp_ms": 178.4,
     "interior_classification": "Massive Inflated Gas Giant",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_66818296/transit_fit.png",
+      "corner": "assets/figures/TIC_66818296/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_66818296/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_66818296/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_66818296/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_66818296/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1052.01",
@@ -511,7 +620,14 @@
     "m_star_msun": 1.1,
     "k_semiamp_ms": 2.8,
     "interior_classification": "Sub-Neptune / Water World",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_317060587/transit_fit.png",
+      "corner": "assets/figures/TIC_317060587/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_317060587/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_317060587/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_317060587/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_317060587/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1054.01",
@@ -534,7 +650,14 @@
     "m_star_msun": 0.95,
     "k_semiamp_ms": 1.9,
     "interior_classification": "Temperate Water World",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_366989877/transit_fit.png",
+      "corner": "assets/figures/TIC_366989877/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_366989877/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_366989877/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_366989877/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_366989877/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1055.01",
@@ -557,7 +680,14 @@
     "m_star_msun": 0.88,
     "k_semiamp_ms": 2.6,
     "interior_classification": "Volatile-Rich Mini-Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_320004517/transit_fit.png",
+      "corner": "assets/figures/TIC_320004517/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_320004517/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_320004517/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_320004517/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_320004517/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1056.01",
@@ -580,7 +710,14 @@
     "m_star_msun": 1.05,
     "k_semiamp_ms": 2.7,
     "interior_classification": "Water World / Sub-Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_421894914/transit_fit.png",
+      "corner": "assets/figures/TIC_421894914/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_421894914/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_421894914/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_421894914/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_421894914/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1062.01",
@@ -603,7 +740,14 @@
     "m_star_msun": 0.85,
     "k_semiamp_ms": 2.3,
     "interior_classification": "Dense Super-Earth / Mini-Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_299799658/transit_fit.png",
+      "corner": "assets/figures/TIC_299799658/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_299799658/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_299799658/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_299799658/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_299799658/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1064.01",
@@ -626,7 +770,14 @@
     "m_star_msun": 0.78,
     "k_semiamp_ms": 3.1,
     "interior_classification": "Water World / Sub-Neptune",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_79748331/transit_fit.png",
+      "corner": "assets/figures/TIC_79748331/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_79748331/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_79748331/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_79748331/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_79748331/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1000.01",
@@ -649,7 +800,14 @@
     "m_star_msun": 1.0,
     "k_semiamp_ms": null,
     "interior_classification": "Falso Positivo Astrométrico (BEB a 59.4\")",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_50365310/transit_fit.png",
+      "corner": "assets/figures/TIC_50365310/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_50365310/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_50365310/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_50365310/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_50365310/rv_keplerian_fit.png"
+    }
   },
   {
     "name": "TOI-1003.01",
@@ -672,6 +830,13 @@
     "m_star_msun": 1.0,
     "k_semiamp_ms": null,
     "interior_classification": "Falso Positivo Astrométrico (BEB a 44.2\")",
-    "figures": {}
+    "figures": {
+      "transit": "assets/figures/TIC_106997505/transit_fit.png",
+      "corner": "assets/figures/TIC_106997505/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_106997505/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_106997505/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_106997505/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_106997505/rv_keplerian_fit.png"
+    }
   }
 ]
