@@ -1,0 +1,29 @@
+{
+  "tic_id": 65212867,
+  "name": "TOI-1007.01",
+  "status": "PASSED",
+  "period_days": 6.998921,
+  "t0_bjd": 2459228.4112,
+  "depth_ppm": 2840.0,
+  "spatial_vetting_passed": true,
+  "centroid_offset_arcsec": 1.3774998186453884,
+  "centroid_significance_sigma": 1.3190539769421101,
+  "fpp": 0.000931,
+  "nfpp": 0.0,
+  "statistical_validation_passed": true,
+  "rp_rs": 0.05386267678524917,
+  "a_rs": 12.475851412103639,
+  "impact_parameter_b": 0.3179221087660806,
+  "stellar_density_g_cm3": 0.7493694029533129,
+  "physical_parameters": {
+    "mass_earth": 278.5337940491435,
+    "mass_jupiter": 0.8763675432242759,
+    "radius_earth": 6.756417095282688,
+    "radius_jupiter": 0.6027681960977804,
+    "density_g_cm3": 4.962497490168953,
+    "log_g_cgs": 3.7766024093113573,
+    "v_esc_kms": 71.78274974334337,
+    "a_au": 0.07348739090469934,
+    "interior_classification": "Dense / Massive Hot Jupiter"
+  }
+}

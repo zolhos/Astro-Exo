@@ -5,6 +5,7 @@
 [![CI](https://github.com/zolhos/Astro-Exo/actions/workflows/ci.yml/badge.svg)](https://github.com/zolhos/Astro-Exo/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Tests: 32 passing](https://img.shields.io/badge/tests-32%20passing-brightgreen.svg)](tests/)
 [![arXiv](https://img.shields.io/badge/astro--ph.EP-arXiv-B31B1B.svg)](https://arxiv.org)
 
 ---
@@ -13,7 +14,7 @@
 
 **Astro-Exo** is an end-to-end astrophysical framework designed to detect, spatially vet, and statistically validate transiting exoplanets observed by NASA space missions (**TESS**, **Kepler**, **K2**). 
 
-Unlike classical 1D transit pipelines that treat photometric points in isolation and underestimate parameter errors, **Astro-Exo** couples **sub-pixel spatial vetting** (Pixel Response Function fitting, difference imaging, and Gaia DR3 blend screening) with **GPU-accelerated Bayesian parameter estimation** (Hamiltonian Monte Carlo / No-U-Turn Sampler via JAX/NumPyro and `celerite2` Gaussian Processes).
+Unlike classical 1D transit pipelines that treat photometric points in isolation and underestimate parameter errors, **Astro-Exo** couples **sub-pixel spatial vetting** (Pixel Response Function fitting, difference imaging, and Gaia DR3 blend screening) with **GPU-accelerated Bayesian parameter estimation** (Hamiltonian Monte Carlo / No-U-Turn Sampler via JAX/NumPyro and `celerite2` Gaussian Processes) and **joint Doppler radial velocity (RV) Keplerian dynamics** to derive absolute planetary masses and bulk densities.
 
 ```
    Raw TESS Cadences / TPF
@@ -40,6 +41,12 @@ Unlike classical 1D transit pipelines that treat photometric points in isolation
 │ 4. Joint RV (Optional)  │ ── Transits + Multi-Spectrograph Doppler (HARPS, ESPRESSO)
 │                         │    Derives True Mass (Mp), Bulk Density (ρp), Orbit
 └─────────────────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│ 5. Scientific Delivery  │ ── Interactive Web Portal, Standardized Catalogs (CSV/JSON),
+│    (Phase 6 / Final)    │    High-Resolution Diagnostic Figures, Paper Draft
+└─────────────────────────┘
 ```
 
 ---
@@ -47,7 +54,7 @@ Unlike classical 1D transit pipelines that treat photometric points in isolation
 ## Core Scientific Features
 
 ### 1. Observational Photometry Ingestion & Detrending (Phase 2)
-* **Direct MAST REST API Client:** Automated query and download of official TESS calibrated light curves (`_lc.fits`) and Target Pixel Files (`_tp.fits`) via STScI CAOM endpoints with local disk caching.
+* **Direct MAST REST API Client:** Automated query and download of official TESS calibrated light curves (`_lc.fits`) and Target Pixel Files (`_tp.fits`) via STScI CAOM endpoints with local disk caching and offline failover.
 * **High-Performance FITS Parser:** Direct extraction of binary tables (`PDCSAP_FLUX`, `SAP_FLUX`, `QUALITY`), 3D pixel cubes, and automated WCS astrometric calibration from `APERTURE` FITS headers.
 * **Stellar Detrending (`wotan`):** Preservation of transit geometries and depth using robust iterative filters (biweight, Huber-spline) with cadence-break tolerance.
 
@@ -59,12 +66,17 @@ Unlike classical 1D transit pipelines that treat photometric points in isolation
 * **Analytical De-dilution (Transit Restoration):** Reverses transit depth attenuation in close binary blends (e.g. WASP-77b at 3.3"), restoring true physical transit depth $\delta_{\text{true}} = \delta_{\text{obs}} / D$ and true radius ratio $(R_p/R_\star)_{\text{true}}$.
 * **TRICERATOPS Statistical Validation:** Computes marginalized posterior probabilities across 6 astrophysical hypotheses (TP, PTP, EB, EBx2P, HEB, BEB), deriving False Positive Probability (FPP < 1%) and Nearby False Positive Probability (NFPP < 0.1%).
 
-### 3. High-Dimensional Bayesian Modeling
+### 3. High-Dimensional Bayesian Modeling (Phase 3)
 * **Kipping (2013) Triangular Parameterization:** Samples unconstrained uniform parameters $(q_1, q_2) \in [0, 1]^2$ mapping directly to physically stable, monotonically decreasing limb-darkening profiles ($u_1 + u_2 < 1$, $u_1 > 0$, $u_1 + 2u_2 > 0$).
 * **Eccentric Orbit Reparameterization:** Samples $h = \sqrt{e}\cos\omega$ and $k = \sqrt{e}\sin\omega$ with uniform disk priors to avoid boundary biases at $e \to 0$.
 * **Empirical Stellar Density Prior:** Integrates Gaia DR3 / spectroscopic density priors ($\rho_*$) into the likelihood to break the classical photo-eccentric degeneracy between orbital eccentricity and transit duration.
-* **Correlated Stellar Noise (GPs):** Integrates stochastically driven Simple Harmonic Oscillator (SHO) kernels via `celerite2` to absorb stellar granulation and spot modulation without distorting transit depth.
-* **Joint Photometry + Radial Velocity:** Simultaneous inference of light curves and Doppler velocities from multiple spectrographs with separate instrumental zero-points and jitter.
+* **Correlated Stellar Noise (GPs):** Integrates stochastically driven Simple Harmonic Oscillator (SHO) kernels via `celerite2` (with exact dense-matrix jitter fallback) to absorb stellar granulation and spot modulation without distorting transit depth.
+
+### 4. Multi-Instrument Joint Keplerian Dynamics & Interior Classification (Phase 5)
+* **Multi-Spectrograph Ingestion & Vectorization:** Simultaneous ingestion of Doppler time-series from ground-based spectrographs (**HARPS**, **CORALIE**, **ESPRESSO**, **HIRES**), partitioning independent systemic zero-point velocities ($\gamma_k$) and instrumental jitters ($\sigma_{\text{jit}, k}$).
+* **Analytical Kepler Solver:** High-precision Newton-Raphson Keplerian solver converging in $< 10^{-12}$ precision across circular and eccentric orbits.
+* **True Planetary Mass ($M_p$) & Bulk Density ($\rho_p$):** Couples transit inclination $i$ with Doppler semi-amplitude $K$ to eliminate the $\sin i$ degeneracy, measuring true mass, physical radius, bulk density, surface gravity ($\log g_p$), and escape velocity ($v_{\text{esc}}$).
+* **Internal Structure Classification:** Automatically maps characterized exoplanets onto theoretical equation of state (EOS) composition tracks (Iron core, Earth-like rocky, Water worlds, Sub-Neptunes, Hot Jupiters, Inflated giants) based on high-pressure EOS models (Zeng et al.).
 
 ---
 
@@ -113,16 +125,25 @@ astro-exo run --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 
 astro-exo vet --tic 261136679 --sector 1 --period 3.5225 --t0 1325.5 --duration 2.5
 ```
 
-### 2. Interactive Visual Dashboard
+### 2. Full Test Round with Novel Samples (Complete Pipeline Verification)
 
-Generate and open a standalone, interactive HTML5 Canvas visual report showing multi-day light curves, phase-folded transits, sub-pixel difference imaging heatmaps, and Doppler radial velocity curves:
+Execute all modules across novel, previously unseen targets and output all diagnostic plots, catalogs, and reports:
+
+```bash
+python3 examples/executar_rodada_amostras_ineditas.py
+```
+This produces the complete suite of 17 individual plots and comprehensive reports in `results/rodada_amostras_ineditas/`.
+
+### 3. Interactive Visual Dashboard
+
+Generate and open a standalone, interactive HTML5 Canvas visual report:
 
 ```bash
 python3 examples/generate_visual_report.py
 open examples/sample_dashboard.html
 ```
 
-### 3. Python API
+### 4. Python API
 
 ```python
 from astro_exo.pipeline import TargetConfig, PipelineConfig, ExoplanetPipelineRunner
@@ -167,39 +188,63 @@ print(f"Centroid Offset: {product.vetting.centroid_offset_arcsec:.2f} arcsec ({p
 
 ```
 Astro-Exo/
-├── data/                # Curated benchmark datasets (pilot_candidates.csv, NASA cache)
-├── docs/                # Architectural manuals and guides (batch_processing_guide.md)
-├── examples/            # Visual reports, sample dashboards (sample_dashboard.html)
-├── src/astro_exo/
-│   ├── ingestion/       # MAST/TESS downloads, NASA TAP client, TLS search, biweight detrending
-│   ├── vetting/         # Difference imaging, Gaia DR3 overlay, dilution, PRF, TRICERATOPS
-│   ├── models/          # Transforms (Kipping, e-omega), emcee MCMC, JAX/NumPyro NUTS, celerite2 GP
-│   ├── pipeline/        # Runner, BatchProcessor, config dataclasses, output schemas
-│   ├── smoke.py         # Diagnostic suite for dependencies and numerical stability
-│   └── cli.py           # Unified CLI (run, vet, smoke, batch, fetch-tois)
-├── tests/               # Automated unit tests (smoke, quick sample, large multi-transit, batch)
-├── pyproject.toml       # Modern Python packaging configuration (PEP 621)
-├── CITATION.cff         # Academic citation metadata
-└── all_turns.json       # Complete 27-turn analytical specification
+├── data/                                      # Curated benchmark datasets & RV archives
+│   ├── rv_data/                               # Multi-spectrograph radial velocity datasets
+│   ├── pilot_candidates.csv                   # Historical validation batch
+│   └── nasa_tois_cache.json                   # Offline cache fallback for NASA TAP
+├── docs/                                      # Architectural manuals, handouts & scientific reports
+│   ├── handout_sessao_fase6.md                # Latest session handout & Phase 6 roadmap
+│   ├── handout_sessao_fase5.md                # Joint RV modeling session handout
+│   ├── relatorio_cientifico_fase5.md          # Multi-spectrograph physical properties report
+│   └── batch_processing_guide.md             # Batch pipeline operational guide
+├── examples/                                  # Executable scripts and visual demonstrations
+│   ├── executar_rodada_amostras_ineditas.py   # Complete novel-sample execution engine
+│   ├── run_phase5_joint_modeling.py           # Joint Transit + RV modeling runner
+│   └── generate_visual_report.py              # HTML5 interactive visual dashboard
+├── results/                                   # Analysis products & diagnostic figures
+│   └── rodada_amostras_ineditas/              # Complete novel-sample validation bundle
+│       ├── catalogo_amostras_ineditas.csv     # Final characterization catalog
+│       ├── resumo_rodada.json                 # Machine-readable output summary
+│       ├── relatorio_completo_rodada_inedita.md # Scientific analytical report
+│       ├── painel_geral_rodada.png            # Multi-panel diagnostic overview
+│       ├── mass_radius_density_diagram.png    # Mass-Radius-Density EOS diagram
+│       └── TIC_*/                             # Individual transit, MCMC, PRF, Gaia & RV plots
+├── src/astro_exo/                             # Core Python package
+│   ├── ingestion/                             # MAST/TESS client, RV loader, NASA archive TAP
+│   ├── vetting/                               # Difference imaging, PRF 2D, Gaia DR3, TRICERATOPS
+│   ├── models/                                # Kipping/e-omega transforms, emcee, NUTS, celerite2, joint RV
+│   ├── pipeline/                              # Pipeline runner, BatchProcessor, configs, schemas
+│   ├── smoke.py                               # Diagnostic environment verifier
+│   └── cli.py                                 # Unified CLI entrypoint
+├── tests/                                     # Automated test suite (32 tests passing)
+│   ├── test_all_modules_novel_samples.py      # Complete novel-sample validation test
+│   ├── test_phase5_joint_rv.py                # Keplerian solver & RV likelihood tests
+│   ├── test_phase4_vetting.py                 # Difference imaging & Gaia cone tests
+│   ├── test_phase3_bayesian.py                # MCMC/NUTS sampler tests
+│   ├── test_phase2_real_photometry.py         # FITS & detrending tests
+│   └── test_smoke.py                          # Fast sanity check
+├── pyproject.toml                             # Modern packaging configuration (PEP 621)
+├── CITATION.cff                               # Academic citation metadata
+└── LICENSE                                    # MIT License
 ```
 
 ---
 
 ## Running Tests
 
-Execute the automated test suite with `pytest` or directly with standard `python3`:
+Execute the automated test suite with standard `unittest` or `pytest`:
 
 ```bash
-# Full test suite via pytest
-pytest tests/ -v
+# Run all 32 automated tests
+python3 -m unittest discover tests
 
-# Or run tests directly with python3:
-python3 tests/test_smoke.py
-python3 tests/test_phase2_real_photometry.py
+# Or run tests individually:
+python3 tests/test_all_modules_novel_samples.py
+python3 tests/test_phase5_joint_rv.py
+python3 tests/test_phase4_vetting.py
 python3 tests/test_phase3_bayesian.py
-python3 tests/test_quick_sample.py
-python3 tests/test_large_sample.py
-python3 tests/test_batch_runner.py
+python3 tests/test_phase2_real_photometry.py
+python3 tests/test_smoke.py
 ```
 
 ---
@@ -211,7 +256,7 @@ If you use **Astro-Exo** in your academic research, please cite:
 ```bibtex
 @software{zolhos2026astroexo,
   author = {Zolhos, Diego},
-  title = {Astro-Exo: High-Precision Bayesian Inference and Spatial Vetting Pipeline for Exoplanet Discovery},
+  title = {Astro-Exo: High-Precision Bayesian Inference, Spatial Vetting, and Radial Velocity Modeling Pipeline for Exoplanet Discovery},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},

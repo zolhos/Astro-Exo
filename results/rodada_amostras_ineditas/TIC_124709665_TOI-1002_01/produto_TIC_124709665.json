@@ -1,0 +1,19 @@
+{
+  "tic_id": 124709665,
+  "name": "TOI-1002.01",
+  "status": "REJECTED_FP",
+  "period_days": 1.867557,
+  "t0_bjd": 2459224.6878,
+  "depth_ppm": 1500.0,
+  "spatial_vetting_passed": false,
+  "centroid_offset_arcsec": 51.28898286460197,
+  "centroid_significance_sigma": 181.06726948131683,
+  "fpp": 1.0,
+  "nfpp": 0.0,
+  "statistical_validation_passed": false,
+  "rp_rs": 0.008850459976950944,
+  "a_rs": 7.709768762837764,
+  "impact_parameter_b": 0.4149313954534236,
+  "stellar_density_g_cm3": 2.4838415322778697,
+  "physical_parameters": null
+}

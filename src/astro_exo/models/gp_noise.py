@@ -55,6 +55,21 @@ class CeleriteGPNoiseModel:
         """
         Evaluate exact marginal log-likelihood for residuals given GP hyper-parameters.
         ln L = -0.5 * (r^T K^-1 r + ln|K| + N ln(2pi))
+        Uses celerite2 if available, or dense exact Cholesky/solver fallback for small samples.
         """
-        gp = self.build_sho_term(sigma_gp, rho_gp)
-        return float(gp.log_likelihood(residuals))
+        try:
+            gp = self.build_sho_term(sigma_gp, rho_gp)
+            return float(gp.log_likelihood(residuals))
+        except ImportError:
+            dt = np.abs(self.time[:, None] - self.time[None, :])
+            k = (sigma_gp ** 2) * np.exp(-dt / (rho_gp + 1e-12))
+            k += np.diag(self.yerr ** 2 + 1e-14)
+            sign, logdet = np.linalg.slogdet(k)
+            if sign <= 0:
+                return -np.inf
+            try:
+                quad = residuals @ np.linalg.solve(k, residuals)
+                n = len(residuals)
+                return float(-0.5 * (quad + logdet + n * np.log(2.0 * np.pi)))
+            except np.linalg.LinAlgError:
+                return -np.inf

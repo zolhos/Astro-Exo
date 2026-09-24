@@ -10,6 +10,12 @@ from astro_exo.models.transforms import (
     impact_param_to_inclination,
     compute_stellar_density,
 )
+from astro_exo.models.joint_rv import (
+    keplerian_rv,
+    compute_planetary_mass_density,
+    classify_planetary_interior,
+    JointTransitRVSampler,
+)
 
 __all__ = [
     "kipping_to_quadratic",
@@ -18,4 +24,8 @@ __all__ = [
     "xy_to_ecc_omega",
     "impact_param_to_inclination",
     "compute_stellar_density",
+    "keplerian_rv",
+    "compute_planetary_mass_density",
+    "classify_planetary_interior",
+    "JointTransitRVSampler",
 ]

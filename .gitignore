@@ -14,7 +14,6 @@ lib/
 lib64/
 parts/
 sdist/
-var/
 wheels/
 *.egg-info/
 .installed.cfg
@@ -46,6 +45,7 @@ data/raw/
 data/cache/
 mastDownload/
 .lightkurve-cache/
+.mpl_cache/
 
 # IDE / Editor
 .vscode/
@@ -59,7 +59,6 @@ mastDownload/
 scratch/
 chrome_profile*
 *.log
-results/
+results/*
+!results/rodada_amostras_ineditas/
 .matplotlib_cache/
-
-

@@ -86,10 +86,22 @@ def fetch_nasa_tois(
     )
 
     t0 = time.perf_counter()
-    with urllib.request.urlopen(req, context=ctx, timeout=20) as resp:
-        raw_json = json.loads(resp.read().decode("utf-8"))
-    dt = time.perf_counter() - t0
-    print(f"[NASA TAP API] Resposta recebida em {dt:.2f}s ({len(raw_json)} registros).")
+    try:
+        with urllib.request.urlopen(req, context=ctx, timeout=20) as resp:
+            raw_json = json.loads(resp.read().decode("utf-8"))
+        dt = time.perf_counter() - t0
+        print(f"[NASA TAP API] Resposta recebida em {dt:.2f}s ({len(raw_json)} registros).")
+    except Exception as net_err:
+        if os.path.exists(cache_path):
+            print(f"[NASA TAP API AVISO] Falha na rede ({net_err}). Utilizando cache em disco ({cache_path}) como fallback...")
+            with open(cache_path, "r", encoding="utf-8") as f:
+                cached_data = json.load(f)
+            filtered = [
+                r for r in cached_data
+                if (not dispositions or r.get("expected_disp") in dispositions) and r.get("period_days") is not None
+            ]
+            return filtered[:limit]
+        raise net_err
 
     # 3. Formata e normaliza para o padrão do Astro-Exo
     formatted_targets = []

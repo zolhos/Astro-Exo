@@ -122,17 +122,22 @@ class ExoplanetPipelineRunner:
                     num_warmup=self.config.nuts_warmup,
                     num_samples=self.config.nuts_samples
                 )
-                post = idata.posterior
-                rp_med = float(np.median(post["rp"].values))
-                rp_err = float(np.std(post["rp"].values))
-                a_rs_med = float(np.median(post["a_rs"].values))
-                a_rs_err = float(np.std(post["a_rs"].values))
-                b_med = float(np.median(post["b"].values))
-                b_err = float(np.std(post["b"].values))
-                t0_med = float(np.median(post["t0"].values))
-                t0_err = float(np.std(post["t0"].values))
-                q1_med = float(np.median(post["q1"].values))
-                q2_med = float(np.median(post["q2"].values))
+                if hasattr(idata, "posterior"):
+                    post = idata.posterior
+                    get_val = lambda k: np.array(post[k].values)
+                else:
+                    post = idata
+                    get_val = lambda k: np.array(post[k])
+                rp_med = float(np.median(get_val("rp")))
+                rp_err = float(np.std(get_val("rp")))
+                a_rs_med = float(np.median(get_val("a_rs")))
+                a_rs_err = float(np.std(get_val("a_rs")))
+                b_med = float(np.median(get_val("b")))
+                b_err = float(np.std(get_val("b")))
+                t0_med = float(np.median(get_val("t0")))
+                t0_err = float(np.std(get_val("t0")))
+                q1_med = float(np.median(get_val("q1")))
+                q2_med = float(np.median(get_val("q2")))
             except Exception as jax_err:
                 print(f"[WARN] JAX/NUTS fallback to emcee: {jax_err}")
                 summary = "fallback"
