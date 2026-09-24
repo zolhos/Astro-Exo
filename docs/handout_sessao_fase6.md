@@ -1,6 +1,6 @@
 # Handout da Sessão: Astro-Exo 🪐🚀
 
-**Sessão Pré-Fase Final: Rodada Completa de Testes com Amostras Inéditas, Auditoria de Módulos (Fases 1 a 5) e Transição para a Fase Final**
+**Sessão Pré-Fase Final: Rodada Completa de Testes com Amostras Inéditas, Auditoria de Módulos (Fases 1 a 5) e Roteiro de Construção da Fase Final**
 
 *Data da Sessão: 24 de Setembro de 2026*  
 *Repositório: [github.com/zolhos/Astro-Exo](https://github.com/zolhos/Astro-Exo.git)*  
@@ -57,27 +57,57 @@ Nesta sessão, realizamos uma bateria rigorosa de testes ponta a ponta em todos 
 
 ---
 
-## 3. Arquitetura de Entrega para a Comunidade Científica
+## 3. Roteiro Lógico de Construção da Fase Final (Fase 6)
 
-O sistema foi delineado sob um protocolo rigoroso de separação de responsabilidades:
-* **Artefatos Determinísticos (Python Puro)**:
-  - FITS, matrizes de covariância, curvas de luz, tensores JAX, MCMC chains, tabelas FITS/CSV/JSON.
-  - 100% reprodutíveis via sementes matemáticas e equações físicas fechadas (Mandel & Agol, Kepler, Kipping, Zellner).
-* **Artefatos Gerados por LLM**:
-  - Resumos executivos, documentação legível por humanos, handouts pedagógicos e relatórios contextuais.
-  - Atuam estritamente como a "camada de síntese e comunicação", sem interferir na física do cálculo numérico.
+A execução da Fase 6 seguirá rigorosamente a sequência lógica de engenharia científica, garantindo estabilidade no núcleo do código antes de construir interfaces e redigir o manuscrito:
+
+```mermaid
+graph TD
+    P1["Passo 1: Empacotamento de Produção & CLI Final v1.0.0<br>(pyproject.toml, CLI robusta, CI/CD GitHub Actions)"]
+    P2["Passo 2: Portal Web Interativo & Dashboard Científico<br>(Dashboard estático, catálogo filtrável, curvas e diagramas)"]
+    P3["Passo 3: Artigo Científico / Paper de Metodologia<br>(Manuscrito LaTeX JOSS/AAS, formulação matemática, benchmarks)"]
+    P4["Passo 4: Preservação Permanente de Dados & Release DOI<br>(Congelamento v1.0.0, Zenodo/Harvard Dataverse, FAIR Data)"]
+
+    P1 -->|Base estável e testada| P2
+    P2 -->|Catálogo e figuras integradas| P3
+    P3 -->|Manuscrito e código validados| P4
+```
+
+### Detalhamento dos 4 Passos Sequenciais:
+
+1. **Passo 1: Empacotamento de Produção & CLI Final (`v1.0.0`)**:
+   - Congelamento de versão e tipagem rigorosa de dependências no `pyproject.toml` (extras: `[gpu]`, `[vetting]`, `[rv]`).
+   - Refinamento ergonômico da CLI (`astro-exo run`, `vet`, `batch`, `joint-rv`, `dashboard`).
+   - Automação de CI/CD via GitHub Actions (testando os 32 testes unitários em Linux, macOS e Windows).
+
+2. **Passo 2: Portal Web Interativo & Dashboard Científico**:
+   - Construção do gerador estático do portal (JAMstack / HTML5 + Canvas/WebGL responsivo, pronto para GitHub Pages / Vercel).
+   - Tabela dinâmica e filtrável com todos os candidatos analisados (status, raio, massa, densidade, FPP).
+   - Visualizadores embutidos: curvas de luz dobradas na fase, centróides TPF, curvas de RV e Diagrama Massa-Raio dinâmico interativo.
+   - Botões de exportação direta de relatórios e dados padronizados (JSON, CSV, FITS).
+
+3. **Passo 3: Artigo Científico / Paper de Metodologia (LaTeX - JOSS / AAS)**:
+   - Redação do artigo científico formal em LaTeX (`paper.tex` / `paper.md` nos padrões do *Journal of Open Source Software* ou periódicos *AAS/MNRAS*).
+   - Formalização matemática completa: trânsito com Kipping (2013), amostragem NUTS em GPU, vetting PRF 2D e solução de Kepler.
+   - Apresentação da matriz de validação e descarte com TOIs reais (incluindo o descarte por centróide do BEB TOI-1002.01).
+   - Declaração de impacto e dados FAIR para suporte a missões espaciais (TESS, James Webb, PLATO).
+
+4. **Passo 4: Preservação Permanente de Dados & Atribuição de DOI (Zenodo / Release)**:
+   - Criação da Release Oficial `v1.0.0` no GitHub.
+   - Integração com o repositório Zenodo para emissão do DOI permanente do software e dos catálogos.
+   - Inserção dos badges finais no `README.md` e referências de citação.
 
 ---
 
-## 4. Estrutura de Arquivos Criada e Atualizada
+## 4. Estrutura de Arquivos Atualizada
 
 ```
 Astro-Exo/
 ├── docs/
-│   ├── handout_sessao_fase6.md                 # Este handout de transição para a Fase Final
+│   ├── handout_sessao_fase6.md                 # Este handout com o roteiro lógico da Fase 6
 │   ├── handout_sessao_fase5.md                 # Handout da Fase 5 (Joint RV)
 │   ├── relatorio_cientifico_fase5.md           # Relatório da modelagem espectroscópica
-│   └── ...
+│   └── batch_processing_guide.md              # Guia operacional do modo lote
 ├── examples/
 │   ├── executar_rodada_amostras_ineditas.py    # Script reprodutível da rodada inédita
 │   └── run_phase5_joint_modeling.py            # Modelagem conjunta dos 5 alvos
@@ -105,7 +135,7 @@ Astro-Exo/
 
 ## 5. Como Iniciar a Próxima Sessão (Fase 6: A Fase Final)
 
-Ao abrir a próxima sessão, envie a seguinte mensagem para engajar imediatamente na **Fase Final**:
+Ao abrir a próxima sessão, envie a seguinte mensagem para iniciar a execução seguindo a ordem lógica:
 
 ```markdown
 Olá! Estou continuando o desenvolvimento do projeto Astro-Exo.
@@ -117,9 +147,11 @@ Por favor, leia os arquivos:
 2. results/rodada_amostras_ineditas/relatorio_completo_rodada_inedita.md
 3. README.md
 
-Estamos prontos para executar a FASE FINAL (Fase 6):
-- Construção do Portal Web Interativo / Dashboard Público de Candidatos
-- Empacotamento formal e distribuição PyPI (v1.0.0)
-- Elaboração do draft do Artigo Científico / Paper Metodológico (JOSS / AAS)
-- Preservação FAIR e documentação final de operação.
+Estamos prontos para executar a FASE FINAL (Fase 6) na ordem lógica estabelecida:
+- Passo 1: Empacotamento de Produção & CLI Final v1.0.0 (pyproject.toml, CLI e CI/CD)
+- Passo 2: Portal Web Interativo & Dashboard Científico (Interface pública com catálogo e gráficos)
+- Passo 3: Artigo Científico / Paper Metodológico (Manuscrito LaTeX JOSS/AAS)
+- Passo 4: Preservação Permanente de Dados & Release DOI (Zenodo / GitHub Release v1.0.0)
+
+Vamos iniciar pelo Passo 1!
 ```
