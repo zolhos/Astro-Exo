@@ -73,7 +73,7 @@ class TestReal24RVDatasets(unittest.TestCase):
             self.assertTrue(target["tic_id"].startswith("TIC"), f"Invalid TIC ID for {sname}")
             self.assertIsNotNone(target["tic_number"], f"Invalid TIC number for {sname}")
 
-    def test_consolidated_28_real_systems_catalog(self):
+    def test_consolidated_50_real_systems_catalog(self):
         cat_path = os.path.join(self.repo_root, "docs", "assets", "consolidated_catalog.json")
         csv_path = os.path.join(self.repo_root, "docs", "assets", "consolidated_catalog.csv")
         self.assertTrue(os.path.isfile(cat_path), "consolidated_catalog.json missing")
@@ -82,16 +82,23 @@ class TestReal24RVDatasets(unittest.TestCase):
         with open(cat_path, "r", encoding="utf-8") as f:
             catalog = json.load(f)
 
-        self.assertEqual(len(catalog), 28, "Catalog must contain exactly 28 real exoplanet systems")
+        self.assertEqual(len(catalog), 50, "Catalog must contain exactly 50 real exoplanet systems")
 
-        # 4 Hot Jupiters + 24 Kepler/K2 systems
-        wasp_names = ["WASP-77b", "WASP-126b", "WASP-62b", "WASP-46b"]
+        # 12 WASP Hot Jupiters + 38 Kepler/K2 systems
+        wasp_names = [
+            "WASP-77b", "WASP-126b", "WASP-62b", "WASP-46b",
+            "WASP-8b", "WASP-23b", "WASP-31b", "WASP-34b",
+            "WASP-50b", "WASP-54b", "WASP-80b", "WASP-103b"
+        ]
         kepler_k2_names = [
             "Kepler-10b", "Kepler-19b", "Kepler-20b", "Kepler-21b", "Kepler-22b",
             "Kepler-78b", "Kepler-93b", "Kepler-102b", "Kepler-103b", "Kepler-107b",
             "Kepler-109b", "Kepler-409b", "Kepler-454b", "Kepler-538b", "Kepler-1655b",
             "K2-2b", "K2-3b", "K2-36b", "K2-38b", "K2-110b", "K2-111b", "K2-131b",
-            "K2-141b", "K2-222b"
+            "K2-141b", "K2-222b",
+            "Kepler-37d", "Kepler-68b", "Kepler-323b", "Kepler-1876b",
+            "K2-12b", "K2-79b", "K2-96b", "K2-106b", "K2-135b", "K2-167b",
+            "K2-262b", "K2-263b", "K2-312b", "K2-418b"
         ]
         all_expected = wasp_names + kepler_k2_names
         actual_names = [t["name"] for t in catalog]
@@ -120,7 +127,7 @@ class TestReal24RVDatasets(unittest.TestCase):
             rv_f = os.path.join(self.repo_root, tgt["rv_file"])
             self.assertTrue(os.path.isfile(rv_f), f"RV file for {name} missing: {rv_f}")
 
-    def test_all_168_scientific_figures_exist(self):
+    def test_all_300_scientific_figures_exist(self):
         cat_path = os.path.join(self.repo_root, "docs", "assets", "consolidated_catalog.json")
         with open(cat_path, "r", encoding="utf-8") as f:
             catalog = json.load(f)
@@ -138,9 +145,10 @@ class TestReal24RVDatasets(unittest.TestCase):
                 self.assertGreater(os.path.getsize(fig_path), 5000, f"Figure too small / empty: {fig_path}")
                 total_figs += 1
 
-        self.assertEqual(total_figs, 28 * 6)  # 168 scientific figures
+        self.assertEqual(total_figs, 50 * 6)  # 300 scientific figures
 
 
 if __name__ == "__main__":
     unittest.main()
+
 

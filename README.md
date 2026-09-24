@@ -8,18 +8,18 @@
 [![Paper](https://img.shields.io/badge/Paper-JOSS%2FAAS-orange.svg)](paper/paper.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![Tests: 51 passing](https://img.shields.io/badge/tests-51%20passing-brightgreen.svg)](tests/)
+[![Tests: 54 passing](https://img.shields.io/badge/tests-54%20passing-brightgreen.svg)](tests/)
 
 ---
 
 ## 🌐 Interactive Scientific Web Portal
 
-Explore our live interactive exoplanet catalog with all **28 benchmark targets** and **168 diagnostic figures** at:  
+Explore our live interactive exoplanet catalog with all **50 real benchmark exoplanets** and **300 diagnostic figures** at:  
 👉 **[https://zolhos.github.io/Astro-Exo/](https://zolhos.github.io/Astro-Exo/)**
 
-* **Filterable Catalog:** Instant filtering across 28 real astronomical targets by planetary regime and validation status.
-* **Full Diagnostic Inspector:** Phase-folded transits, 7D MCMC corner plots, 2D PRF difference images, Gaia DR3 cone screening fields, TRICERATOPS hypothesis distributions, and Keplerian Doppler RV curves.
-* **Interactive Mass-Radius-Density ($\rho_p$) Diagram:** Real-time correlation chart with clickable candidates.
+* **Filterable Catalog:** Instant filtering across 50 real exoplanet systems (12 Hot Jupiters + 38 Sub-Neptunes and Super-Earths) by planetary regime and validation status.
+* **Full Diagnostic Inspector:** Phase-folded transits with Mandel-Agol & Keplerian $a/R_*$, 7D MCMC corner plots, 2D PRF difference images, Gaia DR3 cone screening fields, TRICERATOPS hypothesis distributions, and authentic Keplerian Doppler RV curves (HARPS-N, HARPS, CORALIE, SOPHIE).
+* **Interactive Mass-Radius-Density ($\rho_p$) Diagram:** Real-time correlation chart with clickable candidates mapped against theoretical EOS tracks (Zeng et al. 2016).
 
 ---
 
