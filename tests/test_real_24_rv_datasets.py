@@ -82,7 +82,11 @@ class TestReal24RVDatasets(unittest.TestCase):
         with open(cat_path, "r", encoding="utf-8") as f:
             catalog = json.load(f)
 
-        self.assertEqual(len(catalog), 50, "Catalog must contain exactly 50 real exoplanet systems")
+        confirmed_targets = [t for t in catalog if t["status"] == "PASSED"]
+        rejected_targets = [t for t in catalog if t["status"] == "REJECTED_FP"]
+
+        self.assertEqual(len(confirmed_targets), 50, "Catalog must contain exactly 50 confirmed real exoplanet systems")
+        self.assertGreaterEqual(len(rejected_targets), 1, "Catalog must contain at least 1 real vetting false positive control")
 
         # 12 WASP Hot Jupiters + 38 Kepler/K2 systems
         wasp_names = [
@@ -101,13 +105,13 @@ class TestReal24RVDatasets(unittest.TestCase):
             "K2-262b", "K2-263b", "K2-312b", "K2-418b"
         ]
         all_expected = wasp_names + kepler_k2_names
-        actual_names = [t["name"] for t in catalog]
+        actual_names = [t["name"] for t in confirmed_targets]
 
         for exp in all_expected:
             self.assertIn(exp, actual_names, f"Target {exp} missing from consolidated catalog")
 
-        # Verify physical parameters and RV files
-        for tgt in catalog:
+        # Verify physical parameters and RV files for confirmed planets
+        for tgt in confirmed_targets:
             name = tgt["name"]
             self.assertEqual(tgt["status"], "PASSED")
             self.assertGreater(tgt["period_days"], 0.0)
@@ -127,6 +131,11 @@ class TestReal24RVDatasets(unittest.TestCase):
             rv_f = os.path.join(self.repo_root, tgt["rv_file"])
             self.assertTrue(os.path.isfile(rv_f), f"RV file for {name} missing: {rv_f}")
 
+        # Verify rejected false positive controls (e.g. TOI-1009.01)
+        for tgt in rejected_targets:
+            self.assertEqual(tgt["status"], "REJECTED_FP")
+            self.assertGreater(tgt["centroid_offset_arcsec"], 4.0)
+
     def test_all_300_scientific_figures_exist(self):
         cat_path = os.path.join(self.repo_root, "docs", "assets", "consolidated_catalog.json")
         with open(cat_path, "r", encoding="utf-8") as f:
@@ -145,7 +154,7 @@ class TestReal24RVDatasets(unittest.TestCase):
                 self.assertGreater(os.path.getsize(fig_path), 5000, f"Figure too small / empty: {fig_path}")
                 total_figs += 1
 
-        self.assertEqual(total_figs, 50 * 6)  # 300 scientific figures
+        self.assertEqual(total_figs, len(catalog) * 6)  # 6 scientific figures per catalog target
 
 
 if __name__ == "__main__":

@@ -1748,5 +1748,40 @@
       "triceratops": "assets/figures/TIC_276754403/triceratops_probabilities.png",
       "rv": "assets/figures/TIC_276754403/rv_keplerian_fit.png"
     }
+  },
+  {
+    "name": "TOI-1009.01",
+    "tic_id": 107782586,
+    "status": "REJECTED_FP",
+    "regime": "Falso Positivo (NEB / BEB)",
+    "period_days": 1.960028,
+    "t0_bjd": 2459229.2309,
+    "depth_ppm": 1707.6,
+    "radius_earth": 4.51,
+    "radius_jupiter": 0.402,
+    "mass_earth": null,
+    "mass_jupiter": null,
+    "density_g_cm3": null,
+    "k_semiamp_ms": null,
+    "transit_duration_hours": 2.01,
+    "r_star_rsun": 1.0,
+    "m_star_msun": 1.0,
+    "centroid_offset_arcsec": 6.26,
+    "centroid_sigma": 11.92,
+    "fpp": 0.999,
+    "nfpp": 0.85,
+    "interior_classification": "Falso Positivo (Contamina\u00e7\u00e3o de Fundo)",
+    "rv_file": "N/A (Falso Positivo Astrom\u00e9trico)",
+    "rv_source": "N/A",
+    "eccentricity": 0.0,
+    "omega_deg": 90.0,
+    "figures": {
+      "transit": "assets/figures/TIC_107782586/transit_fit.png",
+      "corner": "assets/figures/TIC_107782586/corner_mcmc.png",
+      "diff_img": "assets/figures/TIC_107782586/difference_image_centroid.png",
+      "gaia": "assets/figures/TIC_107782586/gaia_field_screening.png",
+      "triceratops": "assets/figures/TIC_107782586/triceratops_probabilities.png",
+      "rv": "assets/figures/TIC_107782586/rv_keplerian_fit.png"
+    }
   }
 ]
