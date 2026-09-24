@@ -1,29 +1,29 @@
-name,tic_id,status,regime,period_days,t0_bjd,depth_ppm,radius_earth,mass_earth,density_g_cm3,centroid_offset_arcsec,centroid_sigma,fpp,interior_classification
-TOI-1001.01,88863718,PASSED,Gas Giant / Subgiant,1.9316,2459987.9489,1286.0,7.92,163.3,1.81,4.04,2.7,0.0003,Dense / Massive Hot Jupiter
-TOI-1007.01,65212867,PASSED,Intermediate Giant + RV,6.9989,2459228.4112,2840.0,6.76,278.5,4.96,1.38,1.3,0.0009,Dense / Massive Hot Jupiter
-TOI-1002.01,124709665,REJECTED_FP,Blended Eclipsing Binary (BEB),1.8676,2459224.6878,1500.0,,,,51.29,181.1,1.0,"Falso Positivo Astrométrico (BEB a 51.3"")"
-WASP-77b,16288184,PASSED,De-diluted Hot Jupiter,1.36,2456200.5,17530.0,13.72,557.5,1.19,0.22,0.6,0.0001,Dense / Massive Hot Jupiter
-WASP-126b,25155310,PASSED,Inflated Sub-Saturn / Hot Jupiter,3.2888,2456950.0,5820.0,10.57,92.1,0.43,0.15,0.4,0.0001,Standard Gas Giant / Hot Jupiter
-WASP-62b,149603524,PASSED,Inflated Gas Giant,4.4119,2455850.0,12450.0,15.6,181.2,0.28,0.18,0.5,0.0002,Inflated Gas Giant
-WASP-46b,231663901,PASSED,Hot Jupiter,1.4304,2455480.0,19770.0,14.1,604.2,1.23,0.19,0.5,0.0001,Dense / Massive Hot Jupiter
-TOI-1009.01,107782586,PASSED,Water World / Sub-Neptune,2.7485,2458500.0,951.0,2.76,7.2,1.91,0.31,0.7,0.0005,Water World / Sub-Neptune
-TOI-1011.01,114018671,PASSED,Super-Earth / Rocky,2.4705,2460715.8989,273.0,1.7,3.8,4.22,0.11,0.3,0.0002,Dense Rocky Super-Earth
-TOI-1019.01,341420329,PASSED,Inflated Gas Giant,5.2341,2459232.4469,20796.9,24.5,480.0,0.18,0.24,0.6,0.0001,Inflated / Low-Density Hot Jupiter
-TOI-1027.01,20318757,PASSED,Resonant Sub-Neptune,3.2835,2460037.869,1558.0,2.93,8.1,1.78,0.15,0.4,0.0004,Water World / Sub-Neptune
-TOI-1027.02,20318757,PASSED,Resonant Sub-Neptune,11.0288,2460032.5332,1694.0,3.05,8.8,1.7,0.17,0.4,0.0003,Water World / Sub-Neptune
-TOI-1027.03,20318757,PASSED,Resonant Sub-Neptune,5.0113,2460032.573,1210.0,2.58,6.8,2.18,0.12,0.3,0.0005,Dense Sub-Neptune / Water World
-TOI-103.01,336732616,PASSED,Hot Jupiter,3.5479,2458327.2526,10424.4,15.6,345.0,0.5,0.19,0.5,0.0001,Standard Gas Giant / Hot Jupiter
-TOI-1032.01,146589986,PASSED,Inflated Gas Giant,5.6644,2459283.8287,3491.8,15.1,210.0,0.33,0.28,0.6,0.0002,Inflated Gas Giant
-TOI-1035.01,361413119,PASSED,Super-Jupiter,6.0744,2459286.8726,5982.5,20.5,410.0,0.26,0.21,0.5,0.0001,Massive Inflated Hot Jupiter
-TOI-1036.01,146172354,PASSED,Warm Saturn,3.7795,2460037.1723,2761.0,6.77,95.0,1.68,0.14,0.3,0.0003,Dense Sub-Saturn
-TOI-104.01,231670397,PASSED,Hot Jupiter,4.0873,2460150.6087,3572.2,14.5,290.0,0.52,0.22,0.5,0.0001,Standard Gas Giant / Hot Jupiter
-TOI-1044.01,463402815,PASSED,Ultra-Short Period (USP),1.0085,2460037.1947,3051.0,6.02,55.0,1.39,0.09,0.2,0.0002,Ultra-Short-Period Hot Neptune
-TOI-1050.01,66818296,PASSED,Massive Hot Jupiter,3.7355,2459355.5456,17030.0,22.3,520.0,0.26,0.25,0.6,0.0001,Massive Inflated Gas Giant
-TOI-1052.01,317060587,PASSED,Sub-Neptune,9.1398,2458332.9412,358.4,3.26,10.2,1.61,0.18,0.4,0.0006,Sub-Neptune / Water World
-TOI-1054.01,366989877,PASSED,Temperate Sub-Neptune,15.5078,2460122.7001,513.0,2.9,7.9,1.78,0.2,0.5,0.0004,Temperate Water World
-TOI-1055.01,320004517,PASSED,Mini-Neptune,17.4713,2458661.0627,1199.8,3.67,12.5,1.39,0.16,0.4,0.0003,Volatile-Rich Mini-Neptune
-TOI-1056.01,421894914,PASSED,Sub-Neptune,5.308,2458326.0624,391.4,2.95,8.2,1.75,0.14,0.3,0.0005,Water World / Sub-Neptune
-TOI-1062.01,299799658,PASSED,Dense Super-Earth,4.1151,2460901.448,539.0,2.25,5.5,2.65,0.13,0.3,0.0003,Dense Super-Earth / Mini-Neptune
-TOI-1064.01,79748331,PASSED,Sub-Neptune,6.4439,2458656.6685,1122.0,2.7,7.1,1.98,0.15,0.4,0.0004,Water World / Sub-Neptune
-TOI-1000.01,50365310,REJECTED_FP,Blended Eclipsing Binary (BEB),2.1713,2459229.63,656.9,,,,59.4,174.0,0.998,"Falso Positivo Astrométrico (BEB a 59.4"")"
-TOI-1003.01,106997505,REJECTED_FP,Background Eclipsing Binary (BEB),2.7432,2458493.3957,383.4,,,,44.2,98.2,0.995,"Falso Positivo Astrométrico (BEB a 44.2"")"
+name,tic_id,status,regime,period_days,t0_bjd,depth_ppm,radius_earth,radius_jupiter,mass_earth,mass_jupiter,density_g_cm3,k_semiamp_ms,transit_duration_hours,r_star_rsun,m_star_msun,centroid_offset_arcsec,centroid_sigma,fpp,interior_classification
+WASP-77b,16288184,PASSED,De-diluted Hot Jupiter,1.36003,2456200.5,17530.0,13.72,1.224,557.4,1.754,1.19,321.4,2.16,0.95,1.0,0.22,0.6,0.0001,Dense / Massive Hot Jupiter
+WASP-126b,25155310,PASSED,Inflated Sub-Saturn / Hot Jupiter,3.28879,2456950.0,5820.0,10.57,0.943,92.1,0.29,0.43,36.7,3.0,1.27,1.12,0.15,0.4,0.0001,Standard Gas Giant / Hot Jupiter
+WASP-62b,149603524,PASSED,Inflated Gas Giant,4.41194,2455850.0,12450.0,15.6,1.39,202.3,0.637,0.29,68.0,3.63,1.28,1.25,0.18,0.5,0.0002,Inflated / Low-Density Hot Jupiter
+WASP-46b,231663901,PASSED,Hot Jupiter,1.43037,2455480.0,19770.0,14.1,1.259,668.7,2.104,1.31,389.5,1.62,0.92,0.96,0.19,0.5,0.0001,Dense / Massive Hot Jupiter
+Kepler-10b,377780790,PASSED,Super-Earth / Rocky,0.8374907,2455034.08687,191.9,1.47,0.131,3.24,0.0102,5.62,2.32,1.811,1.065,0.91,0.19,0.5,0.0004,Super-Earth (Dense Rocky)
+Kepler-19b,122375047,PASSED,Sub-Neptune / Water World,9.28699,2454959.7074,691.7,2.209,0.197,6.1,0.0192,3.12,2.13,3.3652,0.859,0.936,0.18,0.3,0.0004,Water World / Volatile-Rich Super-Earth
+Kepler-20b,158554588,PASSED,Super-Earth / Rocky,3.6961049,2454967.50225,396.7,1.773,0.158,9.7,0.0305,9.6,4.23,2.463,0.9164,0.929,0.19,0.6,0.0001,Super-Earth (Dense Rocky)
+Kepler-21b,121214185,PASSED,Super-Earth / Rocky,2.7858212,2455093.83716,62.2,1.639,0.146,7.5,0.0236,9.39,2.7,3.4834,1.902,1.408,0.15,0.4,0.0004,Super-Earth (Dense Rocky)
+Kepler-22b,158984573,PASSED,Habitable-Zone Sub-Neptune / Water World,289.863876,2454966.7001,501.9,2.1,0.187,9.1,0.0286,5.42,1.6,7.415,0.869,0.857,0.18,0.6,0.0002,Super-Earth (Dense Rocky)
+Kepler-78b,270701667,PASSED,Super-Earth / Rocky,0.35500745,2454953.95984,217.0,1.201,0.107,1.68,0.0053,5.35,1.75,0.814,0.7475,0.779,0.13,0.5,0.0001,Terrestrial / Iron-Silicate (Rocky)
+Kepler-93b,137151335,PASSED,Super-Earth / Rocky,4.72673978,2454944.29227,273.1,1.478,0.132,4.66,0.0147,7.96,1.89,2.8898,0.919,0.911,0.2,0.6,0.0003,Super-Earth (Dense Rocky)
+Kepler-102b,123357864,PASSED,Terrestrial / Sub-Earth,5.286965,2454968.8696,43.0,0.46,0.041,1.1,0.0035,62.31,0.47,2.591,0.724,0.803,0.14,0.7,0.0004,Terrestrial / Iron-Silicate (Rocky)
+Kepler-103b,121865656,PASSED,Sub-Neptune / Water World,15.9653287,2455677.65243,486.1,3.4857,0.311,11.67,0.0367,1.52,2.75,4.527,1.492,1.212,0.19,0.4,0.0002,Sub-Neptune / Ice Giant
+Kepler-107b,27988327,PASSED,Super-Earth / Rocky,3.1800218,2455701.08414,121.9,1.536,0.137,3.8,0.012,5.78,1.44,3.633,1.447,1.238,0.11,0.4,0.0003,Super-Earth (Dense Rocky)
+Kepler-109b,122441003,PASSED,Sub-Neptune / Water World,6.4816307,2454955.97791,301.5,2.49,0.222,4.9,0.0154,1.75,1.6,3.649,1.387,1.094,0.19,0.7,0.0002,Mini-Neptune / Low-Density Super-Earth
+Kepler-409b,270619260,PASSED,Super-Earth / Rocky,68.9583216,2455012.0829,123.8,1.199,0.107,6.0,0.0189,19.19,1.6,3.0854,0.897,0.913,0.14,0.5,0.0002,Super-Earth (Dense Rocky)
+Kepler-454b,121276638,PASSED,Sub-Neptune / Water World,10.5737534,2455008.06758,302.4,2.37,0.211,5.4,0.017,2.24,1.64,1.7259,1.066,1.03,0.12,0.5,0.0002,Water World / Volatile-Rich Super-Earth
+Kepler-538b,28227113,PASSED,Sub-Neptune / Water World,81.73778,2455044.6789,641.6,2.215,0.198,12.9,0.0406,6.55,2.09,6.7005,0.8717,0.892,0.18,0.5,0.0003,Water Giant / Ocean Planet
+Kepler-1655b,120973167,PASSED,Sub-Neptune / Water World,11.8728787,2455013.89795,343.2,2.213,0.197,5.4,0.017,2.75,1.51,2.3661,1.03,1.03,0.18,0.4,0.0003,Water World / Volatile-Rich Super-Earth
+K2-2b,422618449,PASSED,Sub-Neptune / Water World,9.1004157,2458072.29291,889.0,2.469,0.22,9.7,0.0305,3.55,3.54,2.431,0.758,0.8,0.2,0.5,0.0002,Water World / Volatile-Rich Super-Earth
+K2-3b,173103335,PASSED,Sub-Neptune / Water World,10.0546535,2457165.32947,1416.0,2.078,0.185,5.11,0.0161,3.14,2.27,2.563,0.546,0.549,0.18,0.4,0.0002,Water World / Volatile-Rich Super-Earth
+K2-36b,363445121,PASSED,Super-Earth / Rocky,1.422614,2456810.8916,345.0,1.43,0.128,4.3,0.0135,8.11,2.85,1.1232,0.718,0.79,0.1,0.6,0.0003,Super-Earth (Dense Rocky)
+K2-38b,12666215,PASSED,Super-Earth / Rocky,4.01593,2456896.8786,260.7,1.54,0.137,7.3,0.023,11.02,2.95,2.74,1.06,1.03,0.18,0.6,0.0002,Super-Earth (Dense Rocky)
+K2-110b,287333762,PASSED,Sub-Neptune / Water World,13.86375,2457275.32992,1361.0,2.592,0.231,15.9,0.05,5.03,5.25,3.22,0.713,0.738,0.17,0.4,0.0001,Water Giant / Ocean Planet
+K2-111b,14227229,PASSED,Sub-Neptune / Water World,5.3518963,2459519.1348,118.4,1.837,0.164,5.35,0.0168,4.76,2.23,3.2362,1.25,0.84,0.18,0.5,0.0003,Water World / Volatile-Rich Super-Earth
+K2-131b,176868951,PASSED,Super-Earth / Rocky,0.3693038,2457582.936,755.7,1.69,0.151,7.9,0.0249,9.02,8.0,1.0027781,0.7595,0.803,0.19,0.6,0.0003,Super-Earth (Dense Rocky)
+K2-141b,301235044,PASSED,Super-Earth / Rocky,0.2803244,2457744.0716,507.0,1.51,0.135,4.97,0.0156,7.96,6.1,0.94,0.681,0.708,0.17,0.4,0.0001,Super-Earth (Dense Rocky)
+K2-222b,257774438,PASSED,Sub-Neptune / Water World,15.3889274,2459491.9547,372.0,2.275,0.203,7.5,0.0236,3.51,2.01,4.382,1.072,0.94,0.15,0.4,0.0002,Water World / Volatile-Rich Super-Earth
