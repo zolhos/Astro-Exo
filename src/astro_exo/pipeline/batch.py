@@ -252,8 +252,8 @@ class BatchProcessor:
         for idx, target_info in enumerate(targets, start=1):
             tic = target_info["tic_id"]
             name = target_info.get("name", f"TIC-{tic}")
-            toi = target_info.get("toi", "N/A")
-            safe_toi = str(toi).replace(".", "_")
+            toi = target_info.get("toi", "NA")
+            safe_toi = str(toi).replace(".", "_").replace("/", "_").replace("\\", "_")
             print(f"[{idx}/{n_total}] Processando {name} (TIC {tic})...", end=" ", flush=True)
 
             try:
