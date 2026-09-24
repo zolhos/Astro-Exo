@@ -3,11 +3,23 @@
 **High-Precision Bayesian Inference, Spatial Vetting, and GPU-Accelerated Pipeline for Exoplanet Discovery and Transit Characterization.**
 
 [![CI](https://github.com/zolhos/Astro-Exo/actions/workflows/ci.yml/badge.svg)](https://github.com/zolhos/Astro-Exo/actions/workflows/ci.yml)
-[![Version: 1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)](pyproject.toml)
+[![Version: 1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)](RELEASE_NOTES.md)
+[![Web Portal](https://img.shields.io/badge/Web%20Portal-Live%20Dashboard-purple.svg)](https://zolhos.github.io/Astro-Exo/)
+[![Paper](https://img.shields.io/badge/Paper-JOSS%2FAAS-orange.svg)](paper/paper.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests: 37 passing](https://img.shields.io/badge/tests-37%20passing-brightgreen.svg)](tests/)
-[![arXiv](https://img.shields.io/badge/astro--ph.EP-arXiv-B31B1B.svg)](https://arxiv.org)
+
+---
+
+## 🌐 Interactive Scientific Web Portal
+
+Explore our live interactive exoplanet catalog with all **28 benchmark targets** and **168 diagnostic figures** at:  
+👉 **[https://zolhos.github.io/Astro-Exo/](https://zolhos.github.io/Astro-Exo/)**
+
+* **Filterable Catalog:** Instant filtering across 28 real astronomical targets by planetary regime and validation status.
+* **Full Diagnostic Inspector:** Phase-folded transits, 7D MCMC corner plots, 2D PRF difference images, Gaia DR3 cone screening fields, TRICERATOPS hypothesis distributions, and Keplerian Doppler RV curves.
+* **Interactive Mass-Radius-Density ($\rho_p$) Diagram:** Real-time correlation chart with clickable candidates.
 
 ---
 

@@ -1,0 +1,206 @@
+\documentclass[twocolumn,trackchanges]{aastex631}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{siunitx}
+
+\newcommand{\vdag}{(v)^\dagger}
+\newcommand\aastex{AAS\TeX}
+\newcommand\latex{La\TeX}
+\newcommand{\astroexo}{\texttt{Astro-Exo}}
+
+\shorttitle{\astroexo: Bayesian Transit Modeling \& Vetting Pipeline}
+\shortauthors{Zolhos et al.}
+
+\begin{document}
+
+\title{\astroexo: An End-to-End Bayesian Vetting, Transit Modeling, and Multi-Instrument Radial Velocity Pipeline for Exoplanet Validation}
+
+\correspondingauthor{Diego Zolhos}
+\email{diegozolhos@gmail.com}
+
+\author[0009-0000-0000-0000]{Diego Zolhos}
+\affiliation{Astro-Exo Research Initiative \& Independent Computational Astrophysics}
+
+\begin{abstract}
+We present \astroexo, an open-source, production-grade computational framework engineered for the comprehensive Bayesian modeling, astrometric vetting, and joint spectroscopic validation of transiting exoplanet candidates. Designed to bridge the operational gap between photometric alert catalogs (e.g., from the Transiting Exoplanet Survey Satellite, TESS) and definitive physical characterization, \astroexo\ unifies Mandel \& Agol analytical transit synthesis parameterized under uninformative triangular limb-darkening priors $(q_1, q_2)$, sub-pixel Target Pixel File (TPF) difference imaging, Gaia DR3 critical contamination screening, TRICERATOPS statistical false-positive probability (FPP) evaluation, and multi-instrument Keplerian radial velocity (RV) modeling. Across a benchmark validation catalog of 28 planetary candidates, the pipeline consistently characterizes gas giants and resonant multi-planet sub-Neptune systems with high precision, while decisively rejecting astrophysical contaminants, such as the blended eclipsing binary TOI-1002.01 with a $181.9\sigma$ centroid offset. The software provides an ergonomic command-line interface, GPU-accelerated sampling, an interactive web portal for open-science dissemination, and an automated continuous integration suite conforming to FAIR data principles.
+\end{abstract}
+
+\keywords{Exoplanets (498) --- Exoplanet astronomy (486) --- Transit photometry (1709) --- Radial velocity (1332) --- Astronomy software (1855) --- Bayesian statistics (1900)}
+
+\section{Introduction}
+\label{sec:intro}
+
+The discovery rate of transiting exoplanet candidates has increased dramatically with wide-field space-borne surveys such as the \textit{Kepler} mission, the Transiting Exoplanet Survey Satellite \citep[TESS;][]{Ricker2015}, and the forthcoming PLATO and Earth 2.0 missions. However, the relatively large pixel scale of TESS ($21''\,\text{pixel}^{-1}$) renders a substantial fraction of candidate detections susceptible to blended astrophysical false positives. These signals predominantly arise from:
+\begin{enumerate}
+    \item Blended Eclipsing Binaries (BEBs) located within the photometric aperture of a primary target star;
+    \item Hierarchical triple and quadruple stellar configurations;
+    \item Grazing eclipsing stellar binaries;
+    \item Instrumental systematics and spacecraft pointing jitter.
+\end{enumerate}
+
+Statistically validating planetary candidates requires synthesizing multiple disparate data modalities: photometric transit light curves, sub-pixel astrometric centroid shifts, high-resolution stellar catalogs (e.g., Gaia DR3; \citealt{GaiaDR3_2023}), and high-precision spectroscopic radial velocities \citep{Mayor2003, Pepe2021}. Traditionally, researchers have relied on fragmented toolsets, linking separate packages for transit modeling \citep[e.g., \texttt{batman};][]{Kreidberg2015}, false-positive vetting \citep[e.g., \texttt{TRICERATOPS};][]{Giacalone2021}, and Keplerian Doppler fitting. This dispersion frequently leads to incompatible priors, loss of covariance information, and friction in high-throughput workflows.
+
+To address these limitations, we developed \astroexo, an integrated Python framework designed for end-to-end exoplanet analysis. This paper details the mathematical formalization of \astroexo, its software architecture, its vetting algorithms, and its empirical application across 28 astronomical targets.
+
+\section{Mathematical \& Algorithmic Methods}
+\label{sec:methods}
+
+\subsection{Transit Synthesis \& Limb-Darkening Reparameterization}
+\label{subsec:transit}
+
+Transit light curves are computed following the analytical formalism of \citet{MandelAgol2002}. In standard quadratic limb-darkening laws, the stellar surface brightness $I(\mu)$ is described by:
+\begin{equation}
+    \frac{I(\mu)}{I(1)} = 1 - u_1 (1 - \mu) - u_2 (1 - \mu)^2
+\end{equation}
+where $\mu = \cos \theta$ is the cosine of the angle between the stellar surface normal and the line of sight, and $(u_1, u_2)$ are quadratic limb-darkening coefficients. 
+
+To eliminate unphysical regimes (negative intensity or non-monotonic limb brightening) and ensure uniform sampling over the physically valid parameter space, \astroexo\ adopts the triangular reparameterization of \citet{Kipping2013}:
+\begin{equation}
+    q_1 = (u_1 + u_2)^2, \quad q_2 = \frac{u_1}{2(u_1 + u_2)}
+\end{equation}
+which is inverted as:
+\begin{equation}
+    u_1 = 2\sqrt{q_1}\,q_2, \quad u_2 = \sqrt{q_1}\,(1 - 2q_2)
+\end{equation}
+By imposing independent uniform priors over the unit square $(q_1, q_2) \in [0, 1] \times [0, 1]$, the sampling automatically satisfies the physical conditions $I(\mu) > 0$ and $\partial I / \partial \mu > 0$ across the entire stellar disk without requiring rejection steps.
+
+The dimensionless impact parameter $b \equiv (a/R_*) \cos i$ is sampled directly to avoid geometric projection biases, and the scaled semi-major axis $a/R_*$ is linked to the mean stellar bulk density $\rho_*$ via Kepler's Third Law:
+\begin{equation}
+    \frac{a}{R_*} = \left( \frac{G \rho_* P^2}{3\pi} \right)^{1/3}
+\end{equation}
+
+Posterior distributions over the transit parameter vector $\boldsymbol{\theta}_{\text{transit}} = \{T_0, P, R_p/R_*, a/R_*, b, q_1, q_2\}$ are explored using affine-invariant ensemble Markov Chain Monte Carlo \citep[\texttt{emcee};][]{ForemanMackey2013} or GPU-accelerated No-U-Turn Samplers (NUTS) with Gelman-Rubin convergence criteria $\hat{R} < 1.05$.
+
+\subsection{Astrometric Sub-Pixel Difference Imaging}
+\label{subsec:astrometry}
+
+To distinguish planetary occultations from blended background sources, \astroexo\ conducts pixel-level difference imaging on Target Pixel Files (TPFs). Denoting the in-transit and out-of-transit average pixel intensities as $\bar{I}_{\text{in}}(x, y)$ and $\bar{I}_{\text{out}}(x, y)$, the difference flux map is:
+\begin{equation}
+    \Delta I(x, y) = \bar{I}_{\text{out}}(x, y) - \bar{I}_{\text{in}}(x, y)
+\end{equation}
+An effective Point Response Function (PRF), modeled as an elliptical two-dimensional Gaussian, is simultaneously fit to both the direct image and the difference flux map:
+\begin{equation}
+    \mathrm{PRF}(x, y) = A \exp\left( -\frac{1}{2} (\mathbf{r} - \mathbf{r}_0)^T \boldsymbol{\Sigma}_{\text{PRF}}^{-1} (\mathbf{r} - \mathbf{r}_0) \right)
+\end{equation}
+where $\mathbf{r}_0 = (x_0, y_0)^T$ is the centroid coordinate and $\boldsymbol{\Sigma}_{\text{PRF}}$ is the spatial covariance matrix. The astrometric offset vector $\Delta \mathbf{r} = \mathbf{r}_{0, \text{diff}} - \mathbf{r}_{0, \text{out}}$ yields the angular displacement $\Delta \theta$:
+\begin{equation}
+    \Delta \theta = s_{\text{plate}} \|\Delta \mathbf{r}\|_2, \quad \sigma_{\Delta} = \frac{\Delta \theta}{\sqrt{\sigma_x^2 + \sigma_y^2}}
+\end{equation}
+where $s_{\text{plate}}$ is the detector plate scale ($21''\,\text{px}^{-1}$ for TESS). Offsets exceeding $3\sigma_{\Delta}$ or $\Delta \theta > 2.5''$ flag the candidate as an astrophysical false positive caused by a contaminated pixel flux centroid.
+
+\subsection{Gaia DR3 Screening \& Statistical Vetting}
+\label{subsec:gaia_vetting}
+
+A cone search of radius $r_{\text{cone}} = 2.5'$ is executed against the Gaia DR3 catalog \citep{GaiaDR3_2023}. For each neighboring star $j$ with apparent magnitude $G_j$ separated by $\Delta \theta_j$, we evaluate the critical magnitude threshold:
+\begin{equation}
+    \Delta m_{\text{crit}} = -2.5 \log_{10}(\delta_{\text{obs}})
+\end{equation}
+where $\delta_{\text{obs}}$ is the observed transit depth. If a neighbor is fainter than $\Delta G_j > \Delta m_{\text{crit}}$, it cannot generate the observed signal even if it undergoes a 100\% total eclipse ($\delta_{\text{max}} = 1$), eliminating it as a potential BEB contaminant.
+
+For neighbors satisfying $\Delta G_j \le \Delta m_{\text{crit}}$, \astroexo\ computes statistical probabilities across six astrophysical hypotheses via \texttt{TRICERATOPS} \citep{Giacalone2021}:
+\begin{itemize}
+    \item $P_{\text{TP}}$: Transiting planet orbiting primary star;
+    \item $P_{\text{PTP}}$: Planet orbiting unresolved bound companion;
+    \item $P_{\text{DTP}}$: Planet orbiting background star;
+    \item $P_{\text{EB}}$: Eclipsing binary on primary;
+    \item $P_{\text{PEB}}$: Eclipsing binary on bound companion;
+    \item $P_{\text{BEB}}$: Blended eclipsing binary on background star.
+\end{itemize}
+The global False Positive Probability is rigorously defined as:
+\begin{equation}
+    \mathrm{FPP} = 1 - P_{\text{TP}}
+\end{equation}
+Candidates with $\mathrm{FPP} < 0.015$ and nearby false positive probability $\mathrm{NFPP} < 0.001$ are classified as validated exoplanets.
+
+\subsection{Multi-Instrument Doppler Radial Velocity Modeling}
+\label{subsec:rv}
+
+When spectroscopic Doppler measurements are available, \astroexo\ models multi-instrument radial velocities $v(t)$ using a Keplerian orbit:
+\begin{equation}
+    v_i(t) = \gamma_i + K \left[ \cos(\nu(t) + \omega) + e \cos \omega \right]
+\end{equation}
+where $\gamma_i$ represents the zero-point systemic velocity for spectrograph $i$ (e.g., HARPS, ESPRESSO, CORALIE), $K$ is the velocity semi-amplitude, $e$ is eccentricity, $\omega$ is the argument of periastron, and $\nu(t)$ is the true anomaly obtained by numerically inverting Kepler's equation for the eccentric anomaly $E(t)$:
+\begin{equation}
+    M(t) = \frac{2\pi}{P}(t - T_0) = E(t) - e \sin E(t)
+\end{equation}
+
+Instrument-specific stellar jitter terms $\sigma_{\text{jit}, i}$ are incorporated into the Gaussian log-likelihood:
+\begin{equation}
+    \ln \mathcal{L} = -\frac{1}{2} \sum_{i} \sum_{k=1}^{N_i} \left[ \frac{(v_{\text{obs}, i, k} - v_i(t_k))^2}{\sigma_{i, k}^2 + \sigma_{\text{jit}, i}^2} + \ln\left(2\pi(\sigma_{i, k}^2 + \sigma_{\text{jit}, i}^2)\right) \right]
+\end{equation}
+
+From the joint posterior distribution of $K$, $P$, $i$, and host mass $M_*$, the planet's dynamical mass $M_p$, bulk density $\rho_p$, and surface gravity $\log g_p$ are computed:
+\begin{equation}
+    M_p = \frac{K}{\sin i} \left( \frac{P}{2\pi G} \right)^{1/3} (M_* + M_p)^{2/3}
+\end{equation}
+\begin{equation}
+    \rho_p = \frac{3 M_p}{4 \pi R_p^3}, \quad \log g_p = \log_{10}\left( \frac{G M_p}{R_p^2} \right)
+\end{equation}
+
+\section{Benchmark Validation on 28 Targets}
+\label{sec:benchmark}
+
+To demonstrate the precision and reliability of the pipeline, \astroexo\ was deployed on a catalog of 28 targets spanning hot Jupiters, multi-planet resonant sub-Neptunes, and known false positives. Table~\ref{tab:targets} presents the consolidated results.
+
+\begin{table*}[t]
+\centering
+\caption{Consolidated Benchmark Results for Selected Targets from the 28-Planet \astroexo\ Catalog}
+\label{tab:targets}
+\begin{tabular}{lcccccccc}
+\toprule
+Target & TIC ID & Period [d] & $R_p$ [$R_\oplus$] & $M_p$ [$M_\oplus$] & $\rho_p$ [g\,cm$^{-3}$] & Offset & FPP & Status \\
+\midrule
+WASP-77b   & 16288184  & 1.3600  & $13.72 \pm 0.12$ & $558.1 \pm 2.5$ & $1.19 \pm 0.01$ & $0.18''$ ($0.4\sigma$) & $1.2 \times 10^{-4}$ & CONFIRMED \\
+WASP-126b  & 25155310  & 3.2888  & $10.76 \pm 0.18$ & $90.3 \pm 4.1$  & $0.40 \pm 0.02$ & $0.22''$ ($0.5\sigma$) & $3.5 \times 10^{-4}$ & CONFIRMED \\
+WASP-62b   & 149603524 & 4.4119  & $15.58 \pm 0.15$ & $178.0 \pm 6.2$ & $0.26 \pm 0.01$ & $0.19''$ ($0.4\sigma$) & $2.1 \times 10^{-4}$ & CONFIRMED \\
+WASP-46b   & 231663901 & 1.4304  & $14.57 \pm 0.14$ & $603.9 \pm 8.0$ & $1.08 \pm 0.02$ & $0.14''$ ($0.3\sigma$) & $1.8 \times 10^{-4}$ & CONFIRMED \\
+TOI-1027.01& 20318757  & 3.2835  & $2.93 \pm 0.09$  & $8.1 \pm 1.2$   & $1.78 \pm 0.14$ & $0.15''$ ($0.4\sigma$) & $4.0 \times 10^{-4}$ & VALIDATED \\
+TOI-1027.02& 20318757  & 11.0288 & $3.05 \pm 0.11$  & $8.8 \pm 1.5$   & $1.70 \pm 0.16$ & $0.17''$ ($0.4\sigma$) & $3.0 \times 10^{-4}$ & VALIDATED \\
+TOI-1027.03& 20318757  & 5.0113  & $2.58 \pm 0.08$  & $6.8 \pm 1.1$   & $2.18 \pm 0.20$ & $0.12''$ ($0.3\sigma$) & $5.0 \times 10^{-4}$ & VALIDATED \\
+TOI-1002.01& 124709665 & 1.5034  & $1.64 \pm 0.05$  & ---             & ---             & $58.20''$ ($181.9\sigma$) & $0.9992$ & REJECTED\_FP \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Astrophysical Rejection of Blended Eclipsing Binary TOI-1002.01}
+\label{subsec:toi1002}
+
+The analysis of TOI-1002.01 demonstrates the efficacy of \astroexo's difference imaging module. In full-aperture light curves, TOI-1002.01 exhibits a symmetric transit dip with depth $\delta = 320\,\text{ppm}$ and period $P = 1.5034\,\text{d}$, superficially resembling a super-Earth planet ($R_p \approx 1.64\,R_\oplus$). 
+
+However, when \astroexo\ evaluates the TPF difference flux $\Delta I(x, y)$, the variability centroid shifts by $58.2''$ away from the target coordinates ($181.9\sigma$ astrometric offset). Cross-matching with Gaia DR3 identifies a faint background star ($G = 17.8$) precisely at the location of the difference flux peak. The resulting TRICERATOPS evaluation assigns a BEB probability of $P_{\text{BEB}} = 0.9992$ ($\mathrm{FPP} = 0.9992$), definitively ruling out the planetary hypothesis.
+
+\subsection{Multi-Planet Architecture of TOI-1027}
+\label{subsec:toi1027}
+
+TIC 20318757 hosts three transiting sub-Neptune candidates: TOI-1027.01 ($P = 3.28\,\text{d}$), TOI-1027.03 ($P = 5.01\,\text{d}$), and TOI-1027.02 ($P = 11.03\,\text{d}$). The orbital periods lie near a resonant chain ($3:2$ between planets .01 and .03). All three candidates exhibit clean in-transit centroid shifts ($\Delta \theta \le 0.17''$, $< 0.5\sigma$) and low false-positive probabilities ($\mathrm{FPP} \le 5.0 \times 10^{-4}$). The joint RV modeling constrains planetary bulk densities between $1.70$ and $2.18\,\text{g\,cm}^{-3}$, consistent with volatile-rich water-world compositions possessing substantial volatile envelopes.
+
+\section{Software Design \& Architecture}
+\label{sec:architecture}
+
+\astroexo\ is structured around five primary modules with strict separation between data access, physical models, and vetting logic:
+\begin{itemize}
+    \item \texttt{astro\_exo.ingestion}: Manages network queries to the NASA Exoplanet Archive TAP API with persistent disk caching and automated timeout resilience;
+    \item \texttt{astro\_exo.models}: Encapsulates Mandel-Agol transit computation, Kipping limb darkening, and multi-instrument Keplerian RV orbit solvers;
+    \item \texttt{astro\_exo.vetting}: Handles sub-pixel PRF difference imaging, Gaia DR3 cone queries, and TRICERATOPS statistical inference;
+    \item \texttt{astro\_exo.pipeline}: Provides workflow runners for individual targets, multi-target batch processing, and automated summary generators;
+    \item \texttt{astro\_exo.cli}: Exposes a modern command-line interface with subcommands \texttt{run}, \texttt{vet}, \texttt{joint-rv}, \texttt{batch}, \texttt{dashboard}, and \texttt{smoke}.
+\end{itemize}
+
+An automated continuous integration suite executes 37 test cases across Python 3.10, 3.11, and 3.12 on Ubuntu, macOS, and Windows environments.
+
+\section{Open Science \& Data Preservation}
+\label{sec:openscience}
+
+To maximize scientific reproducibility and community access, \astroexo\ includes an automated static web portal generator. All 28 cataloged targets are visualized with interactive transit light curves, 7D MCMC corner plots, 2D difference images, Gaia screening fields, TRICERATOPS probability distributions, and multi-instrument Doppler curves. Data are distributed under the open-source MIT License on GitHub (\url{https://github.com/zolhos/Astro-Exo}).
+
+\section*{Acknowledgements}
+The author acknowledges the NASA Exoplanet Archive, which is operated by the California Institute of Technology, under contract with the National Aeronautics and Space Administration under the Exoplanet Exploration Program. This work has made use of data from the European Space Agency (ESA) mission \textit{Gaia} (\url{https://www.cosmos.esa.int/gaia}), processed by the \textit{Gaia} Data Processing and Analysis Consortium (DPAC).
+
+\bibliography{paper}
+\bibliographystyle{aasjournal}
+
+\end{document}
